@@ -47,4 +47,3 @@ public class SearchListActivity extends AppCompatActivity {
     }
 
 }
-
