@@ -7,6 +7,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Dao
@@ -21,7 +22,7 @@ public interface SearchListItemDao {
     SearchListItem get(long id);
 
     @Query("SELECT * FROM `search_list_items` ORDER BY `id`")
-    List<SearchListItem> getAll();
+    ArrayList<String> getAll();
 
     @Query("SELECT * FROM `search_list_items` ORDER BY `id`")
     LiveData<List<SearchListItem>> getAllLive();
