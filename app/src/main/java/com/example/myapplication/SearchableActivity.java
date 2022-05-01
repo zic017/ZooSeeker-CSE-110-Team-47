@@ -10,12 +10,18 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.widget.SearchView;
 
+import java.util.List;
+
 public class SearchableActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_list);
+
+        // Get the database by using singleton
+        SearchListItemDao searchListItemDao = SearchDataBase.getSingleton(this).searchListItemDao();
+        List<SearchListItem> mylist = searchListItemDao.getAll();
 
         // Get the intent, verify the action and get the query
         Intent intent = getIntent();
@@ -26,6 +32,7 @@ public class SearchableActivity extends AppCompatActivity {
     }
 
     private void doMySearch(String query) {
+
     }
 
     @Override
