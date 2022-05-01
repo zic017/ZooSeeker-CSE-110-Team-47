@@ -22,7 +22,7 @@ public interface SearchListItemDao {
     SearchListItem get(long id);
 
     @Query("SELECT * FROM `search_list_items` ORDER BY `id`")
-    ArrayList<String> getAll();
+    ArrayList<SearchListItem> getAll();
 
     @Query("SELECT * FROM `search_list_items` ORDER BY `id`")
     LiveData<List<SearchListItem>> getAllLive();

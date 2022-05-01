@@ -26,7 +26,7 @@ public class SearchableActivity extends AppCompatActivity {
 
     // Get the database by using singleton
     SearchListItemDao searchListItemDao = SearchDataBase.getSingleton(this).searchListItemDao();
-    ArrayList<String> mylist = searchListItemDao.getAll();
+    ArrayList<SearchListItem> mylist = searchListItemDao.getAll();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,16 +38,16 @@ public class SearchableActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
 
         // Get the intent, verify the action and get the query
-        Intent intent = getIntent();
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            doMySearch(query);
-        }
+//        Intent intent = getIntent();
+//        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+//            String query = intent.getStringExtra(SearchManager.QUERY);
+//            doMySearch(query);
+//        }
     }
 
-    private void doMySearch(String query) {
-
-    }
+//    private void doMySearch(String query) {
+//
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
