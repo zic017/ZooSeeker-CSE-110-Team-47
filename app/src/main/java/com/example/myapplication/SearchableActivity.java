@@ -34,7 +34,7 @@ public class SearchableActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_list);
 
         ListView listView = findViewById(R.id.list_view);
-        adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, mylist);
+//        adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, mylist);
         listView.setAdapter(adapter);
 
         // Get the intent, verify the action and get the query
