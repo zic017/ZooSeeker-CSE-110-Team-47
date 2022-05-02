@@ -46,6 +46,7 @@
         android:layout_height="40dp"
         android:hint="Search for Exhibits"
         android:completionThreshold="1"
+        android:inputType="text"
         app:layout_constraintBottom_toTopOf="@+id/listView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
