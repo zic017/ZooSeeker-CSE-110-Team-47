@@ -19,6 +19,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
 public class SearchableActivity extends AppCompatActivity {
 
     ListView listView;
@@ -85,5 +86,6 @@ public class SearchableActivity extends AppCompatActivity {
 //
 //        return true;
     }
+    }
+*/
 
-}

@@ -18,8 +18,7 @@ public class SearchListActivity extends AppCompatActivity {
     // Exposed for testing purposes later...
     public RecyclerView recyclerView;
 
-//    private SearchListViewModel viewModel;
-    //private TodoListItem todoListItem;
+    private SearchListViewModel viewModel;
 //    private Button addButton;
 
     @Override
@@ -28,13 +27,15 @@ public class SearchListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_list);
 
 
-//        viewModel = new ViewModelProvider(this)
-//                .get(TodoListViewModel.class);
+        SearchListItemDao searchListItemDao = SearchDataBase.getSingleton(this).searchListItemDao();
+        List<SearchListItem> searchListItems = searchListItemDao.getAll();
+        SearchListViewModel viewModel = new ViewModelProvider(this).get(SearchListViewModel.class);
 
         SearchListAdapter adapter = new SearchListAdapter();
         adapter.setHasStableIds(true);
+        adapter.setSearchListItems(searchListItems);
 //        adapter.setOnAddClickedHandler(viewModel::setDeleted);
-//        viewModel.getTodoListItems().observe(this, adapter::setTodoListItems);
+        viewModel.getSearchListItems().observe(this, adapter::setSearchListItems);
 
         recyclerView = findViewById(R.id.search_results);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

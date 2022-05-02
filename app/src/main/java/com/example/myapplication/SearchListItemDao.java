@@ -19,10 +19,10 @@ public interface SearchListItemDao {
     List<Long> insertAll(List<SearchListItem> searchListItems);
 
     @Query("SELECT * FROM `search_list_items` WHERE `id`=:id")
-    SearchListItem get(long id);
+    SearchListItem get(String id);
 
     @Query("SELECT * FROM `search_list_items` ORDER BY `id`")
-    ArrayList<SearchListItem> getAll();
+    List<SearchListItem> getAll();
 
     @Query("SELECT * FROM `search_list_items` ORDER BY `id`")
     LiveData<List<SearchListItem>> getAllLive();

@@ -9,7 +9,7 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
-public class SearchListViewModel{ /*extends AndroidViewModel {
+public class SearchListViewModel extends AndroidViewModel {
 
     private LiveData<List<SearchListItem>> searchListItems;
     private final SearchListItemDao searchListItemDao;
@@ -17,41 +17,22 @@ public class SearchListViewModel{ /*extends AndroidViewModel {
     public SearchListViewModel(@NonNull Application application){
         super(application);
         Context context = getApplication().getApplicationContext();
-        TodoDatabase db = TodoDatabase.getSingleton(context);
-        todoListItemDao = db.todoListItemDao();
+        SearchDataBase db = SearchDataBase.getSingleton(context);
+        searchListItemDao = db.searchListItemDao();
     }
 
-    public LiveData<List<TodoListItem>> getTodoListItems(){
-        if(todoListItems == null){
+    public LiveData<List<SearchListItem>> getSearchListItems(){
+        if(searchListItems == null){
             loadUsers();
         }
-        return todoListItems;
+        return searchListItems;
     }
 
     public void loadUsers(){
-        todoListItems = todoListItemDao.getAllLive();
+        searchListItems = searchListItemDao.getAllLive();
     }
 
-    public void toggleCompleted(TodoListItem todoListItem){
-        todoListItem.completed = !todoListItem.completed;
-        todoListItemDao.update(todoListItem);
-    }
-
-    public void updateText(TodoListItem todoListItem, String newText){
-        todoListItem.text = newText;
-        todoListItemDao.update(todoListItem);
-    }
-
-    public void createTodo(String text){
-        int endOfListOrder = todoListItemDao.getOrderForAppend();
-        TodoListItem newItem = new TodoListItem(text, false, endOfListOrder);
-        todoListItemDao.insert(newItem);
-    }
-
-    public void deleteTodo(TodoListItem todoListItem){
-        todoListItems.getValue().clear();
-        todoListItemDao.delete(todoListItem);
-    }
-
-*/
+//    public void deleteTodo(TodoListItem todoListItem){
+//        todoListItems.getValue().clear();
+//        todoListItemDao.delete(todoListItem);
 }

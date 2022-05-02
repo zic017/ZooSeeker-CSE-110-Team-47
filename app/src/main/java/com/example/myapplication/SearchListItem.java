@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -22,12 +23,15 @@ import java.util.List;
 public class SearchListItem {
 
     @NonNull
+    @PrimaryKey
     public String id;
+
+    @NonNull
     public String kind;
     public String name;
-    public String[] tags;
+    public List<String> tags;
 
-    public SearchListItem(@NonNull String id, String kind, String name, String[] tags) {
+    public SearchListItem(@NonNull String id, String kind, String name, List<String> tags) {
         this.id = id;
         this.kind = kind;
         this.name = name;
@@ -40,7 +44,7 @@ public class SearchListItem {
                 "id='" + id + '\'' +
                 ", kind='" + kind + '\'' +
                 ", name='" + name + '\'' +
-                ", tags=" + Arrays.toString(tags) +
+                ", tags=" + tags +
                 '}';
     }
 
@@ -55,6 +59,5 @@ public class SearchListItem {
             e.printStackTrace();
             return Collections.emptyList();
         }
-
     }
 }
