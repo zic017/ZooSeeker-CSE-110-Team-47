@@ -14,33 +14,44 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SearchListActivity extends AppCompatActivity {
     // Exposed for testing purposes later...
     public RecyclerView recyclerView;
+    public AutoCompleteTextView suggestionBox;
+    public Spinner spinner;
+    public ArrayList<String> myList = new ArrayList<>();
 
 //    private SearchListViewModel viewModel;
     //private TodoListItem todoListItem;
+
+    /*
     ListView listView;
 
     // Define array adapter for ListView
     ArrayAdapter<String> adapter2;
 
     // Define array List for List View data
-    ArrayList<String> mylist;
+
+
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_list);
+        suggestionBox = findViewById(R.id.suggestion_box);
 
 
 //        viewModel = new ViewModelProvider(this)
@@ -53,24 +64,28 @@ public class SearchListActivity extends AppCompatActivity {
 
 //        recyclerView = findViewById(R.id.search_results);
 //        recyclerView.setLayoutManager(new LinearLayoutManager(this));
- //       recyclerView.setAdapter(adapter);
-
+        //       recyclerView.setAdapter(adapter);
 
 
         adapter.setSearchListItems(SearchListItem.loadJSON(this, "sample_node_info.json"));
 
-        listView = findViewById(R.id.listView);
+        //listView = findViewById(R.id.listView);
 
         // Add items to Array List
-        mylist = new ArrayList<>();
-        mylist.add("Entrance and Exit Gate");
-        mylist.add("Gorillas");
-        mylist.add("Alligators");
-        mylist.add("Lions");
-        mylist.add("Elephant Odyssey");
-        mylist.add("Arctic Foxes");
+        myList.add("Entrance and Exit Gate");
+        myList.add("Gorillas");
+        myList.add("Alligators");
+        myList.add("Lions");
+        myList.add("Elephant Odyssey");
+        myList.add("Arctic Foxes");
 
+        ArrayAdapter<String> myListAdapter = new ArrayAdapter<String>(
+                SearchListActivity.this, android.R.layout.simple_spinner_dropdown_item
+                , myList
+        );
 
+        suggestionBox.setAdapter(myListAdapter);
+/*
         // Set adapter to ListView
         adapter2
                 = new ArrayAdapter<String>(
@@ -78,6 +93,8 @@ public class SearchListActivity extends AppCompatActivity {
                 android.R.layout.simple_list_item_1,
                 mylist);
         listView.setAdapter(adapter2);
+
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -137,4 +154,8 @@ public class SearchListActivity extends AppCompatActivity {
 
         return super.onCreateOptionsMenu(menu);
     }
+
+ */
+    }
+
 }
