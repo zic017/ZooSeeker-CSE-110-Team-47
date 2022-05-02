@@ -5,12 +5,6 @@ plugins {
 android {
     compileSdk 32
 
-    testOptions {
-        unitTests {
-            includeAndroidResources = true
-        }
-    }
-
     testOptions{
         unitTests{
             includeAndroidResources = true;
