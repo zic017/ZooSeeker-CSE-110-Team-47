@@ -11,6 +11,12 @@ android {
         }
     }
 
+    testOptions{
+        unitTests{
+            includeAndroidResources = true;
+        }
+    }
+
     defaultConfig {
         applicationId "com.example.myapplication"
         minSdk 28
