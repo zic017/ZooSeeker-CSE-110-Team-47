@@ -3,17 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/ctric/AndroidStudioProjects/zooseeker-cse-110-team-47/app/src/main/res/layout/activity_main.xml" value="0.14130434782608695" />
-        <entry key="..\:/Users/ctric/AndroidStudioProjects/zooseeker-cse-110-team-47/app/src/main/res/layout/activity_search_list.xml" value="0.14666666666666667" />
-        <entry key="..\:/Users/ctric/AndroidStudioProjects/zooseeker-cse-110-team-47/app/src/main/res/layout/search_list_item.xml" value="0.22" />
-        <entry key="..\:/Users/ctric/AndroidStudioProjects/zooseeker-cse-110-team-47/app/src/main/res/menu/menu.xml" value="0.17916666666666667" />
-        <entry key="..\:/Users/ctric/AndroidStudioProjects/zooseeker-cse-110-team-47/app/src/main/res/xml/searchable.xml" value="0.14130434782608695" />
         <entry key="..\:/Users/ctric/Downloads/MyApplication2/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Users/ctric/Downloads/MyApplication2/app/src/main/res/layout/activity_search_list.xml" value="0.22" />
         <entry key="..\:/Users/ctric/Downloads/MyApplication2/app/src/main/res/layout/search_list_item.xml" value="0.22" />
         <entry key="..\:/Users/ctric/Downloads/ZooSeeker/app/src/main/res/layout/activity_search_list.xml" value="0.14130434782608695" />
-        <entry key="app/src/main/res/layout/activity_search_list.xml" value="0.4388586956521739" />
-        <entry key="app/src/main/res/layout/search_list_item.xml" value="0.4388586956521739" />
+        <entry key="..\:/ZooSeeker/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/ZooSeeker/app/src/main/res/layout/activity_search_list.xml" value="0.1" />
+        <entry key="..\:/ZooSeeker/app/src/main/res/layout/search_list_item.xml" value="0.22826086956521738" />
       </map>
     </option>
   </component>

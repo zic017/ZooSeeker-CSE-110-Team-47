@@ -14,7 +14,8 @@ import java.util.function.Consumer;
 
 public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.ViewHolder> {
     private List<SearchListItem> searchItems = Collections.emptyList();
-    private Consumer<SearchListItem> onAddClickedHandler;
+    private List<PlanListItem> planItems = Collections.emptyList();
+    private Consumer<PlanListItem> onAddClickedHandler;
 
     public void setSearchListItems(List<SearchListItem> newSearchItems){
         this.searchItems.clear();
@@ -22,7 +23,7 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Vi
         notifyDataSetChanged();
     }
 
-    public void setOnAddClickedHandler(Consumer<SearchListItem> onAddClickedHandler) {
+    public void setOnAddClickedHandler(Consumer<PlanListItem> onAddClickedHandler) {
         this.onAddClickedHandler = onAddClickedHandler;
     }
 
@@ -56,6 +57,7 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Vi
         private final TextView textView;
         private final TextView add_btn;
         private SearchListItem searchItem;
+        private PlanListItem planItem;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -63,7 +65,7 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Vi
             this.add_btn = itemView.findViewById(R.id.add_btn);
 
             this.add_btn.setOnClickListener(view -> {
-                onAddClickedHandler.accept(searchItem);
+                onAddClickedHandler.accept(planItem);
             });
         }
 
