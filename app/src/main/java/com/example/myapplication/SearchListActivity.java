@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuItemCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,18 +9,33 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.SearchView;
+import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchListActivity extends AppCompatActivity {
     // Exposed for testing purposes later...
     public RecyclerView recyclerView;
 
-    private SearchListViewModel viewModel;
-//    private Button addButton;
+//    private SearchListViewModel viewModel;
+    //private TodoListItem todoListItem;
+    ListView listView;
+
+    // Define array adapter for ListView
+    ArrayAdapter<String> adapter2;
+
+    // Define array List for List View data
+    ArrayList<String> mylist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,24 +43,98 @@ public class SearchListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_list);
 
 
-        SearchListItemDao searchListItemDao = SearchDataBase.getSingleton(this).searchListItemDao();
-        List<SearchListItem> searchListItems = searchListItemDao.getAll();
-        SearchListViewModel viewModel = new ViewModelProvider(this).get(SearchListViewModel.class);
+//        viewModel = new ViewModelProvider(this)
+//                .get(TodoListViewModel.class);
 
         SearchListAdapter adapter = new SearchListAdapter();
         adapter.setHasStableIds(true);
-        adapter.setSearchListItems(searchListItems);
 //        adapter.setOnAddClickedHandler(viewModel::setDeleted);
-        viewModel.getSearchListItems().observe(this, adapter::setSearchListItems);
+//        viewModel.getTodoListItems().observe(this, adapter::setTodoListItems);
 
-        recyclerView = findViewById(R.id.search_results);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
+//        recyclerView = findViewById(R.id.search_results);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+ //       recyclerView.setAdapter(adapter);
 
 
-//        addTodoButton.setOnClickListener(this::onAddTodoClicked);
 
         adapter.setSearchListItems(SearchListItem.loadJSON(this, "sample_node_info.json"));
-    }
 
+        listView = findViewById(R.id.listView);
+
+        // Add items to Array List
+        mylist = new ArrayList<>();
+        mylist.add("Entrance and Exit Gate");
+        mylist.add("Gorillas");
+        mylist.add("Alligators");
+        mylist.add("Lions");
+        mylist.add("Elephant Odyssey");
+        mylist.add("Arctic Foxes");
+
+
+        // Set adapter to ListView
+        adapter2
+                = new ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_list_item_1,
+                mylist);
+        listView.setAdapter(adapter2);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        // Inflate menu with items using MenuInflator
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+
+        // Initialise menu item search bar
+        // with id and take its object
+        MenuItem searchViewItem
+                = menu.findItem(R.id.search_bar);
+        SearchView searchView
+                = (SearchView) MenuItemCompat
+                .getActionView(searchViewItem);
+
+        // attach setOnQueryTextListener
+        // to search view defined above
+        searchView.setOnQueryTextListener(
+                new SearchView.OnQueryTextListener() {
+
+                    // Override onQueryTextSubmit method
+                    // which is call
+                    // when submitquery is searched
+
+                    @Override
+                    public boolean onQueryTextSubmit(String query)
+                    {
+                        // If the list contains the search query
+                        // than filter the adapter
+                        // using the filter method
+                        // with the query as its argument
+                        if (mylist.contains(query)) {
+                            adapter2.getFilter().filter(query);
+                        }
+                        else {
+                            // Search query not found in List View
+                            Toast
+                                    .makeText(SearchListActivity.this,
+                                            "Not found",
+                                            Toast.LENGTH_LONG)
+                                    .show();
+                        }
+                        return false;
+                    }
+
+                    // This method is overridden to filter
+                    // the adapter according to a search query
+                    // when the user is typing search
+                    @Override
+                    public boolean onQueryTextChange(String newText)
+                    {
+                        adapter2.getFilter().filter(newText);
+                        return false;
+                    }
+                });
+
+        return super.onCreateOptionsMenu(menu);
+    }
 }
