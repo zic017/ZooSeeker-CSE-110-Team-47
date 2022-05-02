@@ -6,28 +6,25 @@
     android:layout_height="match_parent">
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/search_results"
+    <ListView
+        android:id="@+id/listView"
         android:layout_width="271dp"
-        android:layout_height="364dp"
-        android:layout_marginTop="1dp"
+        android:layout_height="365dp"
+        android:layout_marginTop="56dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.392"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_bar_text" />
+        app:layout_constraintTop_toBottomOf="@+id/logo" />
 
     <Button
         android:id="@+id/plan_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="88dp"
         android:text="Plan"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_results"
-        app:layout_constraintVertical_bias="0.185" />
+        app:layout_constraintTop_toBottomOf="@+id/listView" />
 
     <TextView
         android:id="@+id/logo"
@@ -43,15 +40,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.119" />
 
-    <SearchView
-        android:id="@+id/search_bar_text"
-        android:layout_width="300dp"
-        android:layout_height="67dp"
-        android:layout_marginTop="52dp"
-        android:layout_marginEnd="56dp"
-        android:inputType="text"
-        android:queryHint="Search for exhibit:"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
