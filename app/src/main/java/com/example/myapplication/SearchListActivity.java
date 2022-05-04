@@ -31,6 +31,7 @@ public class SearchListActivity extends AppCompatActivity {
     public RecyclerView recyclerView;
     public AutoCompleteTextView suggestionBox;
     public Spinner spinner;
+
     public ArrayList<String> myList = new ArrayList<>();
 
 //    private SearchListViewModel viewModel;
@@ -52,7 +53,7 @@ public class SearchListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_list);
         suggestionBox = findViewById(R.id.suggestion_box);
-
+        spinner = findViewById(R.id.items);
 
 //        viewModel = new ViewModelProvider(this)
 //                .get(TodoListViewModel.class);
@@ -84,7 +85,14 @@ public class SearchListActivity extends AppCompatActivity {
                 , myList
         );
 
+        ArrayAdapter<String> myListAdapter1 = new ArrayAdapter<String>(
+                SearchListActivity.this, android.R.layout.simple_spinner_dropdown_item
+                , myList
+        );
+
         suggestionBox.setAdapter(myListAdapter);
+
+        spinner.setAdapter(myListAdapter);
 /*
         // Set adapter to ListView
         adapter2

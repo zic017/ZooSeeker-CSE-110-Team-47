@@ -6,10 +6,10 @@
     android:layout_height="match_parent">
 
 
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="271dp"
-        android:layout_height="365dp"
+    <Spinner
+        android:id="@+id/items"
+        android:layout_width="256dp"
+        android:layout_height="213dp"
         android:layout_marginTop="108dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -17,14 +17,14 @@
 
     <Button
         android:id="@+id/plan_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="88dp"
+        android:layout_width="123dp"
+        android:layout_height="49dp"
         android:text="Plan"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listView" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.873" />
 
     <TextView
         android:id="@+id/logo"
@@ -47,7 +47,7 @@
         android:hint="Search for Exhibits"
         android:completionThreshold="1"
         android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/listView"
+        app:layout_constraintBottom_toTopOf="@+id/items"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo"

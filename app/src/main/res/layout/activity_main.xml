@@ -18,7 +18,7 @@
         app:layout_constraintVertical_bias="0.023" />
 
     <Spinner
-        android:id="@+id/items"
+        android:id="@+id/items2"
         android:layout_width="404dp"
         android:layout_height="502dp"
         android:layout_below="@+id/suggestion_box"
@@ -26,7 +26,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/suggestion_box"
-        app:layout_constraintVertical_bias="0.261"></Spinner>
+        app:layout_constraintVertical_bias="0.261"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
