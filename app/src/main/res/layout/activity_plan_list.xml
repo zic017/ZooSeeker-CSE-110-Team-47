@@ -3,30 +3,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    tools:context=".PlanListActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/search_list"
-        android:layout_width="328dp"
-        android:layout_height="365dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_bar" />
+        android:id="@+id/plan_list"
+        android:layout_width="409dp"
+        android:layout_height="400dp"
+        android:layout_marginBottom="164dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="1dp" />
 
-    <Button
-        android:id="@+id/plan_btn"
+    <TextView
+        android:id="@+id/myPlan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="Plan"
-        android:onClick="onPlanButtonClicked"
+        android:layout_marginBottom="7dp"
+        android:text="My Plan"
+        android:textColor="#E1392C"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/plan_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_list" />
+        app:layout_constraintTop_toBottomOf="@+id/logo"
+        app:layout_constraintVertical_bias="0.843" />
 
     <TextView
         android:id="@+id/logo"
@@ -42,17 +44,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.08" />
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/search_bar"
-        android:layout_width="303dp"
-        android:layout_height="52dp"
-        android:layout_marginTop="64dp"
-        android:maxLines="1"
-        app:actionViewClass="androidx.appcompat.widget.SearchView"
+    <Button
+        android:id="@+id/backToSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="161dp"
+        android:layout_marginEnd="162dp"
+        android:layout_marginBottom="36dp"
+        android:text="Back"
+        android:onClick="onBackButtonClicked"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.62"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo" />
-
-
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

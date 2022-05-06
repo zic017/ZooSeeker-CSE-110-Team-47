@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -123,5 +124,10 @@ public class SearchListActivity extends AppCompatActivity {
         // setting adapter to
         // our recycler view.
         RV.setAdapter(adapter);
+    }
+
+    public void onPlanButtonClicked(View view) {
+        Intent intent = new Intent(this,PlanListActivity.class);
+        startActivity(intent);
     }
 }
