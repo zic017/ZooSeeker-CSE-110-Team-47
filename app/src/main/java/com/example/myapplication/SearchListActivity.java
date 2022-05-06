@@ -110,6 +110,7 @@ public class SearchListActivity extends AppCompatActivity {
         // initializing our adapter class.
         this.AllTags = AllTags;
         this.tagMap = tagMap;
+
         adapter = new SearchAdapter(ItemList, SearchListActivity.this);
 
         // adding layout manager to our recycler view.
