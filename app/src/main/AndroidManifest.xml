@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
         <activity
+            android:name=".DirectionsActivity"
+            android:exported="false" />
+        <activity
             android:name=".SearchListActivity"
             android:exported="false" />
         <activity
