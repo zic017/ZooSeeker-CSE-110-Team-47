@@ -1,172 +1,127 @@
 package com.example.myapplication;
 
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.View;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.MenuItemCompat;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.SearchView;
-import android.widget.Spinner;
-import android.widget.Toast;
-
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.HashSet;
+
 
 public class SearchListActivity extends AppCompatActivity {
-    // Exposed for testing purposes later...
-    public RecyclerView recyclerView;
-    public AutoCompleteTextView suggestionBox;
-    public Spinner spinner;
 
-    public ArrayList<String> myList = new ArrayList<>();
-
-    private SearchListViewModel viewModel;
-    //private TodoListItem todoListItem;
-
-    /*
-    ListView listView;
-
-    // Define array adapter for ListView
-    ArrayAdapter<String> adapter2;
-
-    // Define array List for List View data
-
-
-     */
+    private RecyclerView RV;
+    private SearchAdapter adapter;
+    private ArrayList<SearchItem> ItemList;
+    private ArrayList<String> AllTags;
+    private HashMap<String, HashSet<SearchItem>> tagMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_list);
-        suggestionBox = findViewById(R.id.suggestion_box);
-        spinner = findViewById(R.id.items);
-
-        SearchListItemDao searchListItemDao = SearchDataBase.getSingleton(this).searchListItemDao();
-//        List<SearchListItem> searchListItems = searchListItemDao.getAll();
-        SearchListViewModel viewModel = new ViewModelProvider(this).get(SearchListViewModel.class);
-
-        SearchListAdapter adapter = new SearchListAdapter();
-        adapter.setHasStableIds(true);
-//        adapter.setSearchListItems(searchListItems);
-//        adapter.setOnAddClickedHandler(viewModel::setDeleted);
-//        viewModel.getSearchListItems().observe(this, adapter::setSearchListItems);
-//        recyclerView = findViewById(R.id.search_results);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //       recyclerView.setAdapter(adapter);
-
-
-//        adapter.setSearchListItems(SearchListItem.loadJSON(this, "sample_node_info.json"));
-
-        //listView = findViewById(R.id.listView);
-
-        // Add items to Array List
-        myList.add("Entrance and Exit Gate");
-        myList.add("Gorillas");
-        myList.add("Alligators");
-        myList.add("Lions");
-        myList.add("Elephant Odyssey");
-        myList.add("Arctic Foxes");
-
-        ArrayAdapter<String> myListAdapter = new ArrayAdapter<String>(
-                SearchListActivity.this, android.R.layout.simple_spinner_dropdown_item
-                , myList
-        );
-
-        ArrayAdapter<String> myListAdapter1 = new ArrayAdapter<String>(
-                SearchListActivity.this, android.R.layout.simple_spinner_dropdown_item
-                , myList
-        );
-
-        suggestionBox.setAdapter(myListAdapter);
-
-        spinner.setAdapter(myListAdapter);
-
-
-/*
-        // Set adapter to ListView
-        adapter2
-                = new ArrayAdapter<String>(
-                this,
-                android.R.layout.simple_list_item_1,
-                mylist);
-        listView.setAdapter(adapter2);
-
-
+        RV = findViewById(R.id.search_list);
+        buildRecyclerView();
+        RV.setVisibility(View.INVISIBLE);
     }
+
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        // Inflate menu with items using MenuInflator
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        SearchView search = findViewById(R.id.search_bar);
 
-        // Initialise menu item search bar
-        // with id and take its object
-        MenuItem searchViewItem
-                = menu.findItem(R.id.search_bar);
-        SearchView searchView
-                = (SearchView) MenuItemCompat
-                .getActionView(searchViewItem);
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
-        // attach setOnQueryTextListener
-        // to search view defined above
-        searchView.setOnQueryTextListener(
-                new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // inside on query text change method we are
+                // calling a method to filter our recycler view.
+                filter(newText);
+                if (search.getQuery().length() == 0){
+                    RV.setVisibility(View.INVISIBLE);
+                }
+                return false;
+            }
+        });
+        return true;
 
-                    // Override onQueryTextSubmit method
-                    // which is call
-                    // when submitquery is searched
-
-                    @Override
-                    public boolean onQueryTextSubmit(String query)
-                    {
-                        // If the list contains the search query
-                        // than filter the adapter
-                        // using the filter method
-                        // with the query as its argument
-                        if (mylist.contains(query)) {
-                            adapter2.getFilter().filter(query);
-                        }
-                        else {
-                            // Search query not found in List View
-                            Toast
-                                    .makeText(SearchListActivity.this,
-                                            "Not found",
-                                            Toast.LENGTH_LONG)
-                                    .show();
-                        }
-                        return false;
-                    }
-
-                    // This method is overridden to filter
-                    // the adapter according to a search query
-                    // when the user is typing search
-                    @Override
-                    public boolean onQueryTextChange(String newText)
-                    {
-                        adapter2.getFilter().filter(newText);
-                        return false;
-                    }
-                });
-
-        return super.onCreateOptionsMenu(menu);
     }
 
- */
-    }
+    private void filter(String text) {
+        // creating a new array list to filter our data.
+        ArrayList<SearchItem> filteredlist = new ArrayList<>();
 
+        // running a for loop to compare elements.
+        for (String tag : AllTags) {
+            // checking if the entered string matched with any item of our recycler view.
+            if (tag.toLowerCase().contains(text.toLowerCase())) {
+                // if the item is matched we are
+                // adding it to our filtered list.
+                for (SearchItem item : tagMap.get(tag)){
+                    filteredlist.add(item);
+                }
+                break;
+            }
+        }
+        if (filteredlist.isEmpty()) {
+            // if no item is added in filtered list we are
+            // displaying a toast message as no data found.
+            Toast.makeText(this, "No Data Found..", Toast.LENGTH_SHORT).show();
+        } else {
+            // at last we are passing that filtered
+            // list to our adapter class.
+            adapter.filterList(filteredlist);
+            RV.setVisibility(View.VISIBLE);
+        }
+    }
+    private void buildRecyclerView() {
+        ArrayList<String> AllTags = new ArrayList<>();
+        HashMap<String, HashSet<SearchItem>> tagMap = new HashMap<>();
+
+        // below line we are creating a new array list
+        ItemList = new ArrayList<>();
+        // below line is to add data to our array list.
+        ItemList = (ArrayList<SearchItem>) SearchItem.loadJSON(this, "sample_node_info.json");
+
+        for (SearchItem item : ItemList) {
+            String name = item.getName();
+            tagMap.putIfAbsent(name, new HashSet<>());
+            tagMap.get(name).add(item);
+            AllTags.add(name);
+
+            for (String tag : item.getTags()){
+                tagMap.putIfAbsent(tag, new HashSet<>());
+                tagMap.get(tag).add(item);
+                AllTags.add(tag);
+            }
+
+        }
+
+        // initializing our adapter class.
+        this.AllTags = AllTags;
+        this.tagMap = tagMap;
+        adapter = new SearchAdapter(ItemList, SearchListActivity.this);
+
+        // adding layout manager to our recycler view.
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        RV.setHasFixedSize(true);
+
+        // setting layout manager
+        // to our recycler view.
+        RV.setLayoutManager(manager);
+
+        // setting adapter to
+        // our recycler view.
+        RV.setAdapter(adapter);
+    }
 }
