@@ -21,16 +21,16 @@ public class SearchListViewModel extends AndroidViewModel {
         searchListItemDao = db.searchListItemDao();
     }
 
-    public LiveData<List<SearchListItem>> getSearchListItems(){
-        if(searchListItems == null){
-            loadUsers();
-        }
-        return searchListItems;
-    }
+//    public LiveData<List<SearchListItem>> getSearchListItems(){
+//        if(searchListItems == null){
+//            loadUsers();
+//        }
+//        return searchListItems;
+//    }
 
-    public void loadUsers(){
-        searchListItems = searchListItemDao.getAllLive();
-    }
+//    public void loadUsers(){
+//        searchListItems = searchListItemDao.getAllLive();
+//    }
 
 //    public void deleteTodo(TodoListItem todoListItem){
 //        todoListItems.getValue().clear();

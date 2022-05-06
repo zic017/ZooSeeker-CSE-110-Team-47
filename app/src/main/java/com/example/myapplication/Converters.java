@@ -13,12 +13,14 @@ public class Converters {
     @TypeConverter
     public static List<String> fromJsonToList(String jsonStr) {
         Type listType = new TypeToken<ArrayList<String>>() {}.getType();
-        return new Gson().fromJson(jsonStr, listType);
+        Gson gson = new Gson();
+        return gson.fromJson(jsonStr, listType);
     }
 
     @TypeConverter
-    public static String fromListToCsv(List<String> list) {
-        return String.join(",", list);
+    public static String fromListToJson(List<String> list) {
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        return json;
     }
-
 }

@@ -34,7 +34,7 @@ public class SearchListActivity extends AppCompatActivity {
 
     public ArrayList<String> myList = new ArrayList<>();
 
-//    private SearchListViewModel viewModel;
+    private SearchListViewModel viewModel;
     //private TodoListItem todoListItem;
 
     /*
@@ -55,20 +55,21 @@ public class SearchListActivity extends AppCompatActivity {
         suggestionBox = findViewById(R.id.suggestion_box);
         spinner = findViewById(R.id.items);
 
-//        viewModel = new ViewModelProvider(this)
-//                .get(TodoListViewModel.class);
+        SearchListItemDao searchListItemDao = SearchDataBase.getSingleton(this).searchListItemDao();
+//        List<SearchListItem> searchListItems = searchListItemDao.getAll();
+        SearchListViewModel viewModel = new ViewModelProvider(this).get(SearchListViewModel.class);
 
         SearchListAdapter adapter = new SearchListAdapter();
         adapter.setHasStableIds(true);
+//        adapter.setSearchListItems(searchListItems);
 //        adapter.setOnAddClickedHandler(viewModel::setDeleted);
-//        viewModel.getTodoListItems().observe(this, adapter::setTodoListItems);
-
+//        viewModel.getSearchListItems().observe(this, adapter::setSearchListItems);
 //        recyclerView = findViewById(R.id.search_results);
 //        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //       recyclerView.setAdapter(adapter);
 
 
-        adapter.setSearchListItems(SearchListItem.loadJSON(this, "sample_node_info.json"));
+//        adapter.setSearchListItems(SearchListItem.loadJSON(this, "sample_node_info.json"));
 
         //listView = findViewById(R.id.listView);
 
@@ -93,6 +94,8 @@ public class SearchListActivity extends AppCompatActivity {
         suggestionBox.setAdapter(myListAdapter);
 
         spinner.setAdapter(myListAdapter);
+
+
 /*
         // Set adapter to ListView
         adapter2
