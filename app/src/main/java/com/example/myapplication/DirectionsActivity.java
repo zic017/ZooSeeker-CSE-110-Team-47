@@ -25,11 +25,27 @@ public class DirectionsActivity extends AppCompatActivity {
         DirectionsAlgorithm d = new DirectionsAlgorithm(testArray,context);
 
         Button nextButton = findViewById(R.id.next_button);
+        TextView directions = (TextView) findViewById(R.id.directions);
+        TextView currentLocation = (TextView) findViewById(R.id.currentLocation);
+        TextView directionsTo = (TextView) findViewById((R.id.directionsTo));
+        d.getNext();
+        directions.setText(d.directionsLine);
+        currentLocation.setText(d.currentName);
+
         nextButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                TextView textView = (TextView) findViewById(R.id.directions);
-                textView.setText(d.current);
                 d.getNext();
+                if(d.currentName != "DONE") {
+                    currentLocation.setText(d.currentName);
+                    directions.setText(d.directionsLine);
+                }
+                else {
+                    currentLocation.setVisibility(View.INVISIBLE);
+                    directions.setText(R.string.thank_you);
+                    directionsTo.setVisibility(View.INVISIBLE);
+                    directions.setTextSize(24);
+                    nextButton.setVisibility(View.INVISIBLE);
+                }
             }
         });
     }

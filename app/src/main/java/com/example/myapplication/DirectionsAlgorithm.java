@@ -15,8 +15,12 @@ public class DirectionsAlgorithm {
     // List of the IDs of every planned
     public ArrayList<String> plannedIds;
     public String current;
+    public String currentName;
     public Context context;
+    String directionsLine;
+    public ArrayList<String> directions;
     Graph<String, IdentifiedWeightedEdge> g;
+    Map<String, ZooData.VertexInfo> vInfo;
 
     public DirectionsAlgorithm(ArrayList<String> plannedIds, Context context){
         this.plannedIds = plannedIds;
@@ -24,20 +28,26 @@ public class DirectionsAlgorithm {
         //Always start at the entrance gate
         current = "entrance_exit_gate";
         g = ZooData.loadZooGraphJSON(context,"sample_zoo_graph.json");
+        vInfo = ZooData.loadVertexInfoJSON(context, "sample_node_info.json");
     }
 
     public void getNext() {
         String next;
 
         //If no more exhibits, return to gate
-        if(plannedIds.size() == 0) {
+        if(current == "entrance_exit_gate" && plannedIds.size() == 0) {
+            currentName = "DONE";
+        }
+        else if(plannedIds.size() == 0) {
             getDirections(current, "entrance_exit_gate");
             current = "entrance_exit_gate";
+            currentName = vInfo.get(current).name;
         }
         else {
             next = closest();
             getDirections(current, next);
             current = next;
+            currentName = vInfo.get(current).name;
             plannedIds.remove(current);
         }
     }
@@ -54,9 +64,6 @@ public class DirectionsAlgorithm {
             // 1. Load the graph...
 
             GraphPath<String, IdentifiedWeightedEdge> path = DijkstraShortestPath.findPathBetween(g, current, id);
-            // 2. Load the information about our nodes and edges...
-            Map<String, ZooData.VertexInfo> vInfo = ZooData.loadVertexInfoJSON(context, "sample_node_info.json");
-            Map<String, ZooData.EdgeInfo> eInfo = ZooData.loadEdgeInfoJSON(context, "sample_edge_info.json");
 
             //Get total distance to this exhibit
             for (IdentifiedWeightedEdge e : path.getEdgeList()) {
@@ -73,8 +80,8 @@ public class DirectionsAlgorithm {
     }
 
     public void getDirections(String current, String next) {
-        // "source" and "sink" are graph terms for the start and end
-
+        directionsLine = "";
+        String loc1, loc2, tempcur;
         // 1. Load the graph...
         GraphPath<String, IdentifiedWeightedEdge> path = DijkstraShortestPath.findPathBetween(g, current, next);
 
@@ -85,13 +92,31 @@ public class DirectionsAlgorithm {
         System.out.printf("The shortest path from '%s' to '%s' is:\n", current, next);
 
         int i = 1;
+        tempcur = current;
         for (IdentifiedWeightedEdge e : path.getEdgeList()) {
-            System.out.printf("  %d. Walk %.0f meters along %s from '%s' to '%s'.\n",
-                    i,
-                    g.getEdgeWeight(e),
-                    eInfo.get(e.getId()).street,
-                    vInfo.get(g.getEdgeSource(e).toString()).name,
-                    vInfo.get(g.getEdgeTarget(e).toString()).name);
+
+
+            loc1 = vInfo.get(g.getEdgeSource(e)).id;
+            loc2 = vInfo.get(g.getEdgeTarget(e)).id;
+
+            if (loc1.equals(tempcur) || loc2.equals(next)) {
+                directionsLine = directionsLine + String.format("  %d. Proceed %.0f meters along %s from '%s' to '%s'.\n",
+                        i,
+                        g.getEdgeWeight(e),
+                        eInfo.get(e.getId()).street,
+                        vInfo.get(g.getEdgeSource(e).toString()).name,
+                        vInfo.get(g.getEdgeTarget(e).toString()).name) + "\n";
+                        tempcur = loc2;
+            }
+            else {
+                directionsLine = directionsLine + String.format("  %d. Proceed %.0f meters along %s from '%s' to '%s'.\n",
+                        i,
+                        g.getEdgeWeight(e),
+                        eInfo.get(e.getId()).street,
+                        vInfo.get(g.getEdgeTarget(e).toString()).name,
+                        vInfo.get(g.getEdgeSource(e).toString()).name) + "\n";
+                        tempcur = loc1;
+            }
             i++;
         }
     }
