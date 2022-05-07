@@ -89,8 +89,6 @@ public class DirectionsAlgorithm {
         Map<String, ZooData.VertexInfo> vInfo = ZooData.loadVertexInfoJSON(context,"sample_node_info.json");
         Map<String, ZooData.EdgeInfo> eInfo = ZooData.loadEdgeInfoJSON(context, "sample_edge_info.json");
 
-        System.out.printf("The shortest path from '%s' to '%s' is:\n", current, next);
-
         int i = 1;
         tempcur = current;
         for (IdentifiedWeightedEdge e : path.getEdgeList()) {
