@@ -1,7 +1,6 @@
 package com.example.myapplication;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
@@ -58,8 +56,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView itemName;
         private TextView add_btn;
-        private ArrayList<String>chosenExhibits = new ArrayList<>();
-        private ArrayList<String>chosenExhibitsIDS = new ArrayList<>();
+        private ArrayList<String> tempList = new ArrayList<>();
+        private ArrayList<String> listOfIDs = new ArrayList<>();
         private String s;
 
         public ViewHolder(@NonNull View itemView) {
@@ -67,26 +65,32 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             itemName = itemView.findViewById(R.id.search_item_text);
             add_btn = itemView.findViewById(R.id.add_btn);
 
+            /*
+                Function: Once user hits '+' this code will execute and add the exhibit to our planned list.
+                          The planned list will contain the IDs of all the exhibits the user clicked '+' on.
+             */
             add_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // s is the name of the exhibit the user is currently trying to add
                     s = itemName.getText().toString();
-                    if(chosenExhibits.contains(s))
+
+                    // Checks to see if the exhibit is already on the list, if so don't add it again
+                    if(tempList.contains(s))
                         return;
+
+                    // Retrieves the id of the exhibit given that we only have the name at the moment
                     for(SearchItem item : ItemList) {
                         if(item.getName() == s)
-                            chosenExhibitsIDS.add(item.getId());
-                        chosenExhibits.add(s);
+                            listOfIDs.add(item.getId());
+                        tempList.add(s);
                     }
-//                    Test to see what IDs are in the list
+//                    Tests to see what IDs are in the list
 //                    for(String item : chosenExhibitsIDS) {
-//                        Log.d("2",item);
+//                        Log.d("1",item);
 //                    }
                 }
             });
-//            for(SearchItem item : ItemList) {
-//                Log.d("3", item.getId());
-//            }
         }
     }
 }
