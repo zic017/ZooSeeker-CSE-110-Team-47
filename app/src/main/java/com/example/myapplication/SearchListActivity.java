@@ -111,7 +111,8 @@ public class SearchListActivity extends AppCompatActivity {
         this.AllTags = AllTags;
         this.tagMap = tagMap;
         adapter = new SearchAdapter(ItemList, SearchListActivity.this);
-
+        adapter.setHasStableIds(true);
+//        adapter.setOnAddBtnClickHandler();
         // adding layout manager to our recycler view.
         LinearLayoutManager manager = new LinearLayoutManager(this);
         RV.setHasFixedSize(true);
