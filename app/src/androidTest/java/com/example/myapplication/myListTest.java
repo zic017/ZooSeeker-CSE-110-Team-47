@@ -18,9 +18,8 @@ public class myListTest {
     public void testSearchBarExistence(){
         try (ActivityScenario<SearchListActivity> scenario = ActivityScenario.launch(SearchListActivity.class)) {
             scenario.onActivity(activity -> {
-                assertEquals(activity.myList.size(), 6);
+                assertEquals(activity.ItemList.size(), 7);
             });
         }
     }
-
 }
