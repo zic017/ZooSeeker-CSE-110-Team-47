@@ -2,35 +2,46 @@ package com.example.myapplication;
 
 import static org.junit.Assert.assertNotEquals;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.lifecycle.Lifecycle;
 import androidx.test.core.app.ActivityScenario;
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import org.junit.Rule;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.ArrayList;
+
 @RunWith(AndroidJUnit4.class)
 public class DirectionsTest {
-    @Rule
-    public ActivityScenarioRule<DirectionsActivity> scenarioRule = new ActivityScenarioRule<>(DirectionsActivity.class);
 
-    @Test
+    @Before
+    public void init() {
+
+    }
+
+    @Test //Test that the next button works
     public void test_next_directions() {
         // Create a "scenario" to move through the activity lifecycle.
         // https://developer.android.com/guide/components/activities/activity-lifecycle
-        ActivityScenario<DirectionsActivity> scenario = scenarioRule.getScenario();
+        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), DirectionsActivity.class);
+        ArrayList<String> plannedList = new ArrayList<>();
+        plannedList.add("lions");
+        plannedList.add("gators");
+        plannedList.add("gorillas");
+        intent.putStringArrayListExtra("key", plannedList);
 
         // Make sure the activity is in the created state (so onCreated is called).
-        scenario.moveToState(Lifecycle.State.CREATED);
 
         // When it's ready, we're ready to test inside this lambda (anonymous inline function).
-        scenario.onActivity(activity -> {
+        ActivityScenario.launch(intent).onActivity(activity -> {
+
+
             TextView directions = activity.findViewById(R.id.directions);
             TextView currentLocation = activity.findViewById(R.id.currentLocation);
             Button next_exhibit = activity.findViewById(R.id.next_button);
@@ -47,17 +58,20 @@ public class DirectionsTest {
         });
     }
 
-    @Test
+    @Test //Test that users are navigated back to the exit after visiting all exhibits.
     public void test_exit() {
-        // Create a "scenario" to move through the activity lifecycle.
-        // https://developer.android.com/guide/components/activities/activity-lifecycle
-        ActivityScenario<DirectionsActivity> scenario = scenarioRule.getScenario();
-        String track;
+        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), DirectionsActivity.class);
+        ArrayList<String> plannedList = new ArrayList<>();
+        plannedList.add("lions");
+        plannedList.add("gators");
+        plannedList.add("gorillas");
+        intent.putStringArrayListExtra("key", plannedList);
+
         // Make sure the activity is in the created state (so onCreated is called).
-        scenario.moveToState(Lifecycle.State.CREATED);
 
         // When it's ready, we're ready to test inside this lambda (anonymous inline function).
-        scenario.onActivity(activity -> {
+        ActivityScenario.launch(intent).onActivity(activity -> {
+
             TextView directions = activity.findViewById(R.id.directions);
             TextView currentLocation = activity.findViewById(R.id.currentLocation);
             Button next_exhibit = activity.findViewById(R.id.next_button);

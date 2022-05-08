@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 
 public class DirectionsActivity extends AppCompatActivity {
+    ArrayList<String> input;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,7 +20,7 @@ public class DirectionsActivity extends AppCompatActivity {
 
 
         Intent i = getIntent();
-        ArrayList<String> input = i.getStringArrayListExtra("key");
+        input = i.getStringArrayListExtra("key");
         Context context = getApplicationContext();
 
         DirectionsAlgorithm d = new DirectionsAlgorithm(input,context);

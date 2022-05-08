@@ -39,9 +39,11 @@ public class SearchListActivity extends AppCompatActivity {
         planButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 plannedList = adapter.getListOfIds();
-                Intent intent = new Intent(SearchListActivity.this, DirectionsActivity.class);
-                intent.putStringArrayListExtra("key", plannedList);
-                startActivity(intent);
+                if(plannedList.size() != 0) {
+                    Intent intent = new Intent(SearchListActivity.this, DirectionsActivity.class);
+                    intent.putStringArrayListExtra("key", plannedList);
+                    startActivity(intent);
+                }
             }
         });
     }
