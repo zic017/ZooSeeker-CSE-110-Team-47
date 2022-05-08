@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,13 +17,12 @@ public class DirectionsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_directions);
 
-        ArrayList<String> testArray = new ArrayList<>();
-        testArray.add("gorillas");
-        testArray.add("gators");
-        testArray.add("elephant_odyssey");
+
+        Intent i = getIntent();
+        ArrayList<String> input = i.getStringArrayListExtra("key");
         Context context = getApplicationContext();
 
-        DirectionsAlgorithm d = new DirectionsAlgorithm(testArray,context);
+        DirectionsAlgorithm d = new DirectionsAlgorithm(input,context);
 
         Button nextButton = findViewById(R.id.next_button);
         TextView directions = (TextView) findViewById(R.id.directions);
