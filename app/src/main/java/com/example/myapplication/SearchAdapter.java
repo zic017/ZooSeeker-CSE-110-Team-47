@@ -17,6 +17,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     private Context context;
     private Consumer<SearchItem> onAddBtnClicked;
     private SearchItem searchItem;
+    private ArrayList<String> listOfIDs = new ArrayList<>();
 
     public SearchAdapter(ArrayList<SearchItem> ItemList, Context context) {
         this.ItemList = ItemList;
@@ -57,7 +58,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         private final TextView itemName;
         private TextView add_btn;
         private ArrayList<String> tempList = new ArrayList<>();
-        private ArrayList<String> listOfIDs = new ArrayList<>();
+
         private String s;
 
         public ViewHolder(@NonNull View itemView) {
@@ -76,12 +77,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                     s = itemName.getText().toString();
 
                     // Checks to see if the exhibit is already on the list, if so don't add it again
-                    if(tempList.contains(s))
+                    if (tempList.contains(s))
                         return;
 
                     // Retrieves the id of the exhibit given that we only have the name at the moment
-                    for(SearchItem item : ItemList) {
-                        if(item.getName() == s)
+                    for (SearchItem item : ItemList) {
+                        if (item.getName() == s)
                             listOfIDs.add(item.getId());
                         tempList.add(s);
                     }
@@ -92,6 +93,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 }
             });
         }
-        public ArrayList getListOfIds() { return listOfIDs; }
+    }
+    public ArrayList<String> getListOfIds() {
+        return listOfIDs;
     }
 }

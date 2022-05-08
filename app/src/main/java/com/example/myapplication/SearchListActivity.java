@@ -1,8 +1,10 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +23,7 @@ public class SearchListActivity extends AppCompatActivity {
     private SearchAdapter adapter;
     private ArrayList<SearchItem> ItemList;
     private ArrayList<String> AllTags;
+    private ArrayList<String> plannedList;
     private HashMap<String, HashSet<SearchItem>> tagMap;
 
     @Override
@@ -30,6 +33,16 @@ public class SearchListActivity extends AppCompatActivity {
         RV = findViewById(R.id.search_list);
         buildRecyclerView();
         RV.setVisibility(View.INVISIBLE);
+
+        Button planButton = findViewById(R.id.plan_btn);
+        planButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                plannedList = adapter.getListOfIds();
+                Intent intent = new Intent(SearchListActivity.this, DirectionsActivity.class);
+                intent.putStringArrayListExtra("key", plannedList);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -97,7 +110,7 @@ public class SearchListActivity extends AppCompatActivity {
             String name = item.getName();
             tagMap.putIfAbsent(name, new HashSet<>());
             tagMap.get(name).add(item);
-            AllTags.add(name);
+             AllTags.add(name);
 
             for (String tag : item.getTags()){
                 tagMap.putIfAbsent(tag, new HashSet<>());
