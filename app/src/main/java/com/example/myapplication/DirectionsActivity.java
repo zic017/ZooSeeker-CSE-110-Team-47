@@ -17,6 +17,7 @@ public class DirectionsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_directions);
 
+
         Intent i = getIntent();
         ArrayList<String> input = i.getStringArrayListExtra("key");
         Context context = getApplicationContext();

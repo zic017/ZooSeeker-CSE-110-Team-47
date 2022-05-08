@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.runner.AndroidJUnit4;
 
@@ -18,10 +19,9 @@ public class SearchSuggestionTest {
     public void testSearchBarExistence(){
         try (ActivityScenario<SearchListActivity> scenario = ActivityScenario.launch(SearchListActivity.class)) {
             scenario.onActivity(activity -> {
-                AutoCompleteTextView text_display = activity.findViewById(R.id.suggestion_box);
-                assertEquals(text_display.getHint(), "Search for Exhibits");
+                SearchView search_bar = activity.findViewById(R.id.search_bar);
+                assertEquals(search_bar.getQueryHint(), "Search for Exhibits");
             });
         }
     }
-
 }

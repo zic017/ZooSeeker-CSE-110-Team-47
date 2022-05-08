@@ -22,10 +22,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:text="Plan"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_list" />
+        app:layout_constraintTop_toBottomOf="@+id/search_list"
+        app:layout_constraintVertical_bias="0.014" />
 
     <TextView
         android:id="@+id/logo"
@@ -49,9 +51,10 @@
         android:maxLines="1"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.62"
+        app:layout_constraintHorizontal_bias="0.611"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo" />
+        app:layout_constraintTop_toBottomOf="@+id/logo"
+        app:queryHint="Search for Exhibits" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
