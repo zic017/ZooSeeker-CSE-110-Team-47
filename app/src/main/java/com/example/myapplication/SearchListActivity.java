@@ -22,6 +22,7 @@ public class SearchListActivity extends AppCompatActivity {
     private RecyclerView RV;
     private SearchAdapter adapter;
     public ArrayList<SearchItem> ItemList;
+    public ArrayList<SearchItem> ExhibitionList;
     private ArrayList<String> AllTags;
     private ArrayList<String> plannedList;
     private HashMap<String, HashSet<SearchItem>> tagMap;
@@ -105,8 +106,13 @@ public class SearchListActivity extends AppCompatActivity {
         ItemList = new ArrayList<>();
         // below line is to add data to our array list.
         ItemList = (ArrayList<SearchItem>) SearchItem.loadJSON(this, "sample_node_info.json");
-
-        for (SearchItem item : ItemList) {
+        ExhibitionList = new ArrayList<SearchItem>();
+        for(SearchItem items : ItemList){
+            if(items.kind.equals("exhibit")){
+                ExhibitionList.add(items);
+            }
+        }
+        for (SearchItem item : ExhibitionList) {
             String name = item.getName();
             tagMap.putIfAbsent(name, new HashSet<>());
             tagMap.get(name).add(item);
@@ -123,7 +129,7 @@ public class SearchListActivity extends AppCompatActivity {
         // initializing our adapter class.
         this.AllTags = AllTags;
         this.tagMap = tagMap;
-        adapter = new SearchAdapter(ItemList, SearchListActivity.this);
+        adapter = new SearchAdapter(ExhibitionList, SearchListActivity.this);
         adapter.setHasStableIds(true);
 //        adapter.setOnAddBtnClickHandler();
         // adding layout manager to our recycler view.
