@@ -22,11 +22,12 @@ import java.util.List;
 public class SearchItem {
     @NonNull
     @PrimaryKey
-    public String id;
+    public String id; // Why is ID set to be string?
     @NonNull
     public String kind;
     public String name;
     public List<String> tags;
+
     public SearchItem(@NonNull String id, String kind, String name, List<String> tags) {
         this.id = id;
         this.kind = kind;
@@ -46,6 +47,8 @@ public class SearchItem {
     public String getName() {
         return name;
     }
+
+    public String getId() { return id; }
 
     public List<String> getTags() {
         return tags;
