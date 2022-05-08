@@ -44,10 +44,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView itemName;
+        private TextView addBtn;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             itemName = itemView.findViewById(R.id.search_item_text);
+            addBtn = itemView.findViewById(R.id.add_btn);
         }
     }
 }
