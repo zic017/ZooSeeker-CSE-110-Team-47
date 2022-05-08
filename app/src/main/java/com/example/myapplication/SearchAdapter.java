@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,6 +86,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                         if (item.getName() == s)
                             listOfIDs.add(item.getId());
                         tempList.add(s);
+                        //.Log.d("STATE", s +" has been added");
                     }
 //                    Tests to see what IDs are in the list
 //                    for(String item : chosenExhibitsIDS) {
