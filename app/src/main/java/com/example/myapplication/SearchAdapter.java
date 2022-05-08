@@ -92,5 +92,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 }
             });
         }
+        public ArrayList getListOfIds() { return listOfIDs; }
     }
 }

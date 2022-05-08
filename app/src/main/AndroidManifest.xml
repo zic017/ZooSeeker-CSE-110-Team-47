@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
         <activity
-            android:name=".PlanListActivity"
+            android:name=".DirectionsActivity"
             android:exported="false" />
         <activity
             android:name=".SearchListActivity"
