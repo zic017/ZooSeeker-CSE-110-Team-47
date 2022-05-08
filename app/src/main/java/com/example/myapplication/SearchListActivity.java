@@ -20,7 +20,7 @@ public class SearchListActivity extends AppCompatActivity {
 
     private RecyclerView RV;
     private SearchAdapter adapter;
-    private ArrayList<SearchItem> ItemList;
+    public ArrayList<SearchItem> ItemList;
     private ArrayList<String> AllTags;
     private HashMap<String, HashSet<SearchItem>> tagMap;
 
