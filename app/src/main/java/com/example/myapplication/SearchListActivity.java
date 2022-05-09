@@ -26,7 +26,7 @@ public class SearchListActivity extends AppCompatActivity {
     private RecyclerView planListRV;
     private SearchAdapter search_adapter;
     private PlanAdapter plan_adapter;
-    private ArrayList<SearchItem> ItemList;
+    public ArrayList<SearchItem> ItemList;
     private ArrayList<String> AllTags;
     private ArrayList<String> plannedList;
     private ArrayList<String> nameList;
@@ -193,6 +193,7 @@ public class SearchListActivity extends AppCompatActivity {
         // initializing our adapter class.
         this.AllTags = AllTags;
         this.tagMap = tagMap;
+
         search_adapter = new SearchAdapter(ItemList, SearchListActivity.this);
         search_adapter.setHasStableIds(true);
 
