@@ -145,17 +145,18 @@ public class SearchListActivity extends AppCompatActivity {
         ItemList = (ArrayList<SearchItem>) SearchItem.loadJSON(this, "sample_node_info.json");
 
         for (SearchItem item : ItemList) {
-            String name = item.getName();
-            tagMap.putIfAbsent(name, new HashSet<>());
-            tagMap.get(name).add(item);
-             AllTags.add(name);
+            if(item.getKind().equals("exhibit")) {
+                String name = item.getName();
+                tagMap.putIfAbsent(name, new HashSet<>());
+                tagMap.get(name).add(item);
+                AllTags.add(name);
 
-            for (String tag : item.getTags()){
-                tagMap.putIfAbsent(tag, new HashSet<>());
-                tagMap.get(tag).add(item);
-                AllTags.add(tag);
+                for (String tag : item.getTags()) {
+                    tagMap.putIfAbsent(tag, new HashSet<>());
+                    tagMap.get(tag).add(item);
+                    AllTags.add(tag);
+                }
             }
-
         }
 
         // initializing our adapter class.
