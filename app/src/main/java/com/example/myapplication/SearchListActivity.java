@@ -26,7 +26,7 @@ public class SearchListActivity extends AppCompatActivity {
     private RecyclerView planListRV;
     private SearchAdapter search_adapter;
     private PlanAdapter plan_adapter;
-    private ArrayList<SearchItem> ItemList;
+    public ArrayList<SearchItem> ItemList;
     private ArrayList<String> AllTags;
     private ArrayList<String> plannedList;
     private ArrayList<String> nameList;
