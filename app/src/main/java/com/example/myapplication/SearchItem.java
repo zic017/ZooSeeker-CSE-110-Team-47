@@ -54,6 +54,11 @@ public class SearchItem {
         return tags;
     }
 
+    @NonNull
+    public String getKind() {
+        return kind;
+    }
+
     public static List<SearchItem> loadJSON(Context context, String path){
         try  {
             InputStream input = context.getAssets().open(path);
