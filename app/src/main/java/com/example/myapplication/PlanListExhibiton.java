@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -21,6 +22,9 @@ public class PlanListExhibiton extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plan_list_exhibiton);
 
+
+        TextView plannedNumber = findViewById(R.id.planned_number);
+
         plan_adapter = new PlanListAdapter();
         plan_adapter.setHasStableIds(true);
 
@@ -30,7 +34,8 @@ public class PlanListExhibiton extends AppCompatActivity {
 
         Intent i = getIntent();
         ArrayList<String> planList = i.getStringArrayListExtra("key");
-
+        Integer num = planList.size();
+        plannedNumber.setText(num.toString());
         plan_adapter.setPlanListItems(planList);
 
         Button backButton = findViewById(R.id.back);

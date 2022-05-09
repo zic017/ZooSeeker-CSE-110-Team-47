@@ -8,8 +8,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/planned_list"
-        android:layout_width="409dp"
-        android:layout_height="500dp"
+        android:layout_width="416dp"
+        android:layout_height="467dp"
         android:layout_marginStart="1dp"
         android:layout_marginEnd="1dp"
         android:layout_marginBottom="21dp"
@@ -42,8 +42,10 @@
         android:text="Plan List"
         app:layout_constraintBottom_toTopOf="@+id/planned_list"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.041" />
 
     <Button
         android:id="@+id/back"
@@ -52,9 +54,17 @@
         android:layout_marginStart="158dp"
         android:layout_marginEnd="165dp"
         android:layout_marginBottom="16dp"
-        android:onClick="onBackClicked"
         android:text="Back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/planned_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/planned_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/plan_list" />
 </androidx.constraintlayout.widget.ConstraintLayout>
