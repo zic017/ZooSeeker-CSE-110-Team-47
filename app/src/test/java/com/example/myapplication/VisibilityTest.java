@@ -27,8 +27,6 @@ public class VisibilityTest {
             RecyclerView RV = activity.findViewById(R.id.search_list);
             assert(RV.getVisibility() == View.INVISIBLE);
 
-
-
         });
     }
 
