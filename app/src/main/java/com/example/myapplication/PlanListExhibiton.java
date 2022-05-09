@@ -6,25 +6,41 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import java.util.ArrayList;
 
 public class PlanListExhibiton extends AppCompatActivity {
     private RecyclerView planListRV;
-    private ArrayList<String> planList;
-    private PlanAdapter plan_adapter;
+    private PlanListAdapter plan_adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plan_list_exhibiton);
 
+        plan_adapter = new PlanListAdapter();
+        plan_adapter.setHasStableIds(true);
+
+        planListRV = findViewById(R.id.planned_list);
+        planListRV.setLayoutManager(new LinearLayoutManager(this));
+        planListRV.setAdapter(plan_adapter);
+
         Intent i = getIntent();
-        planList = i.getStringArrayListExtra("key");
-        planListRV = findViewById(R.id.recyclerView);
+        ArrayList<String> planList = i.getStringArrayListExtra("key");
 
+        plan_adapter.setPlanListItems(planList);
 
+        Button backButton = findViewById(R.id.back);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(PlanListExhibiton.this, SearchListActivity.class);
+                intent.putStringArrayListExtra("key", planList);
+                startActivity(intent);
+            }
+        });
     }
 
     /*public void buildPlanListRecyclerView() {
@@ -38,8 +54,4 @@ public class PlanListExhibiton extends AppCompatActivity {
         planListRV.setAdapter(plan_adapter);
     }*/
 
-    public void onBackClicked(View view) {
-        Intent intent = new Intent(this, SearchListActivity.class);
-        startActivity(intent);
-    }
 }

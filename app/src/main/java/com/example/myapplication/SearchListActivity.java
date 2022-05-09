@@ -28,6 +28,7 @@ public class SearchListActivity extends AppCompatActivity {
     private ArrayList<SearchItem> ItemList;
     private ArrayList<String> AllTags;
     private ArrayList<String> plannedList;
+    private ArrayList<String> passedInList;
     private ArrayList<String> displayList = new ArrayList<>();
     private HashMap<String, HashSet<SearchItem>> tagMap;
 
@@ -40,6 +41,7 @@ public class SearchListActivity extends AppCompatActivity {
         searchListRV = findViewById(R.id.search_list);
         planListRV = findViewById(R.id.plan_list);
         plan_adapter = new PlanAdapter(displayList, this);
+        Intent i = getIntent();
 
         buildPlanListRecyclerView();
         planListRV.setVisibility(View.INVISIBLE);
@@ -47,10 +49,17 @@ public class SearchListActivity extends AppCompatActivity {
         buildRecyclerView();
         searchListRV.setVisibility(View.INVISIBLE);
 
+        updatePassedInList(i.getStringArrayListExtra("key"));
         Button planButton = findViewById(R.id.plan_btn);
         planButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                plannedList = search_adapter.getListOfIds();
+                if(passedInList != null){
+                    passedInList.addAll(search_adapter.getListOfIds());
+                    plannedList = passedInList;
+                }else {
+                    plannedList = search_adapter.getListOfIds();
+                }
+
                 Intent intent = new Intent(SearchListActivity.this, DirectionsActivity.class);
                 intent.putStringArrayListExtra("key", plannedList);
                 startActivity(intent);
@@ -61,6 +70,13 @@ public class SearchListActivity extends AppCompatActivity {
         exhibitionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
                 plannedList = search_adapter.getListOfIds();
+                if(passedInList != null) {
+                    for(String s : passedInList){
+                        if(!plannedList.contains(s)){
+                            plannedList.add(s);
+                        }
+                    }
+                }
                 Intent intent = new Intent(SearchListActivity.this, PlanListExhibiton.class);
                 intent.putStringArrayListExtra("key", plannedList);
                 startActivity(intent);
@@ -188,4 +204,7 @@ public class SearchListActivity extends AppCompatActivity {
         planListRV.setAdapter(plan_adapter);
     }
 
+    public void updatePassedInList(ArrayList<String> passedInList){
+        this.passedInList = passedInList;
+    }
 }
