@@ -6,6 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".PlanListExhibiton">
 
+    <TextView
+        android:id="@+id/logo3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ZooSeeker"
+        android:textColor="#4CAF50"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.098"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.08" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/planned_list"
         android:layout_width="416dp"
@@ -26,26 +40,9 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.098"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.08" />
-
-    <TextView
-        android:id="@+id/plan_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="172dp"
-        android:layout_marginTop="98dp"
-        android:layout_marginEnd="185dp"
-        android:layout_marginBottom="29dp"
-        android:text="Plan List"
-        app:layout_constraintBottom_toTopOf="@+id/planned_list"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.041" />
+        app:layout_constraintVertical_bias="0.157" />
 
     <Button
         android:id="@+id/back"
@@ -66,5 +63,5 @@
         app:layout_constraintBottom_toTopOf="@+id/planned_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/plan_list" />
+        app:layout_constraintTop_toBottomOf="@+id/logo" />
 </androidx.constraintlayout.widget.ConstraintLayout>
