@@ -1,7 +1,6 @@
 package com.example.myapplication;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     private Consumer<SearchItem> onAddBtnClicked;
     private SearchItem searchItem;
     private ArrayList<String> listOfIDs = new ArrayList<>();
-    private SearchListActivity SLA = new SearchListActivity();
 
     public SearchAdapter(ArrayList<SearchItem> ItemList, Context context) {
         this.ItemList = ItemList;
@@ -52,6 +50,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         return ItemList.size();
     }
 
+    public String getItemID(int position) {
+        return ItemList.get(position).getId();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView itemName;
         private TextView add_btn;
@@ -80,17 +82,14 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
                     // Retrieves the id of the exhibit given that we only have the name at the moment
                     for (SearchItem item : ItemList) {
-                        if (item.getName() == s) {
+                        if (item.getName() == s)
                             listOfIDs.add(item.getId());
-                            tempList.add(s);
-                            SLA.getPlannedList().add(s);
-                        }
+                        tempList.add(s);
                     }
-
 //                    Tests to see what IDs are in the list
-                    for(String item : listOfIDs) {
-                        Log.d("1",item);
-                    }
+//                    for(String item : chosenExhibitsIDS) {
+//                        Log.d("1",item);
+//                    }
                 }
             });
         }

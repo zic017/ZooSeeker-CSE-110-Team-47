@@ -21,7 +21,7 @@
         android:id="@+id/logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ZooSeeker"
+        android:text="Plan List"
         android:textColor="#4CAF50"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"

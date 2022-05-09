@@ -23,7 +23,7 @@ public class PlanListExhibiton extends AppCompatActivity {
         Intent i = getIntent();
         planList = i.getStringArrayListExtra("key");
         planListRV = findViewById(R.id.recyclerView);
-        //buildPlanListRecyclerView();
+
 
     }
 

@@ -57,6 +57,15 @@ public class SearchListActivity extends AppCompatActivity {
             }
         });
 
+        Button exhibitionButton = findViewById(R.id.show_exhibit);
+        exhibitionButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                plannedList = search_adapter.getListOfIds();
+                Intent intent = new Intent(SearchListActivity.this, PlanListExhibiton.class);
+                intent.putStringArrayListExtra("key", plannedList);
+                startActivity(intent);
+            }
+        });
     }
 
     public void updatePlan() {
@@ -134,8 +143,8 @@ public class SearchListActivity extends AppCompatActivity {
         ItemList = new ArrayList<>();
         // below line is to add data to our array list.
         ItemList = (ArrayList<SearchItem>) SearchItem.loadJSON(this, "sample_node_info.json");
+
         for (SearchItem item : ItemList) {
-            if(item.kind.equals("exhibit")){
             String name = item.getName();
             tagMap.putIfAbsent(name, new HashSet<>());
             tagMap.get(name).add(item);
@@ -147,7 +156,7 @@ public class SearchListActivity extends AppCompatActivity {
                 AllTags.add(tag);
             }
 
-        }}
+        }
 
         // initializing our adapter class.
         this.AllTags = AllTags;
@@ -179,8 +188,4 @@ public class SearchListActivity extends AppCompatActivity {
         planListRV.setAdapter(plan_adapter);
     }
 
-    public void onShowExhibitionClicked(View view) {
-        Intent intent = new Intent(this, PlanListExhibiton.class);
-        startActivity(intent);
-    }
 }
