@@ -98,22 +98,20 @@ public class DirectionsAlgorithm {
             loc2 = vInfo.get(g.getEdgeTarget(e)).id;
 
             if (loc1.equals(tempcur) || loc2.equals(next)) {
-                directionsLine = directionsLine + String.format("  %d. Proceed %.0f meters along %s from '%s' to '%s'.\n",
+                directionsLine = directionsLine + String.format("  %d. Proceed on %s %.0f feet towards '%s'\n",
                         i,
-                        g.getEdgeWeight(e),
                         eInfo.get(e.getId()).street,
-                        vInfo.get(g.getEdgeSource(e).toString()).name,
+                        g.getEdgeWeight(e),
                         vInfo.get(g.getEdgeTarget(e).toString()).name) + "\n";
-                        tempcur = loc2;
+                tempcur = loc2;
             }
             else {
-                directionsLine = directionsLine + String.format("  %d. Proceed %.0f meters along %s from '%s' to '%s'.\n",
+                directionsLine = directionsLine + String.format("  %d. Proceed on %s %.0f feet towards '%s'\n",
                         i,
-                        g.getEdgeWeight(e),
                         eInfo.get(e.getId()).street,
-                        vInfo.get(g.getEdgeTarget(e).toString()).name,
+                        g.getEdgeWeight(e),
                         vInfo.get(g.getEdgeSource(e).toString()).name) + "\n";
-                        tempcur = loc1;
+                tempcur = loc1;
             }
             i++;
         }

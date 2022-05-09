@@ -1,17 +1,18 @@
 package com.example.myapplication;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
+import java.util.Map;
 
 public class PlanListExhibiton extends AppCompatActivity {
     private RecyclerView planListRV;
@@ -21,7 +22,7 @@ public class PlanListExhibiton extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plan_list_exhibiton);
-
+        Context context = getApplicationContext();
 
         TextView plannedNumber = findViewById(R.id.planned_number);
 
@@ -34,7 +35,7 @@ public class PlanListExhibiton extends AppCompatActivity {
 
         Intent i = getIntent();
         ArrayList<String> planList = i.getStringArrayListExtra("key");
-        ArrayList<String> ItemList = i.getStringArrayListExtra("key1");
+        ArrayList<String> ItemList = idToString(context, planList);
         Integer num = planList.size();
         plannedNumber.setText("Added Exhibits: (" + num.toString() + ")");
         plan_adapter.setPlanListItems(ItemList);
@@ -50,15 +51,14 @@ public class PlanListExhibiton extends AppCompatActivity {
         });
     }
 
-    /*public void buildPlanListRecyclerView() {
-        plan_adapter = new PlanAdapter(planList, PlanListExhibiton.this);
-        plan_adapter.setHasStableIds(true);
-        LinearLayoutManager manager = new LinearLayoutManager(this);
-        planListRV.setHasFixedSize(true);
-
-        planListRV.setLayoutManager(manager);
-
-        planListRV.setAdapter(plan_adapter);
-    }*/
+    //Retrieve names based on the list of IDs
+    public ArrayList<String> idToString(Context context, ArrayList<String> ids) {
+        ArrayList<String> names = new ArrayList<>();
+        Map<String, ZooData.VertexInfo> vInfo = ZooData.loadVertexInfoJSON(context, "sample_node_info.json");
+        for(String id : ids) {
+            names.add(vInfo.get(id).name);
+        }
+        return names;
+    }
 
 }

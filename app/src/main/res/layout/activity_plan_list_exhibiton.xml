@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PlanListExhibiton">
+    tools:context=".PlanListExhibition">
 
     <TextView
         android:id="@+id/logo3"
@@ -22,13 +22,15 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/planned_list"
-        android:layout_width="416dp"
-        android:layout_height="467dp"
+        android:layout_width="408dp"
+        android:layout_height="493dp"
+        android:layout_centerHorizontal="true"
         android:layout_marginStart="1dp"
         android:layout_marginEnd="1dp"
-        android:layout_marginBottom="21dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/back"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -51,6 +53,7 @@
         android:layout_marginStart="158dp"
         android:layout_marginEnd="165dp"
         android:layout_marginBottom="16dp"
+        android:backgroundTint="#71AA31"
         android:text="Back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
