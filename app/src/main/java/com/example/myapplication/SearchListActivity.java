@@ -2,9 +2,11 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +14,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,30 +22,96 @@ import java.util.HashSet;
 
 public class SearchListActivity extends AppCompatActivity {
 
-    private RecyclerView RV;
-    private SearchAdapter adapter;
-    public ArrayList<SearchItem> ItemList;
+    private RecyclerView searchListRV;
+    private RecyclerView planListRV;
+    private SearchAdapter search_adapter;
+    private PlanAdapter plan_adapter;
+    private ArrayList<SearchItem> ItemList;
     private ArrayList<String> AllTags;
     private ArrayList<String> plannedList;
+    private ArrayList<String> nameList;
+    private ArrayList<String> passedInList;
+    private ArrayList<String> passedNameList;
+    private ArrayList<String> displayList = new ArrayList<>();
     private HashMap<String, HashSet<SearchItem>> tagMap;
+
+    public ArrayList<String> getPlannedList () { return displayList; }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_list);
-        RV = findViewById(R.id.search_list);
+        searchListRV = findViewById(R.id.search_list);
+        planListRV = findViewById(R.id.plan_list);
+        plan_adapter = new PlanAdapter(displayList, this);
+        Intent i = getIntent();
+
+        buildPlanListRecyclerView();
+        planListRV.setVisibility(View.INVISIBLE);
+
         buildRecyclerView();
-        RV.setVisibility(View.INVISIBLE);
+        searchListRV.setVisibility(View.INVISIBLE);
+
+        updatePassedInList(i.getStringArrayListExtra("key"));
+        updatePassedNameList(i.getStringArrayListExtra("key1"));
 
         Button planButton = findViewById(R.id.plan_btn);
         planButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                plannedList = adapter.getListOfIds();
+                if(passedInList != null){
+                    passedInList.addAll(search_adapter.getListOfIds());
+                    plannedList = passedInList;
+                }else {
+                    plannedList = search_adapter.getListOfIds();
+                }
+
                 Intent intent = new Intent(SearchListActivity.this, DirectionsActivity.class);
                 intent.putStringArrayListExtra("key", plannedList);
                 startActivity(intent);
             }
         });
+
+        Button exhibitionButton = findViewById(R.id.show_exhibit);
+        exhibitionButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                plannedList = search_adapter.getListOfIds();
+                if(passedInList != null) {
+                    for(String s : passedInList){
+                        if(!plannedList.contains(s)){
+                            plannedList.add(s);
+                        }
+                    }
+                }
+
+                nameList = search_adapter.getListofNames();
+                if(passedNameList != null) {
+                    for(String s : passedNameList){
+                        if(!nameList.contains(s)){
+                            nameList.add(s);
+                        }
+                    }
+                }
+                Intent intent = new Intent(SearchListActivity.this, PlanListExhibiton.class);
+                intent.putStringArrayListExtra("key", plannedList);
+                intent.putStringArrayListExtra("key1", nameList);
+                startActivity(intent);
+            }
+        });
+    }
+
+    public void updatePlan() {
+        if (displayList.isEmpty()) {
+            Toast.makeText(this, "No Data Found..", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            for(String item : displayList)
+            {
+                Log.d("insideUpdatePlan", item);
+            }
+            searchListRV.setVisibility(View.VISIBLE);
+            plan_adapter.updateDisplayList(displayList);
+
+        }
     }
 
     @Override
@@ -61,7 +130,7 @@ public class SearchListActivity extends AppCompatActivity {
                 // calling a method to filter our recycler view.
                 filter(newText);
                 if (search.getQuery().length() == 0){
-                    RV.setVisibility(View.INVISIBLE);
+                    searchListRV.setVisibility(View.INVISIBLE);
                 }
                 return false;
             }
@@ -93,8 +162,8 @@ public class SearchListActivity extends AppCompatActivity {
         } else {
             // at last we are passing that filtered
             // list to our adapter class.
-            adapter.filterList(filteredlist);
-            RV.setVisibility(View.VISIBLE);
+            search_adapter.filterList(filteredlist);
+            searchListRV.setVisibility(View.VISIBLE);
         }
     }
     private void buildRecyclerView() {
@@ -107,35 +176,55 @@ public class SearchListActivity extends AppCompatActivity {
         ItemList = (ArrayList<SearchItem>) SearchItem.loadJSON(this, "sample_node_info.json");
 
         for (SearchItem item : ItemList) {
-            String name = item.getName();
-            tagMap.putIfAbsent(name, new HashSet<>());
-            tagMap.get(name).add(item);
-             AllTags.add(name);
+            if(item.getKind().equals("exhibit")) {
+                String name = item.getName();
+                tagMap.putIfAbsent(name, new HashSet<>());
+                tagMap.get(name).add(item);
+                AllTags.add(name);
 
-            for (String tag : item.getTags()){
-                tagMap.putIfAbsent(tag, new HashSet<>());
-                tagMap.get(tag).add(item);
-                AllTags.add(tag);
+                for (String tag : item.getTags()) {
+                    tagMap.putIfAbsent(tag, new HashSet<>());
+                    tagMap.get(tag).add(item);
+                    AllTags.add(tag);
+                }
             }
-
         }
 
         // initializing our adapter class.
         this.AllTags = AllTags;
         this.tagMap = tagMap;
-        adapter = new SearchAdapter(ItemList, SearchListActivity.this);
-        adapter.setHasStableIds(true);
-//        adapter.setOnAddBtnClickHandler();
+        search_adapter = new SearchAdapter(ItemList, SearchListActivity.this);
+        search_adapter.setHasStableIds(true);
+
         // adding layout manager to our recycler view.
         LinearLayoutManager manager = new LinearLayoutManager(this);
-        RV.setHasFixedSize(true);
+        searchListRV.setHasFixedSize(true);
 
         // setting layout manager
         // to our recycler view.
-        RV.setLayoutManager(manager);
+        searchListRV.setLayoutManager(manager);
 
         // setting adapter to
         // our recycler view.
-        RV.setAdapter(adapter);
+        searchListRV.setAdapter(search_adapter);
+    }
+
+    public void buildPlanListRecyclerView() {
+        plan_adapter = new PlanAdapter(displayList, SearchListActivity.this);
+        plan_adapter.setHasStableIds(true);
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        planListRV.setHasFixedSize(true);
+
+        planListRV.setLayoutManager(manager);
+
+        planListRV.setAdapter(plan_adapter);
+    }
+
+    public void updatePassedInList(ArrayList<String> passedInList){
+        this.passedInList = passedInList;
+    }
+
+    public void updatePassedNameList(ArrayList<String> passedNameList){
+        this.passedNameList = passedNameList;
     }
 }

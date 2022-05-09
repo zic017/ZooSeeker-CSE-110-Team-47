@@ -24,10 +24,10 @@
         android:text="Plan"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toEndOf="@+id/show_exhibit"
         app:layout_constraintTop_toBottomOf="@+id/search_list"
-        app:layout_constraintVertical_bias="0.014" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/logo"
@@ -55,6 +55,37 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo"
         app:queryHint="Search for Exhibits" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/plan_list"
+        android:layout_width="266dp"
+        android:layout_height="369dp"
+        app:layout_constraintBottom_toTopOf="@+id/plan_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_bar"
+        app:layout_constraintVertical_bias="0.488" />
+
+    <Button
+        android:id="@+id/show_exhibit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
+        android:onClick="onShowExhibitionClicked"
+        android:text="Show Exhibition"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/plan_list"
+        app:layout_constraintVertical_bias="0.041" />
+
+    <ListView
+        android:id="@+id/plan_list_view"
+        android:layout_width="203dp"
+        android:layout_height="66dp"
+        tools:layout_editor_absoluteX="111dp"
+        tools:layout_editor_absoluteY="84dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
