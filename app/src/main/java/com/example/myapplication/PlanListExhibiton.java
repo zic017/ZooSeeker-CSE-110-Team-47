@@ -34,15 +34,17 @@ public class PlanListExhibiton extends AppCompatActivity {
 
         Intent i = getIntent();
         ArrayList<String> planList = i.getStringArrayListExtra("key");
+        ArrayList<String> ItemList = i.getStringArrayListExtra("key1");
         Integer num = planList.size();
         plannedNumber.setText("Added Exhibits: (" + num.toString() + ")");
-        plan_adapter.setPlanListItems(planList);
+        plan_adapter.setPlanListItems(ItemList);
 
         Button backButton = findViewById(R.id.back);
         backButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(PlanListExhibiton.this, SearchListActivity.class);
                 intent.putStringArrayListExtra("key", planList);
+                intent.putStringArrayListExtra("key1", ItemList);
                 startActivity(intent);
             }
         });

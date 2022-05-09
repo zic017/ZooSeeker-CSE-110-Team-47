@@ -14,6 +14,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -28,7 +29,9 @@ public class SearchListActivity extends AppCompatActivity {
     private ArrayList<SearchItem> ItemList;
     private ArrayList<String> AllTags;
     private ArrayList<String> plannedList;
+    private ArrayList<String> nameList;
     private ArrayList<String> passedInList;
+    private ArrayList<String> passedNameList;
     private ArrayList<String> displayList = new ArrayList<>();
     private HashMap<String, HashSet<SearchItem>> tagMap;
 
@@ -50,6 +53,8 @@ public class SearchListActivity extends AppCompatActivity {
         searchListRV.setVisibility(View.INVISIBLE);
 
         updatePassedInList(i.getStringArrayListExtra("key"));
+        updatePassedNameList(i.getStringArrayListExtra("key1"));
+
         Button planButton = findViewById(R.id.plan_btn);
         planButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -77,8 +82,18 @@ public class SearchListActivity extends AppCompatActivity {
                         }
                     }
                 }
+
+                nameList = search_adapter.getListofNames();
+                if(passedNameList != null) {
+                    for(String s : passedNameList){
+                        if(!nameList.contains(s)){
+                            nameList.add(s);
+                        }
+                    }
+                }
                 Intent intent = new Intent(SearchListActivity.this, PlanListExhibiton.class);
                 intent.putStringArrayListExtra("key", plannedList);
+                intent.putStringArrayListExtra("key1", nameList);
                 startActivity(intent);
             }
         });
@@ -207,5 +222,9 @@ public class SearchListActivity extends AppCompatActivity {
 
     public void updatePassedInList(ArrayList<String> passedInList){
         this.passedInList = passedInList;
+    }
+
+    public void updatePassedNameList(ArrayList<String> passedNameList){
+        this.passedNameList = passedNameList;
     }
 }

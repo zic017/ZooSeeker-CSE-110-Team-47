@@ -18,6 +18,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     private Consumer<SearchItem> onAddBtnClicked;
     private SearchItem searchItem;
     private ArrayList<String> listOfIDs = new ArrayList<>();
+    private ArrayList<String> listofNames = new ArrayList<>();
 
     public SearchAdapter(ArrayList<SearchItem> ItemList, Context context) {
         this.ItemList = ItemList;
@@ -85,6 +86,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                         if (item.getName() == s)
                             listOfIDs.add(item.getId());
                         tempList.add(s);
+                        listofNames.add(s);
                     }
 //                    Tests to see what IDs are in the list
 //                    for(String item : chosenExhibitsIDS) {
@@ -97,4 +99,5 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     public ArrayList<String> getListOfIds() {
         return listOfIDs;
     }
+    public ArrayList<String> getListofNames(){ return listofNames;}
 }
