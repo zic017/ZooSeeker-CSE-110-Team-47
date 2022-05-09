@@ -35,7 +35,7 @@ public class PlanListExhibiton extends AppCompatActivity {
         Intent i = getIntent();
         ArrayList<String> planList = i.getStringArrayListExtra("key");
         Integer num = planList.size();
-        plannedNumber.setText(num.toString());
+        plannedNumber.setText("Added Exhibits: (" + num.toString() + ")");
         plan_adapter.setPlanListItems(planList);
 
         Button backButton = findViewById(R.id.back);
