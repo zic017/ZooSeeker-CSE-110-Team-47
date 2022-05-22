@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,7 +26,7 @@ public class SearchListActivity extends AppCompatActivity {
     private RecyclerView searchListRV;
     private RecyclerView planListRV;
     private SearchAdapter search_adapter;
-    private PlanAdapter plan_adapter;
+    private PlanListAdapter plan_adapter;
     public ArrayList<SearchItem> ItemList;
     private ArrayList<String> AllTags;
     private ArrayList<String> plannedList;
@@ -43,7 +44,6 @@ public class SearchListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_list);
         searchListRV = findViewById(R.id.search_list);
         planListRV = findViewById(R.id.plan_list);
-        plan_adapter = new PlanAdapter(displayList, this);
         Intent i = getIntent();
 
         buildPlanListRecyclerView();
@@ -55,6 +55,7 @@ public class SearchListActivity extends AppCompatActivity {
         updatePassedInList(i.getStringArrayListExtra("key"));
         updatePassedNameList(i.getStringArrayListExtra("key1"));
 
+        // get directions button
         Button planButton = findViewById(R.id.plan_btn);
         planButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -71,6 +72,7 @@ public class SearchListActivity extends AppCompatActivity {
             }
         });
 
+        // show exhibition button
         Button exhibitionButton = findViewById(R.id.show_exhibit);
         exhibitionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
@@ -109,8 +111,6 @@ public class SearchListActivity extends AppCompatActivity {
                 Log.d("insideUpdatePlan", item);
             }
             searchListRV.setVisibility(View.VISIBLE);
-            plan_adapter.updateDisplayList(displayList);
-
         }
     }
 
@@ -131,6 +131,7 @@ public class SearchListActivity extends AppCompatActivity {
                 filter(newText);
                 if (search.getQuery().length() == 0){
                     searchListRV.setVisibility(View.INVISIBLE);
+                    planListRV.setVisibility(View.VISIBLE);
                 }
                 return false;
             }
@@ -211,7 +212,9 @@ public class SearchListActivity extends AppCompatActivity {
     }
 
     public void buildPlanListRecyclerView() {
-        plan_adapter = new PlanAdapter(displayList, SearchListActivity.this);
+        Context context = getApplicationContext();
+
+        plan_adapter = new PlanListAdapter();
         plan_adapter.setHasStableIds(true);
         LinearLayoutManager manager = new LinearLayoutManager(this);
         planListRV.setHasFixedSize(true);
@@ -219,6 +222,16 @@ public class SearchListActivity extends AppCompatActivity {
         planListRV.setLayoutManager(manager);
 
         planListRV.setAdapter(plan_adapter);
+//        plannedList = search_adapter.getListOfIds();
+        if(passedInList != null) {
+            for(String s : passedInList){
+                if(!plannedList.contains(s)){
+                    plannedList.add(s);
+                }
+            }
+        }
+        ArrayList<String> ItemList = SearchAdapter.getListofNames();
+        plan_adapter.setPlanListItems(ItemList);
     }
 
     public void updatePassedInList(ArrayList<String> passedInList){
