@@ -130,6 +130,7 @@ public class SearchListActivity extends AppCompatActivity {
                 filter(newText);
                 if (search.getQuery().length() == 0){
                     searchListRV.setVisibility(View.INVISIBLE);
+                    buildPlanListRecyclerView();
                 }
                 return false;
             }
@@ -220,25 +221,9 @@ public class SearchListActivity extends AppCompatActivity {
         planListRV.setLayoutManager(manager);
 
         planListRV.setAdapter(plan_adapter);
-        if (plannedList != null){
-            plannedList = search_adapter.getListOfIds();
-        }
-        if(passedInList != null) {
-            for(String s : passedInList){
-                if(!plannedList.contains(s)){
-                    plannedList.add(s);
-                }
-            }
-        }
-        ArrayList<String> ItemArrList = SearchAdapter.getListofNames();
-//        ArrayList<String> ItemArrList = PlanListExhibiton.idToString(context, plannedList);
-        ArrayList<String> uniqueItems = new ArrayList<String>();
-        for (String item : ItemArrList) {
-            if(!uniqueItems.contains(item)) {
-                uniqueItems.add(item);
-            }
-        }
-        plan_adapter.setPlanListItems(uniqueItems);
+
+        ArrayList<String> ItemList = SearchAdapter.getListofNames();
+        plan_adapter.setPlanListItems(ItemList);
     }
 
     public void updatePassedInList(ArrayList<String> passedInList){

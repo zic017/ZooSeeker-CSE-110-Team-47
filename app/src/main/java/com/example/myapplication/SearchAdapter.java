@@ -88,7 +88,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                         if (item.getName() == s)
                             listOfIDs.add(item.getId());
                         tempList.add(s);
-                        listofNames.add(s);
+                        if (!listofNames.contains(s)){
+                            listofNames.add(s);
+                        }
                     }
 //                    Tests to see what IDs are in the list
 //                    for(String item : chosenExhibitsIDS) {
