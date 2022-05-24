@@ -18,11 +18,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     private Consumer<SearchItem> onAddBtnClicked;
     private SearchItem searchItem;
     private ArrayList<String> listOfIDs = new ArrayList<>();
-    private ArrayList<String> listofNames = new ArrayList<>();
+    public ArrayList<String> listofNames = new ArrayList<>();
 
     public SearchAdapter(ArrayList<SearchItem> ItemList, Context context) {
         this.ItemList = ItemList;
         this.context = context;
+
     }
     public void filterList(ArrayList<SearchItem> filterllist) {
         ItemList = filterllist;
@@ -67,6 +68,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             itemName = itemView.findViewById(R.id.search_item_text);
             add_btn = itemView.findViewById(R.id.add_btn);
 
+
             /*
                 Function: Once user hits '+' this code will execute and add the exhibit to our planned list.
                           The planned list will contain the IDs of all the exhibits the user clicked '+' on.
@@ -80,7 +82,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                     // Checks to see if the exhibit is already on the list, if so don't add it again
                     if (tempList.contains(s))
                         return;
-
                     // Retrieves the id of the exhibit given that we only have the name at the moment
                     for (SearchItem item : ItemList) {
                         if (item.getName() == s)
@@ -88,10 +89,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                         tempList.add(s);
                         listofNames.add(s);
                     }
-//                    Tests to see what IDs are in the list
-//                    for(String item : chosenExhibitsIDS) {
-//                        Log.d("1",item);
-//                    }
+                    if(context instanceof SearchListActivity) {
+                        ((SearchListActivity)context).updateDisplayList(s);
+                    }
                 }
             });
         }
