@@ -57,6 +57,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView itemName;
+        private final TextView planItemName;
         private TextView add_btn;
         private ArrayList<String> tempList = new ArrayList<>();
 
@@ -66,6 +67,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             super(itemView);
             itemName = itemView.findViewById(R.id.search_item_text);
             add_btn = itemView.findViewById(R.id.add_btn);
+            planItemName = itemView.findViewById(R.id.plan_item_text);
 
             /*
                 Function: Once user hits '+' this code will execute and add the exhibit to our planned list.

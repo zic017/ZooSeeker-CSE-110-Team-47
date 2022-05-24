@@ -47,7 +47,6 @@ public class SearchListActivity extends AppCompatActivity {
         Intent i = getIntent();
 
         buildPlanListRecyclerView();
-        planListRV.setVisibility(View.INVISIBLE);
 
         buildRecyclerView();
         searchListRV.setVisibility(View.INVISIBLE);
@@ -131,7 +130,6 @@ public class SearchListActivity extends AppCompatActivity {
                 filter(newText);
                 if (search.getQuery().length() == 0){
                     searchListRV.setVisibility(View.INVISIBLE);
-                    planListRV.setVisibility(View.VISIBLE);
                 }
                 return false;
             }
@@ -222,7 +220,9 @@ public class SearchListActivity extends AppCompatActivity {
         planListRV.setLayoutManager(manager);
 
         planListRV.setAdapter(plan_adapter);
-//        plannedList = search_adapter.getListOfIds();
+        if (plannedList != null){
+            plannedList = search_adapter.getListOfIds();
+        }
         if(passedInList != null) {
             for(String s : passedInList){
                 if(!plannedList.contains(s)){
@@ -230,8 +230,15 @@ public class SearchListActivity extends AppCompatActivity {
                 }
             }
         }
-        ArrayList<String> ItemList = SearchAdapter.getListofNames();
-        plan_adapter.setPlanListItems(ItemList);
+        ArrayList<String> ItemArrList = SearchAdapter.getListofNames();
+//        ArrayList<String> ItemArrList = PlanListExhibiton.idToString(context, plannedList);
+        ArrayList<String> uniqueItems = new ArrayList<String>();
+        for (String item : ItemArrList) {
+            if(!uniqueItems.contains(item)) {
+                uniqueItems.add(item);
+            }
+        }
+        plan_adapter.setPlanListItems(uniqueItems);
     }
 
     public void updatePassedInList(ArrayList<String> passedInList){

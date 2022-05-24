@@ -52,7 +52,7 @@ public class PlanListExhibiton extends AppCompatActivity {
     }
 
     //Retrieve names based on the list of IDs
-    public ArrayList<String> idToString(Context context, ArrayList<String> ids) {
+    public static ArrayList<String> idToString(Context context, ArrayList<String> ids) {
         ArrayList<String> names = new ArrayList<>();
         Map<String, ZooData.VertexInfo> vInfo = ZooData.loadVertexInfoJSON(context, "sample_node_info.json");
         for(String id : ids) {

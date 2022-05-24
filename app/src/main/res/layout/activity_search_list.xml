@@ -8,11 +8,11 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_list"
-        android:layout_width="328dp"
-        android:layout_height="365dp"
+        android:layout_width="322dp"
+        android:layout_height="239dp"
         android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@id/plan_list"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_bar" />
 
@@ -20,15 +20,15 @@
         android:id="@+id/plan_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="#71AA31"
         android:text="Get Directions"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.619"
+        app:layout_constraintHorizontal_bias="0.703"
         app:layout_constraintStart_toEndOf="@+id/show_exhibit"
-        app:layout_constraintTop_toBottomOf="@+id/search_list"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@id/plan_list"
+        app:layout_constraintVertical_bias="0.25" />
 
     <TextView
         android:id="@+id/logo"
@@ -39,34 +39,32 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.098"
+        app:layout_constraintHorizontal_bias="0.092"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.08" />
+        app:layout_constraintVertical_bias="0.042" />
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_bar"
         android:layout_width="303dp"
         android:layout_height="52dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="20dp"
         android:maxLines="1"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.611"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo"
         app:queryHint="Search for Exhibits" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/plan_list"
-        android:layout_width="266dp"
-        android:layout_height="369dp"
-        app:layout_constraintBottom_toTopOf="@+id/plan_btn"
+        android:layout_width="319dp"
+        android:layout_height="227dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_bar"
-        app:layout_constraintVertical_bias="0.488" />
+        app:layout_constraintTop_toBottomOf="@id/search_list" />
 
     <Button
         android:id="@+id/show_exhibit"
@@ -79,15 +77,8 @@
         android:text="Show Exhibition"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/plan_list"
-        app:layout_constraintVertical_bias="0.041" />
-
-    <ListView
-        android:id="@+id/plan_list_view"
-        android:layout_width="203dp"
-        android:layout_height="66dp"
-        tools:layout_editor_absoluteX="111dp"
-        tools:layout_editor_absoluteY="84dp" />
+        app:layout_constraintTop_toBottomOf="@id/plan_list"
+        app:layout_constraintVertical_bias="0.425" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
