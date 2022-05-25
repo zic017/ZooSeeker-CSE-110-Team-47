@@ -2,7 +2,6 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -14,7 +13,6 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,7 +23,7 @@ public class SearchListActivity extends AppCompatActivity {
     private RecyclerView searchListRV;
     private RecyclerView planListRV;
     private SearchAdapter search_adapter;
-    private PlanAdapter plan_adapter;
+    private PlanListAdapter plan_adapter;
     public ArrayList<SearchItem> ItemList;
     private ArrayList<String> AllTags;
     private ArrayList<String> plannedList;
@@ -34,6 +32,7 @@ public class SearchListActivity extends AppCompatActivity {
     private ArrayList<String> passedNameList;
     private ArrayList<String> displayList = new ArrayList<>();
     private HashMap<String, HashSet<SearchItem>> tagMap;
+    private TextView count;
 
     public ArrayList<String> getPlannedList () { return displayList; }
 
@@ -42,12 +41,16 @@ public class SearchListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_list);
         searchListRV = findViewById(R.id.search_list);
-        planListRV = findViewById(R.id.plan_list);
-        plan_adapter = new PlanAdapter(displayList, this);
-        Intent i = getIntent();
+        planListRV = findViewById(R.id.plan_list_view);
+        plan_adapter = new PlanListAdapter();
+        plan_adapter.setHasStableIds(true);
+        planListRV.setLayoutManager(new LinearLayoutManager(this));
+        planListRV.setAdapter(plan_adapter);
+        plan_adapter.setPlanListItems(displayList);
 
-        buildPlanListRecyclerView();
-        planListRV.setVisibility(View.INVISIBLE);
+        count = findViewById(R.id.plan_count);
+
+        Intent i = getIntent();
 
         buildRecyclerView();
         searchListRV.setVisibility(View.INVISIBLE);
@@ -70,35 +73,9 @@ public class SearchListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        Button exhibitionButton = findViewById(R.id.show_exhibit);
-        exhibitionButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v){
-                plannedList = search_adapter.getListOfIds();
-                if(passedInList != null) {
-                    for(String s : passedInList){
-                        if(!plannedList.contains(s)){
-                            plannedList.add(s);
-                        }
-                    }
-                }
-
-                nameList = search_adapter.getListofNames();
-                if(passedNameList != null) {
-                    for(String s : passedNameList){
-                        if(!nameList.contains(s)){
-                            nameList.add(s);
-                        }
-                    }
-                }
-                Intent intent = new Intent(SearchListActivity.this, PlanListExhibiton.class);
-                intent.putStringArrayListExtra("key", plannedList);
-                intent.putStringArrayListExtra("key1", nameList);
-                startActivity(intent);
-            }
-        });
     }
 
+    /**
     public void updatePlan() {
         if (displayList.isEmpty()) {
             Toast.makeText(this, "No Data Found..", Toast.LENGTH_SHORT).show();
@@ -113,6 +90,7 @@ public class SearchListActivity extends AppCompatActivity {
 
         }
     }
+     **/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -209,7 +187,7 @@ public class SearchListActivity extends AppCompatActivity {
         // our recycler view.
         searchListRV.setAdapter(search_adapter);
     }
-
+/**
     public void buildPlanListRecyclerView() {
         plan_adapter = new PlanAdapter(displayList, SearchListActivity.this);
         plan_adapter.setHasStableIds(true);
@@ -220,6 +198,7 @@ public class SearchListActivity extends AppCompatActivity {
 
         planListRV.setAdapter(plan_adapter);
     }
+ **/
 
     public void updatePassedInList(ArrayList<String> passedInList){
         this.passedInList = passedInList;
@@ -227,5 +206,11 @@ public class SearchListActivity extends AppCompatActivity {
 
     public void updatePassedNameList(ArrayList<String> passedNameList){
         this.passedNameList = passedNameList;
+    }
+
+    public void updateDisplayList(String addedExhibit) {
+        displayList.add(addedExhibit);
+        plan_adapter.notifyDataSetChanged();
+        count.setText("" + displayList.size());
     }
 }

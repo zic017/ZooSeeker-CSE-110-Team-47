@@ -16,9 +16,9 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import androidx.test.espresso.ViewInteraction;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
-import androidx.test.rule.ActivityTestRule;
-import androidx.test.runner.AndroidJUnit4;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -29,13 +29,14 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class addTest {
+public class addEspressoTest {
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
+    public ActivityScenarioRule<MainActivity> mActivityScenarioRule =
+            new ActivityScenarioRule<>(MainActivity.class);
 
     @Test
-    public void addTest() {
+    public void addEspressoTest() {
         ViewInteraction appCompatImageView = onView(
                 allOf(withId(androidx.appcompat.R.id.search_button), withContentDescription("Search"),
                         childAtPosition(
@@ -56,7 +57,7 @@ public class addTest {
                                                 1)),
                                 0),
                         isDisplayed()));
-        searchAutoComplete.perform(replaceText("cat"), closeSoftKeyboard());
+        searchAutoComplete.perform(replaceText("Lion"), closeSoftKeyboard());
 
         ViewInteraction materialTextView = onView(
                 allOf(withId(R.id.add_btn), withText("+"),
