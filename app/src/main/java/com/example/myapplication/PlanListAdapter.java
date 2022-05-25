@@ -57,4 +57,8 @@ public class PlanListAdapter extends RecyclerView.Adapter<PlanListAdapter.ViewHo
         }
     }
 
+    public String getItem(int position) {
+        return this.ItemList.get(position);
+    }
+
 }
