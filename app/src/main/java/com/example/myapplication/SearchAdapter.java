@@ -18,11 +18,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     private Consumer<SearchItem> onAddBtnClicked;
     private SearchItem searchItem;
     private ArrayList<String> listOfIDs = new ArrayList<>();
-    private static ArrayList<String> listofNames = new ArrayList<>();
+    public ArrayList<String> listofNames = new ArrayList<>();
 
     public SearchAdapter(ArrayList<SearchItem> ItemList, Context context) {
         this.ItemList = ItemList;
         this.context = context;
+
     }
     public void filterList(ArrayList<SearchItem> filterllist) {
         ItemList = filterllist;
@@ -57,7 +58,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView itemName;
-        private final TextView planItemName;
         private TextView add_btn;
         private ArrayList<String> tempList = new ArrayList<>();
 
@@ -67,7 +67,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             super(itemView);
             itemName = itemView.findViewById(R.id.search_item_text);
             add_btn = itemView.findViewById(R.id.add_btn);
-            planItemName = itemView.findViewById(R.id.plan_item_text);
+
 
             /*
                 Function: Once user hits '+' this code will execute and add the exhibit to our planned list.
@@ -82,20 +82,16 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                     // Checks to see if the exhibit is already on the list, if so don't add it again
                     if (tempList.contains(s))
                         return;
-
                     // Retrieves the id of the exhibit given that we only have the name at the moment
                     for (SearchItem item : ItemList) {
                         if (item.getName() == s)
                             listOfIDs.add(item.getId());
                         tempList.add(s);
-                        if (!listofNames.contains(s)){
-                            listofNames.add(s);
-                        }
+                        listofNames.add(s);
                     }
-//                    Tests to see what IDs are in the list
-//                    for(String item : chosenExhibitsIDS) {
-//                        Log.d("1",item);
-//                    }
+                    if(context instanceof SearchListActivity) {
+                        ((SearchListActivity)context).updateDisplayList(s);
+                    }
                 }
             });
         }
@@ -103,5 +99,5 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     public ArrayList<String> getListOfIds() {
         return listOfIDs;
     }
-    public static ArrayList<String> getListofNames(){ return listofNames;}
+    public ArrayList<String> getListofNames(){ return listofNames;}
 }
