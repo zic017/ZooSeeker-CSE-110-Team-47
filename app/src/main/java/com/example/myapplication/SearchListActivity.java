@@ -21,7 +21,7 @@ import java.util.HashSet;
 
 
 public class SearchListActivity extends AppCompatActivity {
-
+//test
     private RecyclerView searchListRV;
     private RecyclerView planListRV;
     private SearchAdapter search_adapter;
