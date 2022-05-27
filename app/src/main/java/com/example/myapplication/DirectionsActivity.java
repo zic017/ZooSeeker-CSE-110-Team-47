@@ -30,47 +30,46 @@ public class DirectionsActivity extends AppCompatActivity {
         ArrayList<String> input = i.getStringArrayListExtra("key");
         Context context = getApplicationContext();
 
-
-//        DetailedDirectionsAlgorithm detailed = new DetailedDirectionsAlgorithm(input,context);
-        BriefDirectionsAlgorithm brief = new BriefDirectionsAlgorithm(input, context);
+        DirectionsAlgorithm dirAlgo = new DirectionsAlgorithm(input, context);
 
         Button nextButton = findViewById(R.id.next_button);
 
         detailed_directions = (TextView) findViewById(R.id.detailed_directions);
+        brief_directions = (TextView) findViewById(R.id.brief_directions);
+
         TextView currentLocation = (TextView) findViewById(R.id.currentLocation);
         TextView directionsTo = (TextView) findViewById((R.id.directionsTo));
- //       detailed.getNext();
-  //      detailed_directions.setText(detailed.directionsLine);
-        currentLocation.setText(brief.currentName);
-//        detailed_directions.setMovementMethod(new ScrollingMovementMethod());
 
-        brief_directions = (TextView) findViewById(R.id.brief_directions);
-        brief.getNext();
-        brief_directions.setText(brief.directionsLine);
+        dirAlgo.getNext();
+        detailed_directions.setText(dirAlgo.getDetailedDirections());
+        brief_directions.setText(dirAlgo.briefDirectionsLine);
+
+        currentLocation.setText(dirAlgo.currentName);
+
+        detailed_directions.setMovementMethod(new ScrollingMovementMethod());
         brief_directions.setMovementMethod(new ScrollingMovementMethod());
 
-  //      detailed_directions.setVisibility(View.INVISIBLE);
+        detailed_directions.setVisibility(View.INVISIBLE);
 
         nextButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-  //              detailed.getNext();
-  //              detailed_directions.scrollTo(0,0);
+                detailed_directions.scrollTo(0,0);
+                brief_directions.scrollTo(0, 0);
 
-                brief.getNext();
-                brief_directions.scrollTo(0,0);
-                if(brief.currentName != "DONE") {
-                    currentLocation.setText(brief.currentName);
-    //                detailed_directions.setText(brief.directionsLine);
+                dirAlgo.getNext();
+                if(dirAlgo.currentName != "DONE") {
+                    currentLocation.setText(dirAlgo.currentName);
 
-                    brief_directions.setText(brief.directionsLine);
+                    detailed_directions.setText(dirAlgo.getDetailedDirections());
+                    brief_directions.setText(dirAlgo.getBriefDirections());
                 }
                 else {
                     currentLocation.setVisibility(View.INVISIBLE);
                     brief_directions.setVisibility(View.INVISIBLE);
- //                   detailed_directions.setVisibility(View.VISIBLE);
- //                   detailed_directions.setText(R.string.thank_you);
+                    detailed_directions.setVisibility(View.VISIBLE);
+                    detailed_directions.setText(R.string.thank_you);
                     directionsTo.setVisibility(View.INVISIBLE);
-  //                  detailed_directions.setTextSize(24);
+                    detailed_directions.setTextSize(24);
                     nextButton.setVisibility(View.INVISIBLE);
                 }
             }

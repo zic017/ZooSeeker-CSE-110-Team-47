@@ -27,7 +27,6 @@ public class SearchListActivity extends AppCompatActivity {
     public ArrayList<SearchItem> ItemList;
     private ArrayList<String> AllTags;
     private ArrayList<String> plannedList;
-    private ArrayList<String> nameList;
     private ArrayList<String> passedInList;
     private ArrayList<String> passedNameList;
     private ArrayList<String> displayList = new ArrayList<>();
