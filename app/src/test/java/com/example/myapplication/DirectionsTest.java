@@ -42,7 +42,7 @@ public class DirectionsTest {
         ActivityScenario.launch(intent).onActivity(activity -> {
 
 
-            TextView directions = activity.findViewById(R.id.directions);
+            TextView directions = activity.findViewById(R.id.detailed_directions);
             TextView currentLocation = activity.findViewById(R.id.currentLocation);
             Button next_exhibit = activity.findViewById(R.id.next_button);
             String start_directions = directions.getText().toString();
@@ -72,7 +72,7 @@ public class DirectionsTest {
         // When it's ready, we're ready to test inside this lambda (anonymous inline function).
         ActivityScenario.launch(intent).onActivity(activity -> {
 
-            TextView directions = activity.findViewById(R.id.directions);
+            TextView directions = activity.findViewById(R.id.detailed_directions);
             TextView currentLocation = activity.findViewById(R.id.currentLocation);
             Button next_exhibit = activity.findViewById(R.id.next_button);
 

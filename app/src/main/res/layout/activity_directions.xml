@@ -29,7 +29,7 @@
         android:gravity="center_horizontal"
         android:text="Entrance"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/directions"
+        app:layout_constraintBottom_toTopOf="@+id/detailed_directions"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent" />
@@ -44,14 +44,29 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/directions"
+        app:layout_constraintTop_toBottomOf="@+id/detailed_directions"
         app:layout_constraintVertical_bias="0.528" />
 
     <TextView
-        android:id="@+id/directions"
+        android:id="@+id/detailed_directions"
         android:layout_width="327dp"
         android:layout_height="415dp"
-        android:gravity="center_horizontal"
+        android:gravity="left"
+        android:scrollbars="vertical"
+        android:text="Directions"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.623" />
+
+    <TextView
+        android:id="@+id/brief_directions"
+        android:layout_width="327dp"
+        android:layout_height="415dp"
+        android:gravity="left"
+        android:scrollbars="vertical"
         android:text="Directions"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
