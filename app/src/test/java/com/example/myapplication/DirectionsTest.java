@@ -31,9 +31,9 @@ public class DirectionsTest {
         // https://developer.android.com/guide/components/activities/activity-lifecycle
         Intent intent = new Intent(ApplicationProvider.getApplicationContext(), DirectionsActivity.class);
         ArrayList<String> plannedList = new ArrayList<>();
-        plannedList.add("lions");
-        plannedList.add("gators");
-        plannedList.add("gorillas");
+        plannedList.add("koi");
+        plannedList.add("flamingo");
+        plannedList.add("gorilla");
         intent.putStringArrayListExtra("key", plannedList);
 
         // Make sure the activity is in the created state (so onCreated is called).
@@ -62,9 +62,9 @@ public class DirectionsTest {
     public void test_exit() {
         Intent intent = new Intent(ApplicationProvider.getApplicationContext(), DirectionsActivity.class);
         ArrayList<String> plannedList = new ArrayList<>();
-        plannedList.add("lions");
-        plannedList.add("gators");
-        plannedList.add("gorillas");
+        plannedList.add("koi");
+        plannedList.add("flamingo");
+        plannedList.add("gorilla");
         intent.putStringArrayListExtra("key", plannedList);
 
         // Make sure the activity is in the created state (so onCreated is called).

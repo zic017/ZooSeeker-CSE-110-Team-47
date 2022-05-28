@@ -68,6 +68,8 @@ public class DirectionsActivity extends AppCompatActivity {
                     brief_directions.setVisibility(View.INVISIBLE);
                     detailed_directions.setVisibility(View.VISIBLE);
                     detailed_directions.setText(R.string.thank_you);
+                    brief_directions.setText(R.string.thank_you);
+                    brief_directions.setTextSize(24);
                     directionsTo.setVisibility(View.INVISIBLE);
                     detailed_directions.setTextSize(24);
                     nextButton.setVisibility(View.INVISIBLE);
