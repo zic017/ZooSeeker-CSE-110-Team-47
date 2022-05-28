@@ -34,6 +34,7 @@ public class ZooData {
         public String id;
         public Kind kind;
         public String name;
+        public String group_id;
         public List<String> tags;
     }
 
