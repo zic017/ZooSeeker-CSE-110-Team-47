@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -73,6 +74,9 @@ public class SearchListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        LocationPermissionChecker permissions = new LocationPermissionChecker(this);
+        permissions.ensurePermissions();
     }
 
     /**
