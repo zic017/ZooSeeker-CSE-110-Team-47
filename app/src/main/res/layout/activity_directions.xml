@@ -14,10 +14,12 @@
         android:layout_marginTop="36dp"
         android:backgroundTint="#71AA31"
         android:text="Previous"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.234"
+        app:layout_constraintHorizontal_bias="0.231"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detailed_directions" />
+        app:layout_constraintTop_toBottomOf="@+id/detailed_directions"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/logo2"

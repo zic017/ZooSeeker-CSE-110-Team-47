@@ -35,7 +35,7 @@ public class DirectionsAlgorithm {
         this.latitude = latitude;
         this.longitude = longitude;
         size = plannedIds.size();
-
+        this.visitedIds = new ArrayList<>();
         g = ZooData.loadZooGraphJSON(context,"zoo_graph.json");
         vInfo = ZooData.loadVertexInfoJSON(context, "zoo_node_info.json");
 
@@ -60,7 +60,6 @@ public class DirectionsAlgorithm {
 
     public void getNext() {
         String next;
-
         //If no more exhibits, return to gate
         if(current.equals("entrance_exit_gate") && plannedIds.size() == 0) {
             currentName = "DONE";
@@ -77,8 +76,8 @@ public class DirectionsAlgorithm {
             setBriefDirections(current, next);
             setDetailedDirections(current, next);
             currentName = vInfo.get(next).name;
-            plannedIds.remove(next);
             visitedIds.add(next);
+            plannedIds.remove(next);
         }
     }
 
