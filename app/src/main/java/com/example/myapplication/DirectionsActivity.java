@@ -56,7 +56,7 @@ public class DirectionsActivity extends AppCompatActivity {
         TextView directionsTo = (TextView) findViewById((R.id.directionsTo));
 
         dirAlgo.getNext();
-        detailed_directions.setText(dirAlgo.setDetailedDirections());
+        detailed_directions.setText(dirAlgo.getDetailedDirections());
         brief_directions.setText(dirAlgo.briefDirectionsLine);
 
         currentLocation.setText(dirAlgo.currentName);
@@ -75,8 +75,8 @@ public class DirectionsActivity extends AppCompatActivity {
                 if(dirAlgo.currentName != "DONE") {
                     currentLocation.setText(dirAlgo.currentName);
 
-                    detailed_directions.setText(dirAlgo.setDetailedDirections());
-                    brief_directions.setText(dirAlgo.setBriefDirections());
+                    detailed_directions.setText(dirAlgo.getDetailedDirections());
+                    brief_directions.setText(dirAlgo.getBriefDirections());
                 }
                 else {
                     currentLocation.setVisibility(View.INVISIBLE);
@@ -94,7 +94,11 @@ public class DirectionsActivity extends AppCompatActivity {
 
         previousButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                dirAlgo.getPrevious();
+                brief_directions.setText(dirAlgo.getBriefDirections());
+                detailed_directions.setText(dirAlgo.getDetailedDirections());
 
+                currentLocation.setText(dirAlgo.currentName);
             }
         });
     }

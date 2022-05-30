@@ -16,7 +16,6 @@ public class DirectionsAlgorithm {
     // List of the IDs of every planned
 
     public ArrayList<String> plannedIds, visitedIds;
-    public int position = 0;
     public String current;
     public String currentName;
     public Context context;
@@ -83,14 +82,15 @@ public class DirectionsAlgorithm {
 
 
     public void getPrevious() {
-        String next = null;
-
         //If no previous, do nothing
-        if(current == "entrance_exit_gate" && plannedIds.size() == 0) {
+        if(visitedIds.size() == 1) {
             return;
         }
-        setBriefDirections(plannedIds.get(position), next);
-        setDetailedDirections(plannedIds.get(position), next);
+        String previous = visitedIds.get(visitedIds.size()-2);
+        current = getCurrent();
+        currentName = vInfo.get(visitedIds.get(visitedIds.size()-2)).name;
+        setBriefDirections(current, previous);
+        setDetailedDirections(current, previous);
     }
 
     //get the closest exhibit to the current location
@@ -308,10 +308,10 @@ public class DirectionsAlgorithm {
             }
         }
     }
-    public String setBriefDirections() {
+    public String getBriefDirections() {
         return briefDirectionsLine;
     }
-    public String setDetailedDirections() {
+    public String getDetailedDirections() {
         return detailedDirectionsLine;
     }
 
