@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 
 import android.content.Context;
+import android.location.Location;
 
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
@@ -13,7 +14,9 @@ import java.util.Map;
 public class DirectionsAlgorithm {
 
     // List of the IDs of every planned
+
     public ArrayList<String> plannedIds;
+    public int position;
     public String current;
     public String currentName;
     public Context context;
@@ -22,15 +25,35 @@ public class DirectionsAlgorithm {
     public ArrayList<String> directions;
     Graph<String, IdentifiedWeightedEdge> g;
     Map<String, ZooData.VertexInfo> vInfo;
+    double longitude, latitude;
 
-    public DirectionsAlgorithm(ArrayList<String> plannedIds, Context context){
+    public DirectionsAlgorithm(ArrayList<String> plannedIds, Context context, double latitude, double longitude){
         this.plannedIds = plannedIds;
         this.context = context;
-        //Always start at the entrance gate
-        current = "entrance_exit_gate";
+        this.latitude = latitude;
+        this.longitude = longitude;
+
         g = ZooData.loadZooGraphJSON(context,"zoo_graph.json");
         vInfo = ZooData.loadVertexInfoJSON(context, "zoo_node_info.json");
+
+        current = "entrance_exit_gate";
     }
+
+    //Get the closest exhibit to current location
+    private String getCurrent() {
+        String closest = "";
+        double lowest = 9999999;
+        float[] results = {};
+        for(Map.Entry<String, ZooData.VertexInfo> vertex : vInfo.entrySet()) {
+            Location.distanceBetween(latitude, longitude, vInfo.get(vertex).lat, vInfo.get(vertex).lng, results);
+            if((double) results[0] < lowest ) {
+                lowest = (double)results[0];
+                closest = vInfo.get(vertex).name;
+            }
+        }
+        return closest;
+    }
+
 
     public void getNext() {
         String next;
@@ -40,19 +63,32 @@ public class DirectionsAlgorithm {
             currentName = "DONE";
         }
         else if(plannedIds.size() == 0) {
-            getBriefDirections(current, "entrance_exit_gate");
-            getDetailedDirections(current, "entrance_exit_gate");
+            setBriefDirections(current, "entrance_exit_gate");
+            setDetailedDirections(current, "entrance_exit_gate");
             current = "entrance_exit_gate";
             currentName = vInfo.get(current).name;
         }
         else {
             next = closest();
-            getBriefDirections(current, next);
-            getDetailedDirections(current, next);
-            current = next;
-            currentName = vInfo.get(current).name;
-            plannedIds.remove(current);
+            current = getCurrent();
+            setBriefDirections(current, next);
+            setDetailedDirections(current, next);
+            currentName = vInfo.get(next).name;
+            // plannedIds.remove(next);
+            position ++;
         }
+    }
+
+
+    public void getPrevious() {
+        String next = null;
+
+        //If no previous, do nothing
+        if(current == "entrance_exit_gate" && plannedIds.size() == 0) {
+            return;
+        }
+        setBriefDirections(plannedIds.get(position), next);
+        setDetailedDirections(plannedIds.get(position), next);
     }
 
     //get the closest exhibit to the current location
@@ -63,7 +99,7 @@ public class DirectionsAlgorithm {
         GraphPath<String, IdentifiedWeightedEdge> path;
 
         //For each other exhibit planned besides the current one
-        for(String id : plannedIds) {
+        for(String id : plannedIds.subList(position,plannedIds.size())) {
             if(vInfo.get(id).group_id != null) {
                 path = DijkstraShortestPath.findPathBetween(g, current, vInfo.get(id).group_id);
             }
@@ -86,7 +122,7 @@ public class DirectionsAlgorithm {
         return close;
     }
 
-    public void getDetailedDirections(String current, String next) {
+    public void setDetailedDirections(String current, String next) {
         detailedDirectionsLine = "";
         String loc1, loc2, tempcur;
         // 1. Load the graph...
@@ -126,13 +162,8 @@ public class DirectionsAlgorithm {
                 }
                 if(vInfo.get(g.getEdgeTarget(e)).kind.toString().equals("INTERSECTION")) {
                     name = vInfo.get(g.getEdgeTarget(e)).name;
-                    if(name.contains(eInfo.get(e.getId()).street)) {
-                        name = name.replace(" / ", "");
-                        name = name.replace(eInfo.get(e.getId()).street, "");
-                    }
-                    else {
-                        name = name.replace("/", "and");
-                    }
+                    name = "corner of" + name.replace(" / ", "and");
+
                 }
                 else if(vInfo.get(g.getEdgeTarget(e)).kind.toString().equals("EXHIBIT_GROUP")) {
                     name= vInfo.get(g.getEdgeTarget(e)).name;
@@ -157,8 +188,7 @@ public class DirectionsAlgorithm {
 
                 if(vInfo.get(g.getEdgeSource(e)).kind.toString().equals("INTERSECTION")) {
                     name = vInfo.get(g.getEdgeSource(e)).name;
-                    name = name.replace(" / ", "");
-                    name = name.replace(eInfo.get(e.getId()).street, "");
+                    name = "corner of" + name.replace(" / ", "and");
 
                 }
                 else if(vInfo.get(g.getEdgeSource(e)).kind.toString().equals("EXHIBIT_GROUP")) {
@@ -180,7 +210,7 @@ public class DirectionsAlgorithm {
         }
     }
 
-    public void getBriefDirections(String current, String next) {
+    public void setBriefDirections(String current, String next) {
         briefDirectionsLine = "";
         String loc1, loc2, tempcur;
 
@@ -230,13 +260,8 @@ public class DirectionsAlgorithm {
                     }
                     if(vInfo.get(g.getEdgeTarget(path.getEdgeList().get(e))).kind.toString().equals("INTERSECTION")) {
                         name = vInfo.get(g.getEdgeTarget(path.getEdgeList().get(e))).name;
-                        if(name.contains(eInfo.get(path.getEdgeList().get(e).getId()).street)) {
-                            name = name.replace(" / ", "");
-                            name = name.replace(eInfo.get(path.getEdgeList().get(e).getId()).street, "");
-                        }
-                        else {
-                            name = name.replace("/", "and");
-                        }
+                        name = "corner of" + name.replace(" / ", " and ");
+
                     }
                     else if(vInfo.get(g.getEdgeTarget(path.getEdgeList().get(e))).kind.toString().equals("EXHIBIT_GROUP")) {
                         name= vInfo.get(g.getEdgeTarget(path.getEdgeList().get(e))).name;
@@ -258,8 +283,7 @@ public class DirectionsAlgorithm {
                     }
                     if(vInfo.get(g.getEdgeSource(path.getEdgeList().get(e))).kind.toString().equals("INTERSECTION")) {
                         name = vInfo.get(g.getEdgeSource(path.getEdgeList().get(e))).name;
-                        name = name.replace(" / ", "");
-                        name = name.replace(eInfo.get(path.getEdgeList().get(e).getId()).street, "");
+                        name = "corner of" + name.replace(" / ", " and ");
 
                     }
                     else if(vInfo.get(g.getEdgeSource(path.getEdgeList().get(e))).kind.toString().equals("EXHIBIT_GROUP")) {
@@ -282,10 +306,30 @@ public class DirectionsAlgorithm {
             }
         }
     }
-    public String getBriefDirections() {
+    public String setBriefDirections() {
         return briefDirectionsLine;
     }
-    public String getDetailedDirections() {
+    public String setDetailedDirections() {
         return detailedDirectionsLine;
     }
+
+    public void updateLocation(double latitude, double longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+
+        /**
+         if(!getCurrent().equals(current)) {
+         promptReplan();
+         }
+         */
+    }
+
+    /**
+     public void skipExhibit() {
+
+     }
+     public void promptReplan() {
+
+     }
+     */
 }
