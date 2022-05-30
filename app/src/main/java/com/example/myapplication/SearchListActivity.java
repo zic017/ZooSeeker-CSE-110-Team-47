@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -19,7 +20,7 @@ import java.util.HashSet;
 
 
 public class SearchListActivity extends AppCompatActivity {
-
+//test
     private RecyclerView searchListRV;
     private RecyclerView planListRV;
     private SearchAdapter search_adapter;
@@ -48,6 +49,7 @@ public class SearchListActivity extends AppCompatActivity {
         planListRV.setAdapter(plan_adapter);
         plan_adapter.setPlanListItems(displayList);
 
+
         count = findViewById(R.id.plan_count);
 
         Intent i = getIntent();
@@ -57,6 +59,20 @@ public class SearchListActivity extends AppCompatActivity {
 
         updatePassedInList(i.getStringArrayListExtra("key"));
         updatePassedNameList(i.getStringArrayListExtra("key1"));
+
+        Button clearButton = findViewById((R.id.clear));
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(displayList == null)
+                    return;
+
+                displayList.clear();
+                search_adapter.clearList();
+                plan_adapter.notifyDataSetChanged();
+                count.setText("0");
+            }
+        });
 
         Button planButton = findViewById(R.id.plan_btn);
         planButton.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +89,9 @@ public class SearchListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
+
     }
 
     /**
@@ -213,4 +232,6 @@ public class SearchListActivity extends AppCompatActivity {
         plan_adapter.notifyDataSetChanged();
         count.setText("" + displayList.size());
     }
+
+
 }
