@@ -43,12 +43,12 @@ public class DirectionsAlgorithm {
     private String getCurrent() {
         String closest = "";
         double lowest = 9999999;
-        float[] results = {};
+        float[] results = new float[1];
         for(Map.Entry<String, ZooData.VertexInfo> vertex : vInfo.entrySet()) {
-            Location.distanceBetween(latitude, longitude, vInfo.get(vertex).lat, vInfo.get(vertex).lng, results);
+            Location.distanceBetween(latitude, longitude, vInfo.get(vertex.getKey()).lat, vInfo.get(vertex.getKey()).lng, results);
             if((double) results[0] < lowest ) {
                 lowest = (double)results[0];
-                closest = vInfo.get(vertex).name;
+                closest = vInfo.get(vertex.getKey()).name;
             }
         }
         return closest;

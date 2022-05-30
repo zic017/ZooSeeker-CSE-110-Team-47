@@ -44,7 +44,7 @@ public class DirectionsActivity extends AppCompatActivity {
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, locationListenerGPS);
 
-        dirAlgo = new DirectionsAlgorithm(input, context, latitude, longitude);
+        dirAlgo = new DirectionsAlgorithm(input, context, 32.73459618, -117.14936);
 
         Button nextButton = findViewById(R.id.next_button);
         Button previousButton = findViewById(R.id.back_button);
