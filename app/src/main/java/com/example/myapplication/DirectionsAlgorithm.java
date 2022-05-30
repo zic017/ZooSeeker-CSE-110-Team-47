@@ -91,6 +91,7 @@ public class DirectionsAlgorithm {
         currentName = vInfo.get(visitedIds.get(visitedIds.size()-2)).name;
         setBriefDirections(current, previous);
         setDetailedDirections(current, previous);
+        plannedIds.add(0,visitedIds.get(visitedIds.size()-1));
     }
 
     //get the closest exhibit to the current location
