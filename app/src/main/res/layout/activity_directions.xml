@@ -11,12 +11,13 @@
         android:id="@+id/back_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
         android:backgroundTint="#71AA31"
         android:text="Previous"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.234"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="650dp" />
+        app:layout_constraintTop_toBottomOf="@+id/detailed_directions" />
 
     <TextView
         android:id="@+id/logo2"
@@ -53,10 +54,10 @@
         android:text="Next Exhibit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.765"
+        app:layout_constraintHorizontal_bias="0.75"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/detailed_directions"
-        app:layout_constraintVertical_bias="0.535" />
+        app:layout_constraintVertical_bias="0.507" />
 
     <TextView
         android:id="@+id/detailed_directions"
