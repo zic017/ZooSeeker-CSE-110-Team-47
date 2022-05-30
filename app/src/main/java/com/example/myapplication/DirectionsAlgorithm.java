@@ -83,7 +83,7 @@ public class DirectionsAlgorithm {
 
     public void getPrevious() {
         //If no previous, do nothing
-        if(visitedIds.size() == 1) {
+        if (visitedIds.size() == 1) {
             return;
         }
         String previous = visitedIds.get(visitedIds.size()-2);
@@ -92,6 +92,7 @@ public class DirectionsAlgorithm {
         setBriefDirections(current, previous);
         setDetailedDirections(current, previous);
         plannedIds.add(0,visitedIds.get(visitedIds.size()-1));
+        visitedIds.remove(visitedIds.size()-1);
     }
 
     //get the closest exhibit to the current location
