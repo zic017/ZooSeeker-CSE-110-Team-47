@@ -16,7 +16,7 @@ public class DirectionsAlgorithm {
     // List of the IDs of every planned
 
     public ArrayList<String> plannedIds;
-    public int position;
+    public int position = 0;
     public String current;
     public String currentName;
     public Context context;
@@ -48,7 +48,7 @@ public class DirectionsAlgorithm {
             Location.distanceBetween(latitude, longitude, vInfo.get(vertex.getKey()).lat, vInfo.get(vertex.getKey()).lng, results);
             if((double) results[0] < lowest ) {
                 lowest = (double)results[0];
-                closest = vInfo.get(vertex.getKey()).name;
+                closest = vInfo.get(vertex.getKey()).id;
             }
         }
         return closest;
@@ -59,10 +59,8 @@ public class DirectionsAlgorithm {
         String next;
 
         //If no more exhibits, return to gate
-        if(current == "entrance_exit_gate" && plannedIds.size() == 0) {
-            currentName = "DONE";
-        }
-        else if(plannedIds.size() == 0) {
+
+        if(plannedIds.size() == 0) {
             setBriefDirections(current, "entrance_exit_gate");
             setDetailedDirections(current, "entrance_exit_gate");
             current = "entrance_exit_gate";
@@ -76,6 +74,9 @@ public class DirectionsAlgorithm {
             currentName = vInfo.get(next).name;
             // plannedIds.remove(next);
             position ++;
+        }
+        if(plannedIds.size() == position) {
+            currentName = "DONE";
         }
     }
 
