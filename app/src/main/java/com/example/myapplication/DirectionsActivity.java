@@ -88,6 +88,8 @@ public class DirectionsActivity extends AppCompatActivity {
                     directionsTo.setVisibility(View.INVISIBLE);
                     detailed_directions.setTextSize(24);
                     nextButton.setVisibility(View.INVISIBLE);
+                    previousButton.setVisibility(View.INVISIBLE);
+
                 }
             }
         });
@@ -99,6 +101,7 @@ public class DirectionsActivity extends AppCompatActivity {
                 detailed_directions.setText(dirAlgo.getDetailedDirections());
 
                 currentLocation.setText(dirAlgo.currentName);
+
             }
         });
     }
