@@ -26,7 +26,7 @@ public class ZooData {
             // The SerializedName annotation tells GSON how to convert
             // from the strings in our JSON to this Enum.
             @SerializedName("gate") GATE,
-            @SerializedName("exhibit") EXHIBIT, 
+            @SerializedName("exhibit") EXHIBIT,
             @SerializedName("intersection") INTERSECTION,
             @SerializedName("exhibit_group") EXHIBIT_GROUP
         }
@@ -36,6 +36,8 @@ public class ZooData {
         public String name;
         public String group_id;
         public List<String> tags;
+        public double lat;
+        public double lng;
     }
 
     public static class EdgeInfo {
