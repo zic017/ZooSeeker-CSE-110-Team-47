@@ -15,7 +15,7 @@ public class DirectionsAlgorithm {
 
     // List of the IDs of every planned
 
-    public ArrayList<String> plannedIds;
+    public ArrayList<String> plannedIds, visitedIds;
     public int position = 0;
     public String current;
     public String currentName;
@@ -26,12 +26,15 @@ public class DirectionsAlgorithm {
     Graph<String, IdentifiedWeightedEdge> g;
     Map<String, ZooData.VertexInfo> vInfo;
     double longitude, latitude;
+    public int size;
+
 
     public DirectionsAlgorithm(ArrayList<String> plannedIds, Context context, double latitude, double longitude){
         this.plannedIds = plannedIds;
         this.context = context;
         this.latitude = latitude;
         this.longitude = longitude;
+        size = plannedIds.size();
 
         g = ZooData.loadZooGraphJSON(context,"zoo_graph.json");
         vInfo = ZooData.loadVertexInfoJSON(context, "zoo_node_info.json");
@@ -59,8 +62,10 @@ public class DirectionsAlgorithm {
         String next;
 
         //If no more exhibits, return to gate
-
-        if(plannedIds.size() == 0) {
+        if(current.equals("entrance_exit_gate") && plannedIds.size() == 0) {
+            currentName = "DONE";
+        }
+        else if(plannedIds.size() == 0) {
             setBriefDirections(current, "entrance_exit_gate");
             setDetailedDirections(current, "entrance_exit_gate");
             current = "entrance_exit_gate";
@@ -72,11 +77,8 @@ public class DirectionsAlgorithm {
             setBriefDirections(current, next);
             setDetailedDirections(current, next);
             currentName = vInfo.get(next).name;
-            // plannedIds.remove(next);
-            position ++;
-        }
-        if(plannedIds.size() == position) {
-            currentName = "DONE";
+            plannedIds.remove(next);
+            visitedIds.add(next);
         }
     }
 
@@ -100,7 +102,7 @@ public class DirectionsAlgorithm {
         GraphPath<String, IdentifiedWeightedEdge> path;
 
         //For each other exhibit planned besides the current one
-        for(String id : plannedIds.subList(position,plannedIds.size())) {
+        for(String id : plannedIds) {
             if(vInfo.get(id).group_id != null) {
                 path = DijkstraShortestPath.findPathBetween(g, current, vInfo.get(id).group_id);
             }
@@ -163,7 +165,7 @@ public class DirectionsAlgorithm {
                 }
                 if(vInfo.get(g.getEdgeTarget(e)).kind.toString().equals("INTERSECTION")) {
                     name = vInfo.get(g.getEdgeTarget(e)).name;
-                    name = "corner of" + name.replace(" / ", "and");
+                    name = "corner of " + name.replace(" / ", "and");
 
                 }
                 else if(vInfo.get(g.getEdgeTarget(e)).kind.toString().equals("EXHIBIT_GROUP")) {
@@ -189,7 +191,7 @@ public class DirectionsAlgorithm {
 
                 if(vInfo.get(g.getEdgeSource(e)).kind.toString().equals("INTERSECTION")) {
                     name = vInfo.get(g.getEdgeSource(e)).name;
-                    name = "corner of" + name.replace(" / ", "and");
+                    name = "corner of " + name.replace(" / ", "and");
 
                 }
                 else if(vInfo.get(g.getEdgeSource(e)).kind.toString().equals("EXHIBIT_GROUP")) {
@@ -261,7 +263,7 @@ public class DirectionsAlgorithm {
                     }
                     if(vInfo.get(g.getEdgeTarget(path.getEdgeList().get(e))).kind.toString().equals("INTERSECTION")) {
                         name = vInfo.get(g.getEdgeTarget(path.getEdgeList().get(e))).name;
-                        name = "corner of" + name.replace(" / ", " and ");
+                        name = "corner of " + name.replace(" / ", " and ");
 
                     }
                     else if(vInfo.get(g.getEdgeTarget(path.getEdgeList().get(e))).kind.toString().equals("EXHIBIT_GROUP")) {
@@ -284,7 +286,7 @@ public class DirectionsAlgorithm {
                     }
                     if(vInfo.get(g.getEdgeSource(path.getEdgeList().get(e))).kind.toString().equals("INTERSECTION")) {
                         name = vInfo.get(g.getEdgeSource(path.getEdgeList().get(e))).name;
-                        name = "corner of" + name.replace(" / ", " and ");
+                        name = "corner of " + name.replace(" / ", " and ");
 
                     }
                     else if(vInfo.get(g.getEdgeSource(path.getEdgeList().get(e))).kind.toString().equals("EXHIBIT_GROUP")) {
