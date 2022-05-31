@@ -7,6 +7,19 @@
     android:backgroundTint="#3E9519"
     tools:context=".DirectionsActivity">
 
+    <Button
+        android:id="@+id/back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#71AA31"
+        android:text="Previous"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/next_button"
+        app:layout_constraintHorizontal_bias="0.731"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/next_button"
+        app:layout_constraintVertical_bias="0.0" />
+
     <TextView
         android:id="@+id/logo2"
         android:layout_width="wrap_content"
@@ -29,7 +42,7 @@
         android:gravity="center_horizontal"
         android:text="Entrance"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/directions"
+        app:layout_constraintBottom_toTopOf="@+id/detailed_directions"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent" />
@@ -42,16 +55,31 @@
         android:text="Next Exhibit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.725"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/directions"
-        app:layout_constraintVertical_bias="0.528" />
+        app:layout_constraintTop_toBottomOf="@+id/detailed_directions"
+        app:layout_constraintVertical_bias="0.507" />
 
     <TextView
-        android:id="@+id/directions"
+        android:id="@+id/detailed_directions"
         android:layout_width="327dp"
         android:layout_height="415dp"
-        android:gravity="center_horizontal"
+        android:gravity="left"
+        android:scrollbars="vertical"
+        android:text="Directions"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.623" />
+
+    <TextView
+        android:id="@+id/brief_directions"
+        android:layout_width="327dp"
+        android:layout_height="415dp"
+        android:gravity="left"
+        android:scrollbars="vertical"
         android:text="Directions"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -73,4 +101,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
