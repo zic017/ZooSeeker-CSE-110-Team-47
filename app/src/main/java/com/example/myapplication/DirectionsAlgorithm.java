@@ -336,4 +336,33 @@ public class DirectionsAlgorithm {
 
      }
      */
+
+    /**
+     * Get the distance for every exhibit from the entrance
+     * @param list
+     * @return ArrayList of distances for each exhibit
+     */
+    public ArrayList<Integer> getDistances (ArrayList<String> list){
+        GraphPath<String, IdentifiedWeightedEdge> path;
+        ArrayList<Integer> distances = new ArrayList<Integer>();
+        int curTotal = 0;
+
+        for(String exhibit : list){
+            if(vInfo.get(exhibit).group_id != null)
+            {
+                path = DijkstraShortestPath.findPathBetween(g, current, vInfo.get(exhibit).group_id);
+            }
+            else
+            {
+                path = DijkstraShortestPath.findPathBetween(g, current, exhibit);
+            }
+
+            for (IdentifiedWeightedEdge e : path.getEdgeList()) {
+                curTotal += g.getEdgeWeight(e);
+            }
+            distances.add(curTotal);
+        }
+
+        return distances;
+    }
 }

@@ -22,7 +22,7 @@ import java.util.HashSet;
 
 
 public class SearchListActivity extends AppCompatActivity {
-//test
+
     private RecyclerView searchListRV;
     private RecyclerView planListRV;
     private SearchAdapter search_adapter;
@@ -43,6 +43,8 @@ public class SearchListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_list);
+
+        // Instantiating variables
         searchListRV = findViewById(R.id.search_list);
         planListRV = findViewById(R.id.plan_list_view);
         plan_adapter = new PlanListAdapter();
@@ -50,17 +52,19 @@ public class SearchListActivity extends AppCompatActivity {
         planListRV.setLayoutManager(new LinearLayoutManager(this));
         planListRV.setAdapter(plan_adapter);
         plan_adapter.setPlanListItems(displayList);
-
         count = findViewById(R.id.plan_count);
 
         Intent i = getIntent();
 
+        // Building search bar
         buildRecyclerView();
         searchListRV.setVisibility(View.INVISIBLE);
 
+        // Updating plan list and plan list count
         updatePassedInList(i.getStringArrayListExtra("key"));
         updatePassedNameList(i.getStringArrayListExtra("key1"));
 
+        // Clears plan list
         Button clearButton = findViewById((R.id.clear));
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +79,7 @@ public class SearchListActivity extends AppCompatActivity {
             }
         });
 
+        // Moves us to route plan summary page
         Button planButton = findViewById(R.id.plan_btn);
         planButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -85,6 +90,7 @@ public class SearchListActivity extends AppCompatActivity {
                     plannedList = search_adapter.getListOfIds();
                 }
 
+                // Code to display popup alert if the plan list is empty
                 if(plannedList.isEmpty()) {
                     Log.d("Plan Button", "List is empty");
                     AlertDialog.Builder builder = new AlertDialog.Builder(SearchListActivity.this);
@@ -110,7 +116,12 @@ public class SearchListActivity extends AppCompatActivity {
                     builder.show();
                     return;
                 }
-                Intent intent = new Intent(SearchListActivity.this, DirectionsActivity.class);
+                // Previously this would send the info to the Directions page. Now we're rerouting to
+                // route plan summary.
+//                Intent intent = new Intent(SearchListActivity.this, DirectionsActivity.class);
+//                intent.putStringArrayListExtra("key", plannedList);
+//                startActivity(intent);
+                Intent intent = new Intent(SearchListActivity.this, RoutePlanSummaryActivity.class);
                 intent.putStringArrayListExtra("key", plannedList);
                 startActivity(intent);
             }
