@@ -3,12 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="../../../layout/custom_preview.xml" value="0.1" />
         <entry key="..\:/Users/ctric/Downloads/MyApplication2/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Users/ctric/Downloads/MyApplication2/app/src/main/res/layout/activity_search_list.xml" value="0.22" />
         <entry key="..\:/Users/ctric/Downloads/MyApplication2/app/src/main/res/layout/search_list_item.xml" value="0.22" />
         <entry key="..\:/Users/ctric/Downloads/ZooSeeker/app/src/main/res/layout/activity_search_list.xml" value="0.14130434782608695" />
-        <entry key="..\:/Users/jeffr/AndroidStudioProjects/zooseeker-cse-110-team-47/app/src/main/res/layout/activity_directions.xml" value="0.22" />
+        <entry key="..\:/Users/jeffr/AndroidStudioProjects/zooseeker-cse-110-team-47/app/src/main/res/layout/activity_directions.xml" value="0.25" />
         <entry key="..\:/Users/jeffr/AndroidStudioProjects/zooseeker-cse-110-team-47/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Users/jeffr/AndroidStudioProjects/zooseeker-cse-110-team-47/app/src/main/res/layout/activity_plan.xml" value="0.26811594202898553" />
         <entry key="..\:/Users/jeffr/AndroidStudioProjects/zooseeker-cse-110-team-47/app/src/main/res/layout/activity_plan_list_exhibition.xml" value="0.36666666666666664" />
@@ -20,8 +19,7 @@
         <entry key="..\:/ZooSeeker/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/ZooSeeker/app/src/main/res/layout/activity_search_list.xml" value="0.1" />
         <entry key="..\:/ZooSeeker/app/src/main/res/layout/search_list_item.xml" value="0.22826086956521738" />
-        <entry key="app/src/main/res/layout/activity_directions.xml" value="0.28790435791015634" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.15070921985815602" />
+        <entry key="app/src/main/res/layout/activity_directions.xml" value="0.5911458333333334" />
         <entry key="app/src/main/res/layout/activity_search_list.xml" value="0.5911458333333334" />
         <entry key="app/src/main/res/layout/search_list_item.xml" value="0.34322916666666664" />
       </map>

@@ -11,59 +11,61 @@
         android:id="@+id/back_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginBottom="48dp"
         android:backgroundTint="#71AA31"
         android:text="Previous"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/next_button"
-        app:layout_constraintHorizontal_bias="0.731"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/next_button"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/location_input" />
 
     <TextView
         android:id="@+id/logo2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="14dp"
         android:text="ZooSeeker"
         android:textColor="#4CAF50"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/directionsTo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.158"
+        app:layout_constraintHorizontal_bias="0.123"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.052" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/currentLocation"
         android:layout_width="328dp"
         android:layout_height="41dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="8dp"
         android:gravity="center_horizontal"
         android:text="Entrance"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/detailed_directions"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintHorizontal_bias="0.469"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/next_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="14dp"
         android:backgroundTint="#71AA31"
         android:text="Next Exhibit"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.725"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detailed_directions"
-        app:layout_constraintVertical_bias="0.507" />
+        app:layout_constraintStart_toEndOf="@+id/back_button"
+        app:layout_constraintTop_toBottomOf="@+id/location_input"
+        app:layout_constraintVertical_bias="0.547" />
 
     <TextView
         android:id="@+id/detailed_directions"
-        android:layout_width="327dp"
-        android:layout_height="415dp"
+        android:layout_width="333dp"
+        android:layout_height="368dp"
         android:gravity="left"
         android:scrollbars="vertical"
         android:text="Directions"
@@ -72,21 +74,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.623" />
+        app:layout_constraintVertical_bias="0.38" />
 
     <TextView
         android:id="@+id/brief_directions"
-        android:layout_width="327dp"
-        android:layout_height="415dp"
+        android:layout_width="329dp"
+        android:layout_height="371dp"
         android:gravity="left"
         android:scrollbars="vertical"
         android:text="Directions"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.463"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.623" />
+        app:layout_constraintVertical_bias="0.383" />
 
     <TextView
         android:id="@+id/directionsTo"
@@ -101,5 +104,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
+
+    <EditText
+        android:id="@+id/location_input"
+        android:layout_width="245dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Location:"
+        android:textSize="35px"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/brief_directions"
+        app:layout_constraintVertical_bias="0.017" />
+
+    <Button
+        android:id="@+id/inputButton"
+        android:layout_width="93dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="17dp"
+        android:backgroundTint="#71AA31"
+        android:text="Enter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/location_input"
+        app:layout_constraintTop_toBottomOf="@+id/brief_directions"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

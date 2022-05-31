@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +23,7 @@ public class DirectionsActivity extends AppCompatActivity {
 
     private TextView detailed_directions;
     private TextView brief_directions;
+    private EditText coords;
     protected LocationManager locationManager;
     protected LocationListener locationListener;
     protected String provider;
@@ -39,7 +41,7 @@ public class DirectionsActivity extends AppCompatActivity {
         ArrayList<String> input = i.getStringArrayListExtra("key");
         Context context = getApplicationContext();
 
-        if (permissionChecker.ensurePermissions()) return;
+        if (permissionChecker.ensurePermissions());
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, locationListenerGPS);
@@ -48,16 +50,18 @@ public class DirectionsActivity extends AppCompatActivity {
 
         Button nextButton = findViewById(R.id.next_button);
         Button previousButton = findViewById(R.id.back_button);
+        Button inputButton = findViewById(R.id.inputButton);
 
         detailed_directions = (TextView) findViewById(R.id.detailed_directions);
         brief_directions = (TextView) findViewById(R.id.brief_directions);
+        coords = (EditText) findViewById(R.id.location_input);
 
         TextView currentLocation = (TextView) findViewById(R.id.currentLocation);
         TextView directionsTo = (TextView) findViewById((R.id.directionsTo));
 
         dirAlgo.getNext();
         detailed_directions.setText(dirAlgo.getDetailedDirections());
-        brief_directions.setText(dirAlgo.briefDirectionsLine);
+        brief_directions.setText(dirAlgo.getBriefDirections());
 
         currentLocation.setText(dirAlgo.currentName);
 
@@ -104,6 +108,21 @@ public class DirectionsActivity extends AppCompatActivity {
 
             }
         });
+
+        inputButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String input = coords.getText().toString();
+                coords.setText("");
+                input = input.replaceAll(" ", "");
+                int com = input.indexOf(",");
+                if(com != -1) {
+                    latitude = Double.parseDouble(input.substring(0, com));
+                    longitude = Double.parseDouble(input.substring(com + 1));
+                    dirAlgo.updateLocation(latitude, longitude);
+                }
+            }
+        });
+
     }
 
     LocationListener locationListenerGPS=new LocationListener() {
@@ -111,7 +130,6 @@ public class DirectionsActivity extends AppCompatActivity {
         public void onLocationChanged(android.location.Location location) {
             latitude=location.getLatitude();
             longitude=location.getLongitude();
-            dirAlgo.updateLocation(latitude, longitude);
         }
 
         @Override

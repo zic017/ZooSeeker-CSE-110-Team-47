@@ -67,9 +67,11 @@ public class SearchListActivity extends AppCompatActivity {
                     plannedList = search_adapter.getListOfIds();
                 }
 
-                Intent intent = new Intent(SearchListActivity.this, DirectionsActivity.class);
-                intent.putStringArrayListExtra("key", plannedList);
-                startActivity(intent);
+                if(plannedList.size() > 0) {
+                    Intent intent = new Intent(SearchListActivity.this, DirectionsActivity.class);
+                    intent.putStringArrayListExtra("key", plannedList);
+                    startActivity(intent);
+                }
             }
         });
     }
