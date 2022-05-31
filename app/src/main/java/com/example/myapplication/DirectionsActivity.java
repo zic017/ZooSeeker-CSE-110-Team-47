@@ -1,7 +1,9 @@
 package com.example.myapplication;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -30,6 +32,7 @@ public class DirectionsActivity extends AppCompatActivity {
     protected Double latitude, longitude;
     private final PermissionChecker permissionChecker = new PermissionChecker(this);
     public DirectionsAlgorithm dirAlgo;
+    private Button nextButton;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -39,18 +42,18 @@ public class DirectionsActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         ArrayList<String> input = i.getStringArrayListExtra("key");
-        Context context = getApplicationContext();
 
         if (permissionChecker.ensurePermissions());
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, locationListenerGPS);
 
-        dirAlgo = new DirectionsAlgorithm(input, context, 32.73459618, -117.14936);
+        dirAlgo = new DirectionsAlgorithm(input, this, 32.73459618, -117.14936);
 
-        Button nextButton = findViewById(R.id.next_button);
+        nextButton = findViewById(R.id.next_button);
         Button previousButton = findViewById(R.id.back_button);
         Button inputButton = findViewById(R.id.inputButton);
+        Button skipButton = findViewById(R.id.skip_button);
 
         detailed_directions = (TextView) findViewById(R.id.detailed_directions);
         brief_directions = (TextView) findViewById(R.id.brief_directions);
@@ -93,7 +96,9 @@ public class DirectionsActivity extends AppCompatActivity {
                     detailed_directions.setTextSize(24);
                     nextButton.setVisibility(View.INVISIBLE);
                     previousButton.setVisibility(View.INVISIBLE);
-
+                    coords.setVisibility(View.INVISIBLE);
+                    inputButton.setVisibility(View.INVISIBLE);
+                    skipButton.setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -122,6 +127,15 @@ public class DirectionsActivity extends AppCompatActivity {
                 }
             }
         });
+
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //Remove exhibit from visited
+                dirAlgo.replanSkip();
+            }
+        });
+
+
 
     }
 
@@ -169,5 +183,33 @@ public class DirectionsActivity extends AppCompatActivity {
             detailed_directions.setVisibility(View.VISIBLE);
             return true;
         }
+    }
+
+    public void showReplan() {
+        nextButton.performClick();
+    }
+
+    public void promptReplan() {
+        AlertDialog.Builder replanPrompt = new AlertDialog.Builder(this);
+        replanPrompt.setMessage("Off Track. Replan?");
+        replanPrompt.setCancelable(true);
+        replanPrompt.setPositiveButton(
+                "Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dirAlgo.replan();
+                    }
+                });
+        replanPrompt.setNegativeButton(
+                "No",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = replanPrompt.create();
+        alert.show();
     }
 }

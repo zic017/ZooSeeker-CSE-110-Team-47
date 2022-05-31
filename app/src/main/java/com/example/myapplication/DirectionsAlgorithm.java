@@ -41,7 +41,7 @@ public class DirectionsAlgorithm {
         current = "entrance_exit_gate";
     }
 
-    //Get the closest exhibit to current location
+    //Get the closest vertex to current location
     private String getCurrent() {
         String closest = "";
         double lowest = 9999999;
@@ -72,11 +72,17 @@ public class DirectionsAlgorithm {
         else {
             next = closest();
             current = getCurrent();
-            setBriefDirections(current, next);
-            setDetailedDirections(current, next);
-            currentName = vInfo.get(next).name;
-            visitedIds.add(next);
-            plannedIds.remove(next);
+            if(!current.equals(next)) {
+                setBriefDirections(current, next);
+                setDetailedDirections(current, next);
+                currentName = vInfo.get(next).name;
+                visitedIds.add(next);
+                plannedIds.remove(next);
+            }
+            else {
+                briefDirectionsLine = "You are currently at the " + vInfo.get(next).name + " exhibit.";
+            }
+
         }
     }
 
@@ -105,7 +111,7 @@ public class DirectionsAlgorithm {
         }
     }
 
-    //get the closest exhibit to the current location
+    //get the closest planned exhibit to the current location
     public String closest() {
         int minDistance = 999999999;
         int curTotal;
@@ -176,14 +182,17 @@ public class DirectionsAlgorithm {
                 }
                 if(vInfo.get(g.getEdgeTarget(e)).kind.toString().equals("INTERSECTION")) {
                     name = vInfo.get(g.getEdgeTarget(e)).name;
-                    name = "corner of " + name.replace(" / ", "and");
+                    name = "corner of " + name.replace(" / ", " and ");
 
                 }
                 else if(vInfo.get(g.getEdgeTarget(e)).kind.toString().equals("EXHIBIT_GROUP")) {
                     name= vInfo.get(g.getEdgeTarget(e)).name;
                 }
-                else {
+                else if(vInfo.get(g.getEdgeTarget(e)).kind.toString().equals("EXHIBIT")){
                     name = "the " + vInfo.get(g.getEdgeTarget(e)).name + " exhibit";
+                }
+                else {
+                    name = "the " + vInfo.get(g.getEdgeTarget(e)).name;
                 }
 
 
@@ -202,14 +211,17 @@ public class DirectionsAlgorithm {
 
                 if(vInfo.get(g.getEdgeSource(e)).kind.toString().equals("INTERSECTION")) {
                     name = vInfo.get(g.getEdgeSource(e)).name;
-                    name = "corner of " + name.replace(" / ", "and");
+                    name = "corner of " + name.replace(" / ", " and ");
 
                 }
                 else if(vInfo.get(g.getEdgeSource(e)).kind.toString().equals("EXHIBIT_GROUP")) {
                     name= vInfo.get(g.getEdgeSource(e)).name;
                 }
-                else {
+                else if(vInfo.get(g.getEdgeSource(e)).kind.toString().equals("EXHIBIT")){
                     name = "the " + vInfo.get(g.getEdgeSource(e)).name + " exhibit";
+                }
+                else {
+                    name = "the " + vInfo.get(g.getEdgeSource(e)).name;
                 }
 
                 detailedDirectionsLine = detailedDirectionsLine + String.format("  %d. Proceed on %s %.0f feet towards %s %s\n",
@@ -280,8 +292,11 @@ public class DirectionsAlgorithm {
                     else if(vInfo.get(g.getEdgeTarget(path.getEdgeList().get(e))).kind.toString().equals("EXHIBIT_GROUP")) {
                         name= vInfo.get(g.getEdgeTarget(path.getEdgeList().get(e))).name;
                     }
-                    else {
+                    else if(vInfo.get(g.getEdgeTarget(path.getEdgeList().get(e))).kind.toString().equals("EXHIBIT")){
                         name = "the " + vInfo.get(g.getEdgeTarget(path.getEdgeList().get(e))).name + " exhibit";
+                    }
+                    else {
+                        name = "the " + vInfo.get(g.getEdgeTarget(path.getEdgeList().get(e))).name;
                     }
                     briefDirectionsLine = briefDirectionsLine + String.format("  %d. Proceed on %s %.0f feet towards %s %s\n",
                             i,
@@ -303,8 +318,11 @@ public class DirectionsAlgorithm {
                     else if(vInfo.get(g.getEdgeSource(path.getEdgeList().get(e))).kind.toString().equals("EXHIBIT_GROUP")) {
                         name= vInfo.get(g.getEdgeSource(path.getEdgeList().get(e))).name;
                     }
-                    else {
+                    else if(vInfo.get(g.getEdgeSource(path.getEdgeList().get(e))).kind.toString().equals("EXHIBIT")){
                         name = "the " + vInfo.get(g.getEdgeSource(path.getEdgeList().get(e))).name + " exhibit";
+                    }
+                    else {
+                        name = "the " + vInfo.get(g.getEdgeSource(path.getEdgeList().get(e))).name;
                     }
 
                     briefDirectionsLine = briefDirectionsLine + String.format("  %d. Proceed on %s %.0f feet towards %s %s\n",
@@ -331,15 +349,37 @@ public class DirectionsAlgorithm {
         this.latitude = latitude;
         this.longitude = longitude;
 
-        current = getCurrent();
+        if(!current.equals(getCurrent())) {
+            current = getCurrent();
+            if(closerTo(current)) {
+                ((DirectionsActivity)context).promptReplan();
+            }
+        }
     }
 
-    /**
+    public void replan() {
+        plannedIds.add(visitedIds.get(visitedIds.size() - 1));
+        visitedIds.remove(visitedIds.get(visitedIds.size() - 1));
+        ((DirectionsActivity)context).showReplan();
+    }
+
+    public void replanSkip() {
+        visitedIds.remove(visitedIds.get(visitedIds.size() - 1));
+        ((DirectionsActivity)context).showReplan();
+    }
+
+    public boolean closerTo(String current) {
+
+        for(String id: plannedIds) {
+            // If current location is closer to a later planned exhibit
+            if (DijkstraShortestPath.findPathBetween(g, current, id).getWeight() < DijkstraShortestPath.findPathBetween(g, current, visitedIds.get(visitedIds.size() - 1)).getWeight()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
      public void skipExhibit() {
 
      }
-     public void promptReplan() {
-
-     }
-     */
 }
