@@ -12,6 +12,9 @@
         <activity
             android:name=".PlanListExhibiton"
             android:exported="false" />
+
+        android:theme="@style/Theme.MyApplication">
+
         <activity
             android:name=".DirectionsActivity"
             android:exported="false" />

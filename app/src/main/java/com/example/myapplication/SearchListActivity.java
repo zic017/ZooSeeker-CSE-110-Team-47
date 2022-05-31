@@ -1,5 +1,7 @@
 package com.example.myapplication;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -49,7 +51,6 @@ public class SearchListActivity extends AppCompatActivity {
         planListRV.setAdapter(plan_adapter);
         plan_adapter.setPlanListItems(displayList);
 
-
         count = findViewById(R.id.plan_count);
 
         Intent i = getIntent();
@@ -84,6 +85,31 @@ public class SearchListActivity extends AppCompatActivity {
                     plannedList = search_adapter.getListOfIds();
                 }
 
+                if(plannedList.isEmpty()) {
+                    Log.d("Plan Button", "List is empty");
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SearchListActivity.this);
+
+                    builder.setCancelable(true);
+                    builder.setTitle("Empty list");
+                    builder.setMessage("Select some exhibits before planning!");
+
+                    builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
+
+                    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            // Nothing needs to go here it's just necessary to create this for the popup to work correctly
+                        }
+                    });
+
+                    builder.show();
+                    return;
+                }
                 Intent intent = new Intent(SearchListActivity.this, DirectionsActivity.class);
                 intent.putStringArrayListExtra("key", plannedList);
                 startActivity(intent);
