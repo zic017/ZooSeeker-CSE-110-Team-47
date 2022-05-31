@@ -3,7 +3,6 @@ package com.example.myapplication;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -33,12 +32,17 @@ public class SearchListActivity extends AppCompatActivity {
     private ArrayList<String> nameList;
     private ArrayList<String> passedInList;
     private ArrayList<String> passedNameList;
-    private ArrayList<String> displayList = new ArrayList<>();
+    private ArrayList<String> displayList;
     private HashMap<String, HashSet<SearchItem>> tagMap;
     private TextView count;
-    private Set<String> set = new HashSet<>();
+    private Set<String> set;
 
-    public ArrayList<String> getPlannedList () { return displayList; }
+    public ArrayList<String> getDisplayList() {
+        if (displayList == null){
+            displayList = new ArrayList<>();
+        }
+        return displayList;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +54,8 @@ public class SearchListActivity extends AppCompatActivity {
         plan_adapter.setHasStableIds(true);
         planListRV.setLayoutManager(new LinearLayoutManager(this));
         planListRV.setAdapter(plan_adapter);
-        plan_adapter.setPlanListItems(displayList);
-
+        plan_adapter.setPlanListItems(getDisplayList());
+        loadPreference();
 
         count = findViewById(R.id.plan_count);
 
@@ -72,6 +76,7 @@ public class SearchListActivity extends AppCompatActivity {
 
                 displayList.clear();
                 search_adapter.clearList();
+                clearPreference();
                 plan_adapter.notifyDataSetChanged();
                 count.setText("0");
             }
@@ -92,7 +97,6 @@ public class SearchListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        loadPreference();
     }
 
     /**
@@ -235,19 +239,12 @@ public class SearchListActivity extends AppCompatActivity {
     }
 
     public void savePreference(){
-        SharedPreferences sp = getPreferences(MODE_PRIVATE);
+        SharedPreferences sp = getSharedPreferences("exhibit", MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
 
-        /*for(int i = 0; i < planListRV.getAdapter().getItemCount(); i++) {
-            View view=planListRV.getChildAt(i); // This will give you entire row(child) from RecyclerView
-            if(view!=null)
-            {
-                TextView textView= (TextView) view.findViewById(R.id.plan_item_text);
-                String text=textView.getText().toString();
-                set.add(text);
-            }
-
-        }*/
+        if (set == null){
+            set = new HashSet<>();
+        }
         set.addAll(displayList);
 
         for(String s: set){
@@ -259,19 +256,28 @@ public class SearchListActivity extends AppCompatActivity {
     }
 
     public void loadPreference(){
-
-        SharedPreferences sp = getPreferences(MODE_PRIVATE);
+        SharedPreferences sp = getSharedPreferences("exhibit", MODE_PRIVATE);
         Set<String> temp = sp.getStringSet("PlanList", null);
         //int size = sp.getInt("size", 0);
         //count.setText(size);
-        for(String s : temp) {
-            System.out.println(s);
-        }
+
         if(temp != null){
+            displayList.addAll(temp);
+            for(String s : temp) {
+                System.out.println(s);
+            }
             for(String s: temp){
-                updateDisplayList(s);
+//                updateDisplayList(s);
             }
         }
+    }
+
+    public void clearPreference() {
+        SharedPreferences sp = getSharedPreferences("exhibit", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+
+        editor.clear();
+        editor.apply();
     }
 
     @Override
