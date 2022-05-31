@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 
 
 public class SearchListActivity extends AppCompatActivity {
@@ -34,6 +36,7 @@ public class SearchListActivity extends AppCompatActivity {
     private ArrayList<String> displayList = new ArrayList<>();
     private HashMap<String, HashSet<SearchItem>> tagMap;
     private TextView count;
+    private Set<String> set = new HashSet<>();
 
     public ArrayList<String> getPlannedList () { return displayList; }
 
@@ -89,9 +92,7 @@ public class SearchListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
-
+        loadPreference();
     }
 
     /**
@@ -232,6 +233,53 @@ public class SearchListActivity extends AppCompatActivity {
         plan_adapter.notifyDataSetChanged();
         count.setText("" + displayList.size());
     }
+
+    public void savePreference(){
+        SharedPreferences sp = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+
+        /*for(int i = 0; i < planListRV.getAdapter().getItemCount(); i++) {
+            View view=planListRV.getChildAt(i); // This will give you entire row(child) from RecyclerView
+            if(view!=null)
+            {
+                TextView textView= (TextView) view.findViewById(R.id.plan_item_text);
+                String text=textView.getText().toString();
+                set.add(text);
+            }
+
+        }*/
+        set.addAll(displayList);
+
+        for(String s: set){
+            System.out.println(s);
+        }
+        editor.putStringSet("PlanList", set);
+        editor.putInt("size", set.size());
+        editor.apply();
+    }
+
+    public void loadPreference(){
+
+        SharedPreferences sp = getPreferences(MODE_PRIVATE);
+        Set<String> temp = sp.getStringSet("PlanList", null);
+        //int size = sp.getInt("size", 0);
+        //count.setText(size);
+        for(String s : temp) {
+            System.out.println(s);
+        }
+        if(temp != null){
+            for(String s: temp){
+                updateDisplayList(s);
+            }
+        }
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        savePreference();
+    }
+
 
 
 }
