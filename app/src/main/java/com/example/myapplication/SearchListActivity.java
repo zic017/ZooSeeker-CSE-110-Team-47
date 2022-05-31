@@ -196,7 +196,7 @@ public class SearchListActivity extends AppCompatActivity {
         // below line we are creating a new array list
         ItemList = new ArrayList<>();
         // below line is to add data to our array list.
-        ItemList = (ArrayList<SearchItem>) SearchItem.loadJSON(this, "sample_node_info.json");
+        ItemList = (ArrayList<SearchItem>) SearchItem.loadJSON(this, "zoo_node_info.json");
 
         for (SearchItem item : ItemList) {
             if(item.getKind().equals("exhibit")) {

@@ -11,7 +11,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        getWindow().getDecorView().setBackgroundColor(228B22);
 
         Intent intent = new Intent(this, SearchListActivity.class);
         startActivity(intent);
