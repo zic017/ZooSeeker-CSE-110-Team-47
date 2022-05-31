@@ -16,6 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
 
+
         <activity
             android:name=".RoutePlanSummaryActivity"
             android:exported="false"/>

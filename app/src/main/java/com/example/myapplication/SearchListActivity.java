@@ -126,9 +126,6 @@ public class SearchListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
-
     }
 
     /**
