@@ -15,7 +15,6 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -67,7 +66,6 @@ public class SearchListActivity extends AppCompatActivity {
         plan_adapter.setHasStableIds(true);
         planListRV.setLayoutManager(new LinearLayoutManager(this));
         planListRV.setAdapter(plan_adapter);
-        plan_adapter.setPlanListItems(displayList);
         plan_adapter.setPlanListItems(getDisplayList());
         loadPreference();
 

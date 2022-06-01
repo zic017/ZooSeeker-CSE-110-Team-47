@@ -138,8 +138,11 @@ public class DirectionsAlgorithm {
         Map<String, ZooData.VertexInfo> vInfo = ZooData.loadVertexInfoJSON(context,"zoo_node_info.json");
         Map<String, ZooData.EdgeInfo> eInfo = ZooData.loadEdgeInfoJSON(context, "trail_info.json");
 
-        if(vInfo.get(current).equals(vInfo.get(next).group_id != null)) {
-            detailedDirectionsLine = "1. Find the " + vInfo.get(next).name + "inside the " + vInfo.get(current).name;
+        if(!(vInfo.get(next).group_id == null) && current.equals(vInfo.get(next).group_id)) {
+            detailedDirectionsLine = "1. Find the " + vInfo.get(next).name + " inside the " + vInfo.get(current).name;
+        }
+        else if(current.equals(next)) {
+            detailedDirectionsLine = "1. You are currently at the " + vInfo.get(next).name + " exhibit";
         }
         else {
             GraphPath<String, IdentifiedWeightedEdge> path;
@@ -235,8 +238,11 @@ public class DirectionsAlgorithm {
         Map<String, ZooData.VertexInfo> vInfo = ZooData.loadVertexInfoJSON(context,"zoo_node_info.json");
         Map<String, ZooData.EdgeInfo> eInfo = ZooData.loadEdgeInfoJSON(context, "trail_info.json");
 
-        if(vInfo.get(current).equals(vInfo.get(next).group_id != null)) {
-            detailedDirectionsLine = "1. Find the " + vInfo.get(next).name + "inside the " + vInfo.get(current).name;
+        if(!(vInfo.get(next).group_id == null) && current.equals(vInfo.get(next).group_id)) {
+            briefDirectionsLine = "1. Find the " + vInfo.get(next).name + " inside the " + vInfo.get(current).name;
+        }
+        else if(current.equals(next)) {
+            briefDirectionsLine = "1. You are currently at the " + vInfo.get(next).name + " exhibit";
         }
         else {
             GraphPath<String, IdentifiedWeightedEdge> path;
