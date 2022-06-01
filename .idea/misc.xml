@@ -11,19 +11,35 @@
         <entry key="..\:/Users/jeffr/AndroidStudioProjects/zooseeker-cse-110-team-47/app/src/main/res/layout/activity_directions.xml" value="0.22" />
         <entry key="..\:/Users/jeffr/AndroidStudioProjects/zooseeker-cse-110-team-47/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Users/jeffr/AndroidStudioProjects/zooseeker-cse-110-team-47/app/src/main/res/layout/activity_plan.xml" value="0.26811594202898553" />
-        <entry key="..\:/Users/jeffr/AndroidStudioProjects/zooseeker-cse-110-team-47/app/src/main/res/layout/activity_plan_list_exhibition.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/jeffr/AndroidStudioProjects/zooseeker-cse-110-team-47/app/src/main/res/layout/activity_plan_list_exhibiton.xml" value="0.18" />
+<<<<<<< HEAD
+        <entry key="..\:/Users/jeffr/AndroidStudioProjects/zooseeker-cse-110-team-47/app/src/main/res/layout/activity_search_list.xml" value="0.22" />
+        <entry key="..\:/Users/jeffr/AndroidStudioProjects/zooseeker-cse-110-team-47/app/src/main/res/layout/plan_list_item.xml" value="0.33" />
+        <entry key="..\:/Users/jeffr/AndroidStudioProjects/zooseeker-cse-110-team-47/app/src/main/res/layout/search_list_item.xml" value="0.22" />
+        <entry key="..\:/ZooSeeker/app/src/main/res/layout/activity_directions.xml" value="0.2" />
+=======
         <entry key="..\:/Users/jeffr/AndroidStudioProjects/zooseeker-cse-110-team-47/app/src/main/res/layout/activity_search_list.xml" value="0.33" />
         <entry key="..\:/Users/jeffr/AndroidStudioProjects/zooseeker-cse-110-team-47/app/src/main/res/layout/plan_list_item.xml" value="0.25" />
         <entry key="..\:/Users/jeffr/AndroidStudioProjects/zooseeker-cse-110-team-47/app/src/main/res/layout/search_list_item.xml" value="0.22" />
         <entry key="..\:/Users/jeffr/AndroidStudioProjects/zooseeker-cse-110-team-47/app/src/main/res/menu/directions_menu.xml" value="0.1" />
+>>>>>>> 307908982e5c4527b62d5790626b09f40245d71a
         <entry key="..\:/ZooSeeker/app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="..\:/ZooSeeker/app/src/main/res/layout/activity_search_list.xml" value="0.1" />
+        <entry key="..\:/ZooSeeker/app/src/main/res/layout/activity_plan_list.xml" value="0.21145833333333333" />
+        <entry key="..\:/ZooSeeker/app/src/main/res/layout/activity_route_plan_summary.xml" value="0.1140625" />
+        <entry key="..\:/ZooSeeker/app/src/main/res/layout/activity_search_list.xml" value="0.2" />
+        <entry key="..\:/ZooSeeker/app/src/main/res/layout/plan_list_item.xml" value="0.25416666666666665" />
         <entry key="..\:/ZooSeeker/app/src/main/res/layout/search_list_item.xml" value="0.22826086956521738" />
+<<<<<<< HEAD
+        <entry key="..\:/ZooSeeker/app/src/main/res/layout/summary_list_item.xml" value="0.1140625" />
+        <entry key="..\:/ZooSeeker/app/src/main/res/menu/directions_menu.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_directions.xml" value="0.5911458333333334" />
+        <entry key="app/src/main/res/layout/activity_search_list.xml" value="0.5911458333333334" />
+=======
         <entry key="app/src/main/res/layout/activity_directions.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layout/activity_route_plan_summary.xml" value="0.34375" />
         <entry key="app/src/main/res/layout/activity_search_list.xml" value="0.319534447079613" />
+>>>>>>> 307908982e5c4527b62d5790626b09f40245d71a
         <entry key="app/src/main/res/layout/search_list_item.xml" value="0.34322916666666664" />
       </map>
     </option>

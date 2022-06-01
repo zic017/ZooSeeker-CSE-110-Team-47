@@ -42,7 +42,7 @@ public class DirectionsTest {
         ActivityScenario.launch(intent).onActivity(activity -> {
 
 
-            TextView directions = activity.findViewById(R.id.detailed_directions);
+            TextView directions = activity.findViewById(R.id.detailed_direction);
             TextView currentLocation = activity.findViewById(R.id.currentLocation);
             Button next_exhibit = activity.findViewById(R.id.next_button);
             String start_directions = directions.getText().toString();
