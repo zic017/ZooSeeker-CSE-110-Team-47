@@ -21,14 +21,13 @@
         android:id="@+id/plan_btn"
         android:layout_width="164dp"
         android:layout_height="48dp"
+        android:layout_marginTop="624dp"
         android:backgroundTint="#71AA31"
         android:text="Plan"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.15"
+        app:layout_constraintHorizontal_bias="0.125"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/plan_list_view"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/logo"
@@ -100,13 +99,13 @@
         android:id="@+id/clear"
         android:layout_width="164dp"
         android:layout_height="48dp"
+        android:layout_marginTop="624dp"
         android:backgroundTint="#71AA31"
         android:text="Clear List"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/plan_btn"
-        app:layout_constraintTop_toBottomOf="@+id/plan_list_view"
-        app:layout_constraintVertical_bias="0.208" />
+        app:layout_constraintHorizontal_bias="0.886"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView2"
