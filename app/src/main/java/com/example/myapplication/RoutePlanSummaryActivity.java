@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class RoutePlanSummaryActivity extends AppCompatActivity {
 
@@ -98,7 +99,8 @@ public class RoutePlanSummaryActivity extends AppCompatActivity {
         /**
          *  Display count of exhibits
          */
-        exhibitListCount.setText(String.valueOf(plannedListIds.size()));
+        List<String> length = plannedListNames.stream().distinct().collect(Collectors.toList());
+        exhibitListCount.setText(String.valueOf(length.size()));
 
 
         /**
