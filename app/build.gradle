@@ -44,7 +44,7 @@ android {
 }
 
 dependencies {
-    classpath 'com.android.tools.build:gradle:7.2.1'
+    classpath 'com.android.tools.build:gradle:2.3.3'
     implementation 'androidx.databinding:adapters:3.2.0-alpha11'
     implementation 'androidx.navigation:navigation-fragment:2.3.5'
     implementation 'androidx.navigation:navigation-ui:2.3.5'
