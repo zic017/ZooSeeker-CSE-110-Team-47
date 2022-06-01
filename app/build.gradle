@@ -7,8 +7,8 @@ android {
     compileSdk 32
 
     testOptions{
-        unitTests{
-            includeAndroidResources = true;
+        unitTests.all {
+            useJUnitPlatform() // <--- this is the important part
         }
     }
 
