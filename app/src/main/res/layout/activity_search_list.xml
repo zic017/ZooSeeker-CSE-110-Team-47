@@ -31,6 +31,8 @@
         app:layout_constraintTop_toBottomOf="@+id/plan_list_view"
         app:layout_constraintVertical_bias="0.0" />
 
+
+
     <TextView
         android:id="@+id/logo"
         android:layout_width="wrap_content"
@@ -97,12 +99,12 @@
         app:layout_constraintTop_toBottomOf="@+id/search_list"
         app:layout_constraintVertical_bias="0.0" />
 
+
     <Button
         android:id="@+id/clear"
         android:layout_width="164dp"
         android:layout_height="48dp"
         android:layout_marginTop="20dp"
-
         android:backgroundTint="#71AA31"
         android:text="Clear List"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -111,7 +113,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/plan_list_view"
         app:layout_constraintVertical_bias="0.0" />
-
 
     <ImageView
         android:id="@+id/imageView2"
