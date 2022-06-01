@@ -131,6 +131,13 @@ public class SearchListActivity extends AppCompatActivity {
                 }
                 cleared = false;
                 // Code to display popup alert if the plan list is empty
+                for (String ex : displayList) {
+                    for (Map.Entry<String, ZooData.VertexInfo> entry : vInfo.entrySet()) {
+                        if (entry.getValue().name.equals(ex)) {
+                            plannedList.add(entry.getKey());
+                        }
+                    }
+                }
                 if(plannedList.isEmpty()) {
                     Log.d("Plan Button", "List is empty");
                     AlertDialog.Builder builder = new AlertDialog.Builder(SearchListActivity.this);
@@ -152,14 +159,6 @@ public class SearchListActivity extends AppCompatActivity {
                             // Nothing needs to go here it's just necessary to create this for the popup to work correctly
                         }
                     });
-                for (String ex : displayList) {
-                    for (Map.Entry<String, ZooData.VertexInfo> entry : vInfo.entrySet()) {
-                        if (entry.getValue().name.equals(ex)) {
-                            plannedList.add(entry.getKey());
-                        }
-                    }
-                }
-
                     builder.show();
                     return;
                 }
