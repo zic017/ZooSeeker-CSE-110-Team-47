@@ -423,6 +423,7 @@ public class DirectionsAlgorithm {
                 path = DijkstraShortestPath.findPathBetween(g, current, exhibit);
             }
 
+            curTotal = 0;
             for (IdentifiedWeightedEdge e : path.getEdgeList()) {
                 curTotal += g.getEdgeWeight(e);
             }

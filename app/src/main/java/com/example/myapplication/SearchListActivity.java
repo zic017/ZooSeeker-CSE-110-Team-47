@@ -36,7 +36,7 @@ public class SearchListActivity extends AppCompatActivity {
     private PlanListAdapter plan_adapter;
     public ArrayList<SearchItem> ItemList;
     private ArrayList<String> AllTags;
-    private ArrayList<String> plannedList;
+    private ArrayList<String> plannedList = plannedList = new ArrayList<String>();
     private ArrayList<String> nameList;
     private ArrayList<String> passedInList;
     private ArrayList<String> passedNameList;
@@ -45,6 +45,7 @@ public class SearchListActivity extends AppCompatActivity {
     private TextView count;
     ActivityResultLauncher<Intent> activityLauncher;
     private Boolean cleared = false;
+    private Boolean saved = false;
     private Set<String> displaySet;
     private Button clearButton;
 
@@ -71,6 +72,14 @@ public class SearchListActivity extends AppCompatActivity {
         loadPreference();
 
         count = findViewById(R.id.plan_count);
+
+        /*
+            If the user hits Clear in RoutePlanSummaryActivity, the plannedList is cleared. The it is returned to this activity, where we
+            clear this activity's plannedList and displayList.
+            The 'cleared' boolean is necessary so that the plannedList isn't immediately repopulated with the same exhibits.
+
+            Otherwise, if the user didn't hit Clear and just hit Go Back then nothing changes with the plannedList in this activity either.
+         */
         activityLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
@@ -78,7 +87,12 @@ public class SearchListActivity extends AppCompatActivity {
                     Intent intent = result.getData();
 
                     if (intent != null) {
+                        // Grabs plannedList that was returned from RoutePlanSummaryActivity
+                        // (could be empty or could be unchanged depending on if they hit Clear)
                         plannedList = intent.getStringArrayListExtra("key");
+
+                        // If the plannedList is empty then they hit Clear and we should update
+                        // this activity's plannedList and displayList
                         if (plannedList.isEmpty()) {
                             displayList.clear();
                             search_adapter.clearList();
@@ -100,6 +114,7 @@ public class SearchListActivity extends AppCompatActivity {
         // Updating plan list and plan list count
         updatePassedInList(i.getStringArrayListExtra("key"));
         updatePassedNameList(i.getStringArrayListExtra("key1"));
+
 
         // Clears plan list
         clearButton = findViewById((R.id.clear));
@@ -130,15 +145,22 @@ public class SearchListActivity extends AppCompatActivity {
                         plannedList = search_adapter.getListOfIds();
                     }
                 }
+                // If cleared is true we skip the above code once indicating that the user hit Clear
+                // in RoutePlanSummary and we do not want to repopulate the plannedList again immediately
                 cleared = false;
-                // Code to display popup alert if the plan list is empty
-                for (String ex : displayList) {
-                    for (Map.Entry<String, ZooData.VertexInfo> entry : vInfo.entrySet()) {
-                        if (entry.getValue().name.equals(ex)) {
-                            plannedList.add(entry.getKey());
+
+                if(saved == true) {
+                    for (String ex : displayList) {
+                        for (Map.Entry<String, ZooData.VertexInfo> entry : vInfo.entrySet()) {
+                            if (entry.getValue().name.equals(ex)) {
+                                plannedList.add(entry.getKey());
+                            }
                         }
                     }
+                    saved = false;
                 }
+
+                // Code to display popup alert if the plan list is empty
                 if(plannedList.isEmpty()) {
                     Log.d("Plan Button", "List is empty");
                     AlertDialog.Builder builder = new AlertDialog.Builder(SearchListActivity.this);
@@ -168,7 +190,6 @@ public class SearchListActivity extends AppCompatActivity {
                 intent.putStringArrayListExtra("key", plannedList);
                 activityLauncher.launch(intent);
 
-//                startActivity(intent);
             }
         });
 
@@ -336,18 +357,11 @@ public class SearchListActivity extends AppCompatActivity {
         SharedPreferences sp = getSharedPreferences("exhibit", MODE_PRIVATE);
         Set<String> temp = sp.getStringSet("PlanList", null);
         int size = sp.getInt("size", 0);
-
+        saved = true;
 
         if(temp != null){
             displayList.addAll(temp);
-            for(String s : temp) {
-                System.out.println(s);
-            }
-            for(String s: temp){
-//                updateDisplayList(s);
-            }
         }
-
     }
 
     public void clearPreference() {

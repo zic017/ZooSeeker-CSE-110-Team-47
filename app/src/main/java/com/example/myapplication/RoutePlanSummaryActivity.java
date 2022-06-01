@@ -58,10 +58,12 @@ public class RoutePlanSummaryActivity extends AppCompatActivity {
         ArrayList<String> plannedListIds = i.getStringArrayListExtra("key");
         Context context = getApplicationContext();
 
+        // Grab the names of each exhibit. We're only passed in the list of ids
         for (String id : plannedListIds){
             plannedListNames.add(vInfo.get(id).name);
         }
 
+        // Calculate distances from exhibits to entrance
         ArrayList<Integer> distFromEntrance;
         dirAlgo = new DirectionsAlgorithm(plannedListIds, context, 32.73459618, -117.14936);
         distFromEntrance = dirAlgo.getDistances(plannedListIds);
@@ -99,19 +101,15 @@ public class RoutePlanSummaryActivity extends AppCompatActivity {
         /**
          *  Display count of exhibits
          */
-        List<String> length = plannedListNames.stream().distinct().collect(Collectors.toList());
-        exhibitListCount.setText(String.valueOf(length.size()));
+        exhibitListCount.setText(String.valueOf(plannedListIds.size()));
 
 
         /**
          *   Clearing the exhibit list
-         *   Todo: Clear the ListView and also the plannedExhibits list that was passed in so we can start over
          */
         clearList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(RoutePlanSummaryActivity.this, SearchListActivity.class);
-//                startActivity(intent);
                 displayList.clear();
                 plannedListIds.clear();
                 adapter.notifyDataSetChanged();
@@ -140,6 +138,7 @@ public class RoutePlanSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                // Code for popup message if plannedListIds is empty
                 if(plannedListIds.isEmpty()) {
                     Log.d("Plan Button", "List is empty");
                     AlertDialog.Builder builder = new AlertDialog.Builder(RoutePlanSummaryActivity.this);
