@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,15 +11,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.function.Consumer;
+import java.util.Objects;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
     private ArrayList<SearchItem> ItemList;
     private Context context;
-    private Consumer<SearchItem> onAddBtnClicked;
-    private SearchItem searchItem;
     private ArrayList<String> listOfIDs = new ArrayList<>();
-    public ArrayList<String> listofNames = new ArrayList<>();
+    public ArrayList<String> listOfNames = new ArrayList<>();
 
     public SearchAdapter(ArrayList<SearchItem> ItemList, Context context) {
         this.ItemList = ItemList;
@@ -28,6 +27,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     public void filterList(ArrayList<SearchItem> filterllist) {
         ItemList = filterllist;
         notifyDataSetChanged();
+    }
+    public void clearList(){
+        listOfNames.clear();
+        listOfIDs.clear();
     }
 
     @NonNull
@@ -43,9 +46,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         holder.itemName.setText(item.getName());
     }
 
-    public void setOnAddBtnClickHandler(Consumer<SearchItem> onAddBtnClicked) {
-        this.onAddBtnClicked = onAddBtnClicked;
-    }
 
     @Override
     public int getItemCount() {
@@ -59,15 +59,13 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView itemName;
         private TextView add_btn;
-        private ArrayList<String> tempList = new ArrayList<>();
 
-        private String s;
+        private String currentExhibit;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             itemName = itemView.findViewById(R.id.search_item_text);
             add_btn = itemView.findViewById(R.id.add_btn);
-
 
             /*
                 Function: Once user hits '+' this code will execute and add the exhibit to our planned list.
@@ -77,27 +75,34 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 @Override
                 public void onClick(View v) {
                     // s is the name of the exhibit the user is currently trying to add
-                    s = itemName.getText().toString();
+                    currentExhibit = itemName.getText().toString();
 
-                    // Checks to see if the exhibit is already on the list, if so don't add it again
-                    if (tempList.contains(s))
+                    // Checks to see if the exhibit is already in the list, if so don't add it again
+                    if (listOfNames.contains(currentExhibit))
                         return;
-                    // Retrieves the id of the exhibit given that we only have the name at the moment
+
+                    // Retrieves the id of the exhibit because we only have the name
                     for (SearchItem item : ItemList) {
-                        if (item.getName() == s)
+                        if (Objects.equals(item.getName(), currentExhibit)) {
                             listOfIDs.add(item.getId());
-                        tempList.add(s);
-                        listofNames.add(s);
+                            listOfNames.add(currentExhibit);
+                            Log.d("Added correctly", currentExhibit);
+                        }
                     }
+
+                    // Update the exhibit list
                     if(context instanceof SearchListActivity) {
-                        ((SearchListActivity)context).updateDisplayList(s);
+                        ((SearchListActivity)context).updateDisplayList(currentExhibit);
+                        ((SearchListActivity)context).savePreference();
                     }
                 }
             });
         }
     }
+
     public ArrayList<String> getListOfIds() {
         return listOfIDs;
     }
-    public ArrayList<String> getListofNames(){ return listofNames;}
+
+    public ArrayList<String> getListOfNames(){ return listOfNames;}
 }

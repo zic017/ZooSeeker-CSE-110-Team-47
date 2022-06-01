@@ -31,9 +31,9 @@ public class DirectionsTest {
         // https://developer.android.com/guide/components/activities/activity-lifecycle
         Intent intent = new Intent(ApplicationProvider.getApplicationContext(), DirectionsActivity.class);
         ArrayList<String> plannedList = new ArrayList<>();
-        plannedList.add("lions");
-        plannedList.add("gators");
-        plannedList.add("gorillas");
+        plannedList.add("koi");
+        plannedList.add("flamingo");
+        plannedList.add("gorilla");
         intent.putStringArrayListExtra("key", plannedList);
 
         // Make sure the activity is in the created state (so onCreated is called).
@@ -42,7 +42,7 @@ public class DirectionsTest {
         ActivityScenario.launch(intent).onActivity(activity -> {
 
 
-            TextView directions = activity.findViewById(R.id.directions);
+            TextView directions = activity.findViewById(R.id.detailed_directions);
             TextView currentLocation = activity.findViewById(R.id.currentLocation);
             Button next_exhibit = activity.findViewById(R.id.next_button);
             String start_directions = directions.getText().toString();
@@ -62,9 +62,9 @@ public class DirectionsTest {
     public void test_exit() {
         Intent intent = new Intent(ApplicationProvider.getApplicationContext(), DirectionsActivity.class);
         ArrayList<String> plannedList = new ArrayList<>();
-        plannedList.add("lions");
-        plannedList.add("gators");
-        plannedList.add("gorillas");
+        plannedList.add("koi");
+        plannedList.add("flamingo");
+        plannedList.add("gorilla");
         intent.putStringArrayListExtra("key", plannedList);
 
         // Make sure the activity is in the created state (so onCreated is called).
@@ -72,19 +72,43 @@ public class DirectionsTest {
         // When it's ready, we're ready to test inside this lambda (anonymous inline function).
         ActivityScenario.launch(intent).onActivity(activity -> {
 
-            TextView directions = activity.findViewById(R.id.directions);
+            TextView directions = activity.findViewById(R.id.detailed_directions);
             TextView currentLocation = activity.findViewById(R.id.currentLocation);
             Button next_exhibit = activity.findViewById(R.id.next_button);
 
-            while(!currentLocation.getText().toString().equals("Entrance and Exit Gate")) {
+            while(next_exhibit.getVisibility() == View.VISIBLE) {
                 next_exhibit.performClick();
             }
-            next_exhibit.performClick();
+            String output = directions.getText().toString();
 
-            assert(directions.getText().toString().equals("Route Completed. Thank you for visiting!"));
+            assert(output.equals("Route Completed. Thank you for visiting!"));
             assert(currentLocation.getVisibility() == View.INVISIBLE);
             assert(next_exhibit.getVisibility() == View.INVISIBLE);
 
         });
+    }
+
+    @Test //Test that brief and detailed directions are different
+    public void test_detailed_vs_brief() {
+        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), DirectionsActivity.class);
+        ArrayList<String> plannedList = new ArrayList<>();
+        plannedList.add("gorilla");
+        intent.putStringArrayListExtra("key", plannedList);
+
+        // Make sure the activity is in the created state (so onCreated is called).
+
+        // When it's ready, we're ready to test inside this lambda (anonymous inline function).
+        ActivityScenario.launch(intent).onActivity(activity -> {
+
+            TextView detailed_directions = activity.findViewById(R.id.detailed_directions);
+            TextView currentLocation = activity.findViewById(R.id.currentLocation);
+            Button next_exhibit = activity.findViewById(R.id.next_button);
+            TextView brief_directions = activity.findViewById(R.id.brief_directions);
+
+
+            assert(currentLocation.getText().toString().equals("Gorillas"));
+            assert(!detailed_directions.getText().toString().equals(brief_directions.getText().toString()));
+        });
+
     }
 }

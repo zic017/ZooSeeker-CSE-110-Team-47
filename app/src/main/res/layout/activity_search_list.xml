@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#C4EAC4">
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -18,16 +19,28 @@
 
     <Button
         android:id="@+id/plan_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="78dp"
+        android:layout_width="164dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="608dp"
         android:backgroundTint="#71AA31"
-        android:text="Get Directions"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="Plan"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.125"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.897" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/clear"
+        android:layout_width="164dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="608dp"
+        android:backgroundTint="#71AA31"
+        android:text="Clear List"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.125"
+        app:layout_constraintStart_toEndOf="@+id/plan_btn"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/logo"
@@ -36,6 +49,7 @@
         android:text="ZooSeeker"
         android:textColor="#4CAF50"
         android:textSize="20sp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.098"
@@ -60,10 +74,12 @@
         android:layout_width="338dp"
         android:layout_height="187dp"
         android:layout_marginTop="37dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_list" />
+        app:layout_constraintTop_toBottomOf="@+id/search_list"
+        app:layout_constraintVertical_bias="0.023" />
 
     <TextView
         android:id="@+id/plan_text"
@@ -91,6 +107,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_list"
         app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="295dp"
+        android:layout_height="165dp"
+        app:layout_constraintBottom_toTopOf="@+id/search_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/sdzoologo" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
