@@ -76,7 +76,7 @@ public class DirectionsTest {
             TextView currentLocation = activity.findViewById(R.id.currentLocation);
             Button next_exhibit = activity.findViewById(R.id.next_button);
 
-            while(!currentLocation.getText().toString().equals("Entrance and Exit Gate")) {
+             while(!currentLocation.getText().toString().equals("Entrance and Exit Gate")) {
                 next_exhibit.performClick();
             }
             next_exhibit.performClick();
