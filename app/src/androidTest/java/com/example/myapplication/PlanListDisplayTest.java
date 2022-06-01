@@ -83,13 +83,13 @@ public class PlanListDisplayTest {
 
         ViewInteraction textView = onView(
                 allOf(withId(R.id.plan_item_text), withText("Gorillas"),
-                        withParent(withParent(withId(R.id.plan_list))),
+                        withParent(withParent(withId(R.id.plan_list_view))),
                         isDisplayed()));
         textView.check(matches(isDisplayed()));
 
         ViewInteraction textView2 = onView(
                 allOf(withId(R.id.plan_item_text), withText("Gorillas"),
-                        withParent(withParent(withId(R.id.plan_list))),
+                        withParent(withParent(withId(R.id.plan_list_view))),
                         isDisplayed()));
         textView2.check(matches(withText("Gorillas")));
     }

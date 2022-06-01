@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -35,7 +36,7 @@ public class SearchListActivity extends AppCompatActivity {
     private ArrayList<String> displayList;
     private HashMap<String, HashSet<SearchItem>> tagMap;
     private TextView count;
-    private Set<String> set;
+    private Set<String> displaySet;
 
     public ArrayList<String> getDisplayList() {
         if (displayList == null){
@@ -82,6 +83,7 @@ public class SearchListActivity extends AppCompatActivity {
             }
         });
 
+        Map<String, ZooData.VertexInfo> vInfo = ZooData.loadVertexInfoJSON(this, "zoo_node_info.json");
         Button planButton = findViewById(R.id.plan_btn);
         planButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -91,12 +93,21 @@ public class SearchListActivity extends AppCompatActivity {
                 }else {
                     plannedList = search_adapter.getListOfIds();
                 }
+                for (String ex : displayList) {
+                    for (Map.Entry<String, ZooData.VertexInfo> entry : vInfo.entrySet()) {
+                        if (entry.getValue().name.equals(ex)) {
+                            plannedList.add(entry.getKey());
+                        }
+                    }
+                }
 
                 Intent intent = new Intent(SearchListActivity.this, DirectionsActivity.class);
                 intent.putStringArrayListExtra("key", plannedList);
                 startActivity(intent);
             }
         });
+
+        count.setText("" + displayList.size());
     }
 
     /**
@@ -242,24 +253,25 @@ public class SearchListActivity extends AppCompatActivity {
         SharedPreferences sp = getSharedPreferences("exhibit", MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
 
-        if (set == null){
-            set = new HashSet<>();
+        if (displaySet == null){
+            displaySet = new HashSet<>();
         }
-        set.addAll(displayList);
+        displaySet.addAll(displayList);
 
-        for(String s: set){
+
+        for(String s: displaySet){
             System.out.println(s);
         }
-        editor.putStringSet("PlanList", set);
-        editor.putInt("size", set.size());
+        editor.putStringSet("PlanList", displaySet);
+        editor.putInt("size", displaySet.size());
         editor.apply();
     }
 
     public void loadPreference(){
         SharedPreferences sp = getSharedPreferences("exhibit", MODE_PRIVATE);
         Set<String> temp = sp.getStringSet("PlanList", null);
-        //int size = sp.getInt("size", 0);
-        //count.setText(size);
+        int size = sp.getInt("size", 0);
+
 
         if(temp != null){
             displayList.addAll(temp);
@@ -270,6 +282,7 @@ public class SearchListActivity extends AppCompatActivity {
 //                updateDisplayList(s);
             }
         }
+
     }
 
     public void clearPreference() {
