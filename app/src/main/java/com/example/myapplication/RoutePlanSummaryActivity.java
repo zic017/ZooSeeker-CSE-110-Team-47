@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class RoutePlanSummaryActivity extends AppCompatActivity {
 
@@ -57,10 +58,12 @@ public class RoutePlanSummaryActivity extends AppCompatActivity {
         ArrayList<String> plannedListIds = i.getStringArrayListExtra("key");
         Context context = getApplicationContext();
 
+        // Grab the names of each exhibit. We're only passed in the list of ids
         for (String id : plannedListIds){
             plannedListNames.add(vInfo.get(id).name);
         }
 
+        // Calculate distances from exhibits to entrance
         ArrayList<Integer> distFromEntrance;
         dirAlgo = new DirectionsAlgorithm(plannedListIds, context, 32.73459618, -117.14936);
         distFromEntrance = dirAlgo.getDistances(plannedListIds);
@@ -107,8 +110,6 @@ public class RoutePlanSummaryActivity extends AppCompatActivity {
         clearList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(RoutePlanSummaryActivity.this, SearchListActivity.class);
-//                startActivity(intent);
                 displayList.clear();
                 plannedListIds.clear();
                 adapter.notifyDataSetChanged();

@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
     private ArrayList<SearchItem> ItemList;
@@ -82,7 +83,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
                     // Retrieves the id of the exhibit because we only have the name
                     for (SearchItem item : ItemList) {
-                        if (item.getName() == currentExhibit) {
+                        if (Objects.equals(item.getName(), currentExhibit)) {
                             listOfIDs.add(item.getId());
                             listOfNames.add(currentExhibit);
                             Log.d("Added correctly", currentExhibit);
@@ -92,6 +93,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                     // Update the exhibit list
                     if(context instanceof SearchListActivity) {
                         ((SearchListActivity)context).updateDisplayList(currentExhibit);
+                        ((SearchListActivity)context).savePreference();
                     }
                 }
             });

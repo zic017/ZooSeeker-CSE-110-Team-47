@@ -23,6 +23,7 @@ public class CountTest {
         }
     }
 
+    @Test
     public void testCountAdd() {
         try (ActivityScenario<SearchListActivity> scenario = ActivityScenario.launch(SearchListActivity.class)) {
             scenario.onActivity(activity -> {

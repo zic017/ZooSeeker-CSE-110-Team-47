@@ -80,13 +80,6 @@ public class DirectionsAlgorithm {
                 visitedIds.add(next);
                 plannedIds.remove(next);
             }
-            else {
-                briefDirectionsLine = "You are currently at the " + vInfo.get(next).name + " exhibit.";
-                detailedDirectionsLine = "You are currently at the " + vInfo.get(next).name + " exhibit.";
-                visitedIds.add(next);
-                plannedIds.remove(next);
-            }
-
         }
     }
 
@@ -145,87 +138,95 @@ public class DirectionsAlgorithm {
         Map<String, ZooData.VertexInfo> vInfo = ZooData.loadVertexInfoJSON(context,"zoo_node_info.json");
         Map<String, ZooData.EdgeInfo> eInfo = ZooData.loadEdgeInfoJSON(context, "trail_info.json");
 
-        GraphPath<String, IdentifiedWeightedEdge> path;
-
-        if(vInfo.get(current).group_id != null && vInfo.get(next).group_id != null) {
-            path = DijkstraShortestPath.findPathBetween(g, vInfo.get(current).group_id, vInfo.get(next).group_id);
+        if(!(vInfo.get(next).group_id == null) && current.equals(vInfo.get(next).group_id)) {
+            detailedDirectionsLine = "1. Find the " + vInfo.get(next).name + " inside the " + vInfo.get(current).name;
         }
-        else if(vInfo.get(next).group_id != null) {
-            path = DijkstraShortestPath.findPathBetween(g, current, vInfo.get(next).group_id);
-        }
-        else if(vInfo.get(current).group_id != null) {
-            path = DijkstraShortestPath.findPathBetween(g, vInfo.get(current).group_id, next);
+        else if(current.equals(next)) {
+            detailedDirectionsLine = "1. You are currently at the " + vInfo.get(next).name + " exhibit";
         }
         else {
-            path = DijkstraShortestPath.findPathBetween(g, current, next);
-        }
+            GraphPath<String, IdentifiedWeightedEdge> path;
 
-        int i = 1;
-        tempcur = current;
-        for (IdentifiedWeightedEdge e : path.getEdgeList()) {
-            String name;
-            String inGroup = "";
-
-            loc1 = vInfo.get(g.getEdgeSource(e)).id;
-            loc2 = vInfo.get(g.getEdgeTarget(e)).id;
-
-            if (loc1.equals(tempcur) || loc2.equals(next)) {
-                if(vInfo.get(next).group_id != null && loc2.equals(vInfo.get(next).group_id)) {
-                    inGroup = "and find the " + vInfo.get(next).name + "exhibit inside";
-                }
-                if(vInfo.get(g.getEdgeTarget(e)).kind.toString().equals("INTERSECTION")) {
-                    name = vInfo.get(g.getEdgeTarget(e)).name;
-                    name = "corner of " + name.replace(" / ", " and ");
-
-                }
-                else if(vInfo.get(g.getEdgeTarget(e)).kind.toString().equals("EXHIBIT_GROUP")) {
-                    name= vInfo.get(g.getEdgeTarget(e)).name;
-                }
-                else if(vInfo.get(g.getEdgeTarget(e)).kind.toString().equals("EXHIBIT")){
-                    name = "the " + vInfo.get(g.getEdgeTarget(e)).name + " exhibit";
-                }
-                else {
-                    name = "the " + vInfo.get(g.getEdgeTarget(e)).name;
-                }
-
-
-                detailedDirectionsLine = detailedDirectionsLine + String.format("  %d. Proceed on %s %.0f feet towards %s %s\n",
-                        i,
-                        eInfo.get(e.getId()).street,
-                        g.getEdgeWeight(e),
-                        name,
-                        inGroup) + "\n";
-                tempcur = loc2;
+            if(vInfo.get(current).group_id != null && vInfo.get(next).group_id != null) {
+                path = DijkstraShortestPath.findPathBetween(g, vInfo.get(current).group_id, vInfo.get(next).group_id);
+            }
+            else if(vInfo.get(next).group_id != null) {
+                path = DijkstraShortestPath.findPathBetween(g, current, vInfo.get(next).group_id);
+            }
+            else if(vInfo.get(current).group_id != null) {
+                path = DijkstraShortestPath.findPathBetween(g, vInfo.get(current).group_id, next);
             }
             else {
-                if(vInfo.get(next).group_id != null && loc1.equals(vInfo.get(next).group_id)) {
-                    inGroup = "and find the " + vInfo.get(next).name + "exhibit inside";
-                }
+                path = DijkstraShortestPath.findPathBetween(g, current, next);
+            }
 
-                if(vInfo.get(g.getEdgeSource(e)).kind.toString().equals("INTERSECTION")) {
-                    name = vInfo.get(g.getEdgeSource(e)).name;
-                    name = "corner of " + name.replace(" / ", " and ");
+            int i = 1;
+            tempcur = current;
+            for (IdentifiedWeightedEdge e : path.getEdgeList()) {
+                String name;
+                String inGroup = "";
 
-                }
-                else if(vInfo.get(g.getEdgeSource(e)).kind.toString().equals("EXHIBIT_GROUP")) {
-                    name= vInfo.get(g.getEdgeSource(e)).name;
-                }
-                else if(vInfo.get(g.getEdgeSource(e)).kind.toString().equals("EXHIBIT")){
-                    name = "the " + vInfo.get(g.getEdgeSource(e)).name + " exhibit";
+                loc1 = vInfo.get(g.getEdgeSource(e)).id;
+                loc2 = vInfo.get(g.getEdgeTarget(e)).id;
+
+                if (loc1.equals(tempcur) || loc2.equals(next)) {
+                    if(vInfo.get(next).group_id != null && loc2.equals(vInfo.get(next).group_id)) {
+                        inGroup = "and find the " + vInfo.get(next).name + " exhibit inside";
+                    }
+                    if(vInfo.get(g.getEdgeTarget(e)).kind.toString().equals("INTERSECTION")) {
+                        name = vInfo.get(g.getEdgeTarget(e)).name;
+                        name = "corner of " + name.replace(" / ", " and ");
+
+                    }
+                    else if(vInfo.get(g.getEdgeTarget(e)).kind.toString().equals("EXHIBIT_GROUP")) {
+                        name= vInfo.get(g.getEdgeTarget(e)).name;
+                    }
+                    else if(vInfo.get(g.getEdgeTarget(e)).kind.toString().equals("EXHIBIT")){
+                        name = "the " + vInfo.get(g.getEdgeTarget(e)).name + " exhibit";
+                    }
+                    else {
+                        name = "the " + vInfo.get(g.getEdgeTarget(e)).name;
+                    }
+
+
+                    detailedDirectionsLine = detailedDirectionsLine + String.format("  %d. Proceed on %s %.0f feet towards %s %s\n",
+                            i,
+                            eInfo.get(e.getId()).street,
+                            g.getEdgeWeight(e),
+                            name,
+                            inGroup) + "\n";
+                    tempcur = loc2;
                 }
                 else {
-                    name = "the " + vInfo.get(g.getEdgeSource(e)).name;
-                }
+                    if(vInfo.get(next).group_id != null && loc1.equals(vInfo.get(next).group_id)) {
+                        inGroup = "and find the " + vInfo.get(next).name + " exhibit inside";
+                    }
 
-                detailedDirectionsLine = detailedDirectionsLine + String.format("  %d. Proceed on %s %.0f feet towards %s %s\n",
-                        i,
-                        eInfo.get(e.getId()).street,
-                        g.getEdgeWeight(e),
-                        name,
-                        inGroup) + "\n";
-                tempcur = loc1;
+                    if(vInfo.get(g.getEdgeSource(e)).kind.toString().equals("INTERSECTION")) {
+                        name = vInfo.get(g.getEdgeSource(e)).name;
+                        name = "corner of " + name.replace(" / ", " and ");
+
+                    }
+                    else if(vInfo.get(g.getEdgeSource(e)).kind.toString().equals("EXHIBIT_GROUP")) {
+                        name= vInfo.get(g.getEdgeSource(e)).name;
+                    }
+                    else if(vInfo.get(g.getEdgeSource(e)).kind.toString().equals("EXHIBIT")){
+                        name = "the " + vInfo.get(g.getEdgeSource(e)).name + " exhibit";
+                    }
+                    else {
+                        name = "the " + vInfo.get(g.getEdgeSource(e)).name;
+                    }
+
+                    detailedDirectionsLine = detailedDirectionsLine + String.format("  %d. Proceed on %s %.0f feet towards %s %s\n",
+                            i,
+                            eInfo.get(e.getId()).street,
+                            g.getEdgeWeight(e),
+                            name,
+                            inGroup) + "\n";
+                    tempcur = loc1;
+                }
+                i++;
             }
-            i++;
         }
     }
 
@@ -237,100 +238,109 @@ public class DirectionsAlgorithm {
         Map<String, ZooData.VertexInfo> vInfo = ZooData.loadVertexInfoJSON(context,"zoo_node_info.json");
         Map<String, ZooData.EdgeInfo> eInfo = ZooData.loadEdgeInfoJSON(context, "trail_info.json");
 
-        GraphPath<String, IdentifiedWeightedEdge> path;
-
-        if(vInfo.get(current).group_id != null && vInfo.get(next).group_id != null) {
-            path = DijkstraShortestPath.findPathBetween(g, vInfo.get(current).group_id, vInfo.get(next).group_id);
+        if(!(vInfo.get(next).group_id == null) && current.equals(vInfo.get(next).group_id)) {
+            briefDirectionsLine = "1. Find the " + vInfo.get(next).name + " inside the " + vInfo.get(current).name;
         }
-        else if(vInfo.get(next).group_id != null) {
-            path = DijkstraShortestPath.findPathBetween(g, current, vInfo.get(next).group_id);
-        }
-        else if(vInfo.get(current).group_id != null) {
-            path = DijkstraShortestPath.findPathBetween(g, vInfo.get(current).group_id, next);
+        else if(current.equals(next)) {
+            briefDirectionsLine = "1. You are currently at the " + vInfo.get(next).name + " exhibit";
         }
         else {
-            path = DijkstraShortestPath.findPathBetween(g, current, next);
-        }
+            GraphPath<String, IdentifiedWeightedEdge> path;
 
-        int i = 1;
-        tempcur = current;
-
-        int accWeight = 0;
-        for (int e = 0; e < path.getEdgeList().size(); e++) {
-            String name;
-            String inGroup = "";
-
-            loc1 = vInfo.get(g.getEdgeSource(path.getEdgeList().get(e))).id;
-            loc2 = vInfo.get(g.getEdgeTarget(path.getEdgeList().get(e))).id;
-
-            if ((e + 1) < path.getEdgeList().size() && eInfo.get(path.getEdgeList().get(e).getId()).street.equals(eInfo.get(path.getEdgeList().get(e + 1).getId()).street)) {
-                accWeight += g.getEdgeWeight(path.getEdgeList().get(e));
-                if (loc1.equals(tempcur) || loc2.equals(next)) {
-                    tempcur = loc2;
-                }
-                else {
-                    tempcur = loc1;
-                }
+            if(vInfo.get(current).group_id != null && vInfo.get(next).group_id != null) {
+                path = DijkstraShortestPath.findPathBetween(g, vInfo.get(current).group_id, vInfo.get(next).group_id);
+            }
+            else if(vInfo.get(next).group_id != null) {
+                path = DijkstraShortestPath.findPathBetween(g, current, vInfo.get(next).group_id);
+            }
+            else if(vInfo.get(current).group_id != null) {
+                path = DijkstraShortestPath.findPathBetween(g, vInfo.get(current).group_id, next);
             }
             else {
-                if (loc1.equals(tempcur) || loc2.equals(next)) {
-                    if(vInfo.get(next).group_id != null && loc2.equals(vInfo.get(next).group_id)) {
-                        inGroup = "and find the " + vInfo.get(next).name + "exhibit inside";
-                    }
-                    if(vInfo.get(g.getEdgeTarget(path.getEdgeList().get(e))).kind.toString().equals("INTERSECTION")) {
-                        name = vInfo.get(g.getEdgeTarget(path.getEdgeList().get(e))).name;
-                        name = "corner of " + name.replace(" / ", " and ");
+                path = DijkstraShortestPath.findPathBetween(g, current, next);
+            }
 
-                    }
-                    else if(vInfo.get(g.getEdgeTarget(path.getEdgeList().get(e))).kind.toString().equals("EXHIBIT_GROUP")) {
-                        name= vInfo.get(g.getEdgeTarget(path.getEdgeList().get(e))).name;
-                    }
-                    else if(vInfo.get(g.getEdgeTarget(path.getEdgeList().get(e))).kind.toString().equals("EXHIBIT")){
-                        name = "the " + vInfo.get(g.getEdgeTarget(path.getEdgeList().get(e))).name + " exhibit";
+            int i = 1;
+            tempcur = current;
+
+            int accWeight = 0;
+            for (int e = 0; e < path.getEdgeList().size(); e++) {
+                String name;
+                String inGroup = "";
+
+                loc1 = vInfo.get(g.getEdgeSource(path.getEdgeList().get(e))).id;
+                loc2 = vInfo.get(g.getEdgeTarget(path.getEdgeList().get(e))).id;
+
+                if ((e + 1) < path.getEdgeList().size() && eInfo.get(path.getEdgeList().get(e).getId()).street.equals(eInfo.get(path.getEdgeList().get(e + 1).getId()).street)) {
+                    accWeight += g.getEdgeWeight(path.getEdgeList().get(e));
+                    if (loc1.equals(tempcur) || loc2.equals(next)) {
+                        tempcur = loc2;
                     }
                     else {
-                        name = "the " + vInfo.get(g.getEdgeTarget(path.getEdgeList().get(e))).name;
+                        tempcur = loc1;
                     }
-                    briefDirectionsLine = briefDirectionsLine + String.format("  %d. Proceed on %s %.0f feet towards %s %s\n",
-                            i,
-                            eInfo.get(path.getEdgeList().get(e).getId()).street,
-                            g.getEdgeWeight(path.getEdgeList().get(e)) + accWeight,
-                            name,
-                            inGroup) + "\n";
-                    tempcur = loc2;
                 }
                 else {
-                    if(vInfo.get(next).group_id != null && loc1.equals(vInfo.get(next).group_id)) {
-                        inGroup = "and find the " + vInfo.get(next).name + "exhibit inside";
-                    }
-                    if(vInfo.get(g.getEdgeSource(path.getEdgeList().get(e))).kind.toString().equals("INTERSECTION")) {
-                        name = vInfo.get(g.getEdgeSource(path.getEdgeList().get(e))).name;
-                        name = "corner of " + name.replace(" / ", " and ");
+                    if (loc1.equals(tempcur) || loc2.equals(next)) {
+                        if(vInfo.get(next).group_id != null && loc2.equals(vInfo.get(next).group_id)) {
+                            inGroup = "and find the " + vInfo.get(next).name + " exhibit inside";
+                        }
+                        if(vInfo.get(g.getEdgeTarget(path.getEdgeList().get(e))).kind.toString().equals("INTERSECTION")) {
+                            name = vInfo.get(g.getEdgeTarget(path.getEdgeList().get(e))).name;
+                            name = "corner of " + name.replace(" / ", " and ");
 
-                    }
-                    else if(vInfo.get(g.getEdgeSource(path.getEdgeList().get(e))).kind.toString().equals("EXHIBIT_GROUP")) {
-                        name= vInfo.get(g.getEdgeSource(path.getEdgeList().get(e))).name;
-                    }
-                    else if(vInfo.get(g.getEdgeSource(path.getEdgeList().get(e))).kind.toString().equals("EXHIBIT")){
-                        name = "the " + vInfo.get(g.getEdgeSource(path.getEdgeList().get(e))).name + " exhibit";
+                        }
+                        else if(vInfo.get(g.getEdgeTarget(path.getEdgeList().get(e))).kind.toString().equals("EXHIBIT_GROUP")) {
+                            name= vInfo.get(g.getEdgeTarget(path.getEdgeList().get(e))).name;
+                        }
+                        else if(vInfo.get(g.getEdgeTarget(path.getEdgeList().get(e))).kind.toString().equals("EXHIBIT")){
+                            name = "the " + vInfo.get(g.getEdgeTarget(path.getEdgeList().get(e))).name + " exhibit";
+                        }
+                        else {
+                            name = "the " + vInfo.get(g.getEdgeTarget(path.getEdgeList().get(e))).name;
+                        }
+                        briefDirectionsLine = briefDirectionsLine + String.format("  %d. Proceed on %s %.0f feet towards %s %s\n",
+                                i,
+                                eInfo.get(path.getEdgeList().get(e).getId()).street,
+                                g.getEdgeWeight(path.getEdgeList().get(e)) + accWeight,
+                                name,
+                                inGroup) + "\n";
+                        tempcur = loc2;
                     }
                     else {
-                        name = "the " + vInfo.get(g.getEdgeSource(path.getEdgeList().get(e))).name;
-                    }
+                        if(vInfo.get(next).group_id != null && loc1.equals(vInfo.get(next).group_id)) {
+                            inGroup = "and find the " + vInfo.get(next).name + " exhibit inside";
+                        }
+                        if(vInfo.get(g.getEdgeSource(path.getEdgeList().get(e))).kind.toString().equals("INTERSECTION")) {
+                            name = vInfo.get(g.getEdgeSource(path.getEdgeList().get(e))).name;
+                            name = "corner of " + name.replace(" / ", " and ");
 
-                    briefDirectionsLine = briefDirectionsLine + String.format("  %d. Proceed on %s %.0f feet towards %s %s\n",
-                            i,
-                            eInfo.get(path.getEdgeList().get(e).getId()).street,
-                            g.getEdgeWeight(path.getEdgeList().get(e)) + accWeight,
-                            name,
-                            inGroup) + "\n";
-                    tempcur = loc1;
+                        }
+                        else if(vInfo.get(g.getEdgeSource(path.getEdgeList().get(e))).kind.toString().equals("EXHIBIT_GROUP")) {
+                            name= vInfo.get(g.getEdgeSource(path.getEdgeList().get(e))).name;
+                        }
+                        else if(vInfo.get(g.getEdgeSource(path.getEdgeList().get(e))).kind.toString().equals("EXHIBIT")){
+                            name = "the " + vInfo.get(g.getEdgeSource(path.getEdgeList().get(e))).name + " exhibit";
+                        }
+                        else {
+                            name = "the " + vInfo.get(g.getEdgeSource(path.getEdgeList().get(e))).name;
+                        }
+
+                        briefDirectionsLine = briefDirectionsLine + String.format("  %d. Proceed on %s %.0f feet towards %s %s\n",
+                                i,
+                                eInfo.get(path.getEdgeList().get(e).getId()).street,
+                                g.getEdgeWeight(path.getEdgeList().get(e)) + accWeight,
+                                name,
+                                inGroup) + "\n";
+                        tempcur = loc1;
+                    }
+                    accWeight = 0;
+                    i++;
                 }
-                accWeight = 0;
-                i++;
             }
         }
     }
+
     public String getBriefDirections() {
         return briefDirectionsLine;
     }
@@ -365,8 +375,25 @@ public class DirectionsAlgorithm {
 
         for(String id: plannedIds) {
             // If current location is closer to a later planned exhibit
-            if (DijkstraShortestPath.findPathBetween(g, current, id).getWeight() < DijkstraShortestPath.findPathBetween(g, current, visitedIds.get(visitedIds.size() - 1)).getWeight()) {
-                return true;
+            if(vInfo.get(id).group_id == null && vInfo.get(visitedIds.get(visitedIds.size() - 1)).group_id == null) {
+                if (DijkstraShortestPath.findPathBetween(g, current, id).getWeight() < DijkstraShortestPath.findPathBetween(g, current, visitedIds.get(visitedIds.size() - 1)).getWeight()) {
+                    return true;
+                }
+            }
+            else if(vInfo.get(id).group_id != null && vInfo.get(visitedIds.get(visitedIds.size() - 1)).group_id == null) {
+                if (DijkstraShortestPath.findPathBetween(g, current, vInfo.get(id).group_id).getWeight() < DijkstraShortestPath.findPathBetween(g, current, visitedIds.get(visitedIds.size() - 1)).getWeight()) {
+                    return true;
+                }
+            }
+            else if(vInfo.get(id).group_id == null && vInfo.get(visitedIds.get(visitedIds.size() - 1)).group_id != null) {
+                if (DijkstraShortestPath.findPathBetween(g, current, id).getWeight() < DijkstraShortestPath.findPathBetween(g, current, vInfo.get(visitedIds.get(visitedIds.size() - 1)).group_id).getWeight()) {
+                    return true;
+                }
+            }
+            else {
+                if (DijkstraShortestPath.findPathBetween(g, current, vInfo.get(id).group_id).getWeight() < DijkstraShortestPath.findPathBetween(g, current, vInfo.get(visitedIds.get(visitedIds.size() - 1)).group_id).getWeight()) {
+                    return true;
+                }
             }
         }
         return false;
@@ -396,6 +423,7 @@ public class DirectionsAlgorithm {
                 path = DijkstraShortestPath.findPathBetween(g, current, exhibit);
             }
 
+            curTotal = 0;
             for (IdentifiedWeightedEdge e : path.getEdgeList()) {
                 curTotal += g.getEdgeWeight(e);
             }

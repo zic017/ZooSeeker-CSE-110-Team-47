@@ -3,6 +3,7 @@ package com.example.myapplication;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -14,7 +15,6 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -24,6 +24,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 
 public class SearchListActivity extends AppCompatActivity {
@@ -34,17 +36,24 @@ public class SearchListActivity extends AppCompatActivity {
     private PlanListAdapter plan_adapter;
     public ArrayList<SearchItem> ItemList;
     private ArrayList<String> AllTags;
-    private ArrayList<String> plannedList;
+    private ArrayList<String> plannedList = plannedList = new ArrayList<String>();
     private ArrayList<String> nameList;
     private ArrayList<String> passedInList;
     private ArrayList<String> passedNameList;
-    private ArrayList<String> displayList = new ArrayList<>();
+    private ArrayList<String> displayList;
     private HashMap<String, HashSet<SearchItem>> tagMap;
     private TextView count;
     ActivityResultLauncher<Intent> activityLauncher;
     private Boolean cleared = false;
+    private Boolean saved = false;
+    private Set<String> displaySet;
 
-    public ArrayList<String> getPlannedList () { return displayList; }
+    public ArrayList<String> getDisplayList() {
+        if (displayList == null){
+            displayList = new ArrayList<>();
+        }
+        return displayList;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +67,9 @@ public class SearchListActivity extends AppCompatActivity {
         plan_adapter.setHasStableIds(true);
         planListRV.setLayoutManager(new LinearLayoutManager(this));
         planListRV.setAdapter(plan_adapter);
-        plan_adapter.setPlanListItems(displayList);
+        plan_adapter.setPlanListItems(getDisplayList());
+        loadPreference();
+
         count = findViewById(R.id.plan_count);
 
         /*
@@ -113,12 +124,14 @@ public class SearchListActivity extends AppCompatActivity {
 
                 displayList.clear();
                 search_adapter.clearList();
+                clearPreference();
                 plan_adapter.notifyDataSetChanged();
                 count.setText("0");
             }
         });
 
         // Moves us to route plan summary page
+        Map<String, ZooData.VertexInfo> vInfo = ZooData.loadVertexInfoJSON(this, "zoo_node_info.json");
         Button planButton = findViewById(R.id.plan_btn);
         planButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -130,7 +143,21 @@ public class SearchListActivity extends AppCompatActivity {
                         plannedList = search_adapter.getListOfIds();
                     }
                 }
+                // If cleared is true we skip the above code once indicating that the user hit Clear
+                // in RoutePlanSummary and we do not want to repopulate the plannedList again immediately
                 cleared = false;
+
+                if(saved == true) {
+                    for (String ex : displayList) {
+                        for (Map.Entry<String, ZooData.VertexInfo> entry : vInfo.entrySet()) {
+                            if (entry.getValue().name.equals(ex)) {
+                                plannedList.add(entry.getKey());
+                            }
+                        }
+                    }
+                    saved = false;
+                }
+
                 // Code to display popup alert if the plan list is empty
                 if(plannedList.isEmpty()) {
                     Log.d("Plan Button", "List is empty");
@@ -153,7 +180,6 @@ public class SearchListActivity extends AppCompatActivity {
                             // Nothing needs to go here it's just necessary to create this for the popup to work correctly
                         }
                     });
-
                     builder.show();
                     return;
                 }
@@ -162,9 +188,10 @@ public class SearchListActivity extends AppCompatActivity {
                 intent.putStringArrayListExtra("key", plannedList);
                 activityLauncher.launch(intent);
 
-//                startActivity(intent);
             }
         });
+
+        count.setText("" + displayList.size());
     }
 
     /**
@@ -305,6 +332,50 @@ public class SearchListActivity extends AppCompatActivity {
         plan_adapter.notifyDataSetChanged();
         count.setText("" + displayList.size());
     }
+
+    public void savePreference(){
+        SharedPreferences sp = getSharedPreferences("exhibit", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+
+        if (displaySet == null){
+            displaySet = new HashSet<>();
+        }
+        displaySet.addAll(displayList);
+
+
+        for(String s: displaySet){
+            System.out.println(s);
+        }
+        editor.putStringSet("PlanList", displaySet);
+        editor.putInt("size", displaySet.size());
+        editor.apply();
+    }
+
+    public void loadPreference(){
+        SharedPreferences sp = getSharedPreferences("exhibit", MODE_PRIVATE);
+        Set<String> temp = sp.getStringSet("PlanList", null);
+        int size = sp.getInt("size", 0);
+        saved = true;
+
+        if(temp != null){
+            displayList.addAll(temp);
+        }
+    }
+
+    public void clearPreference() {
+        SharedPreferences sp = getSharedPreferences("exhibit", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+
+        editor.clear();
+        editor.apply();
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        savePreference();
+    }
+
 
 
 
