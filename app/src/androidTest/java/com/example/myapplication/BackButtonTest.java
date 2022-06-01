@@ -71,12 +71,6 @@ public class BackButtonTest {
                         isDisplayed()));
         materialTextView.perform(click());
 
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.plan_item_text), withText("Gorillas"),
-                        withParent(withParent(withId(R.id.plan_list_view))),
-                        isDisplayed()));
-        textView.check(matches(withText("Gorillas")));
-
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.plan_btn), withText("Plan"),
                         childAtPosition(
@@ -86,12 +80,6 @@ public class BackButtonTest {
                                 1),
                         isDisplayed()));
         materialButton.perform(click());
-
-        ViewInteraction textView2 = onView(
-                allOf(withId(R.id.exhibit1), withText("Gorillas"),
-                        withParent(withParent(withId(R.id.displayOfExhibits))),
-                        isDisplayed()));
-        textView2.check(matches(withText("Gorillas")));
 
         ViewInteraction materialButton2 = onView(
                 allOf(withId(R.id.goBack), withText("Go Back"),
@@ -103,11 +91,11 @@ public class BackButtonTest {
                         isDisplayed()));
         materialButton2.perform(click());
 
-        ViewInteraction textView3 = onView(
-                allOf(withId(R.id.plan_item_text), withText("Gorillas"),
-                        withParent(withParent(withId(R.id.plan_list_view))),
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.plan_count), withText("1"),
+                        withParent(withParent(withId(android.R.id.content))),
                         isDisplayed()));
-        textView3.check(matches(withText("Gorillas")));
+        textView.check(matches(withText("1")));
     }
 
     private static Matcher<View> childAtPosition(
