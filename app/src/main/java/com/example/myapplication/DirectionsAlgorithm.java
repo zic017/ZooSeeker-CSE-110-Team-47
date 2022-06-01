@@ -66,6 +66,7 @@ public class DirectionsAlgorithm {
         else if(plannedIds.size() == 0) {
             setBriefDirections(current, "entrance_exit_gate");
             setDetailedDirections(current, "entrance_exit_gate");
+            visitedIds.add("entrance_exit_gate");
             current = "entrance_exit_gate";
             currentName = vInfo.get(current).name;
         }
@@ -81,6 +82,9 @@ public class DirectionsAlgorithm {
             }
             else {
                 briefDirectionsLine = "You are currently at the " + vInfo.get(next).name + " exhibit.";
+                detailedDirectionsLine = "You are currently at the " + vInfo.get(next).name + " exhibit.";
+                visitedIds.add(next);
+                plannedIds.remove(next);
             }
 
         }
@@ -89,18 +93,7 @@ public class DirectionsAlgorithm {
 
     public void getPrevious() {
         //If no previous, do nothing
-        if (visitedIds.size() == 0) {
-            return;
-        }
-        else if(current.equals("entrance_exit_gate")) {
-            String previous = visitedIds.get(visitedIds.size() - 1);
-            current = getCurrent();
-            currentName = vInfo.get(visitedIds.get(visitedIds.size()-1)).name;
-            setBriefDirections(current, previous);
-            setDetailedDirections(current, previous);
-
-        }
-        else {
+        if (visitedIds.size() > 1) {
             String previous = visitedIds.get(visitedIds.size()-2);
             current = getCurrent();
             currentName = vInfo.get(visitedIds.get(visitedIds.size()-2)).name;

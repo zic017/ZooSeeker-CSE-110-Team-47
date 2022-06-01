@@ -3,17 +3,6 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-<<<<<<< HEAD
-        <entry key="../../../layout/custom_preview.xml" value="0.1" />
-        <entry key="..\:/Users/KEN/AndroidStudioProjects/zooseeker-cse-110-team-47b/app/src/main/res/layout/activity_directions.xml" value="0.358695652173913" />
-        <entry key="..\:/Users/KEN/AndroidStudioProjects/zooseeker-cse-110-team-47b/app/src/main/res/layout/activity_main.xml" value="0.358695652173913" />
-        <entry key="..\:/Users/KEN/AndroidStudioProjects/zooseeker-cse-110-team-47b/app/src/main/res/layout/activity_route_plan_summary.xml" value="0.365625" />
-        <entry key="..\:/Users/KEN/AndroidStudioProjects/zooseeker-cse-110-team-47b/app/src/main/res/layout/activity_search_list.xml" value="0.358695652173913" />
-        <entry key="..\:/Users/KEN/AndroidStudioProjects/zooseeker-cse-110-team-47b/app/src/main/res/layout/plan_list_item.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/KEN/AndroidStudioProjects/zooseeker-cse-110-team-47b/app/src/main/res/layout/search_list_item.xml" value="0.358695652173913" />
-        <entry key="..\:/Users/KEN/AndroidStudioProjects/zooseeker-cse-110-team-47b/app/src/main/res/layout/summary_list_item.xml" value="0.365625" />
-=======
->>>>>>> 5b98c5f37d49740925bc1d2dca7cfa05a41607bd
         <entry key="..\:/Users/ctric/Downloads/MyApplication2/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Users/ctric/Downloads/MyApplication2/app/src/main/res/layout/activity_search_list.xml" value="0.22" />
         <entry key="..\:/Users/ctric/Downloads/MyApplication2/app/src/main/res/layout/search_list_item.xml" value="0.22" />
@@ -23,6 +12,7 @@
         <entry key="..\:/Users/jeffr/AndroidStudioProjects/zooseeker-cse-110-team-47/app/src/main/res/layout/activity_plan.xml" value="0.26811594202898553" />
         <entry key="..\:/Users/jeffr/AndroidStudioProjects/zooseeker-cse-110-team-47/app/src/main/res/layout/activity_plan_list_exhibition.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/jeffr/AndroidStudioProjects/zooseeker-cse-110-team-47/app/src/main/res/layout/activity_plan_list_exhibiton.xml" value="0.18" />
+        <entry key="..\:/Users/jeffr/AndroidStudioProjects/zooseeker-cse-110-team-47/app/src/main/res/layout/activity_route_plan_summary.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/jeffr/AndroidStudioProjects/zooseeker-cse-110-team-47/app/src/main/res/layout/activity_search_list.xml" value="0.33" />
         <entry key="..\:/Users/jeffr/AndroidStudioProjects/zooseeker-cse-110-team-47/app/src/main/res/layout/plan_list_item.xml" value="0.25" />
         <entry key="..\:/Users/jeffr/AndroidStudioProjects/zooseeker-cse-110-team-47/app/src/main/res/layout/search_list_item.xml" value="0.22" />
