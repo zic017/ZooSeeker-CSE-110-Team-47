@@ -60,6 +60,14 @@ public class SearchListActivity extends AppCompatActivity {
         planListRV.setAdapter(plan_adapter);
         plan_adapter.setPlanListItems(displayList);
         count = findViewById(R.id.plan_count);
+
+        /*
+            If the user hits Clear in RoutePlanSummaryActivity, the plannedList is cleared. The it is returned to this activity, where we
+            clear this activity's plannedList and displayList.
+            The 'cleared' boolean is necessary so that the plannedList isn't immediately repopulated with the same exhibits.
+
+            Otherwise, if the user didn't hit Clear and just hit Go Back then nothing changes with the plannedList in this activity either.
+         */
         activityLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
@@ -67,7 +75,12 @@ public class SearchListActivity extends AppCompatActivity {
                     Intent intent = result.getData();
 
                     if (intent != null) {
+                        // Grabs plannedList that was returned from RoutePlanSummaryActivity
+                        // (could be empty or could be unchanged depending on if they hit Clear)
                         plannedList = intent.getStringArrayListExtra("key");
+
+                        // If the plannedList is empty then they hit Clear and we should update
+                        // this activity's plannedList and displayList
                         if (plannedList.isEmpty()) {
                             displayList.clear();
                             search_adapter.clearList();
@@ -90,7 +103,7 @@ public class SearchListActivity extends AppCompatActivity {
         updatePassedInList(i.getStringArrayListExtra("key"));
         updatePassedNameList(i.getStringArrayListExtra("key1"));
 
-        // Clears plan list
+        // Clears the list we're displaying
         Button clearButton = findViewById((R.id.clear));
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override

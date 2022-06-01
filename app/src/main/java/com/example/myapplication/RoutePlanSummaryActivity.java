@@ -103,7 +103,6 @@ public class RoutePlanSummaryActivity extends AppCompatActivity {
 
         /**
          *   Clearing the exhibit list
-         *   Todo: Clear the ListView and also the plannedExhibits list that was passed in so we can start over
          */
         clearList.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,6 +137,7 @@ public class RoutePlanSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                // Code for popup message if plannedListIds is empty
                 if(plannedListIds.isEmpty()) {
                     Log.d("Plan Button", "List is empty");
                     AlertDialog.Builder builder = new AlertDialog.Builder(RoutePlanSummaryActivity.this);
