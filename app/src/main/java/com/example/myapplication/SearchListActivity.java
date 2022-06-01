@@ -11,6 +11,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,6 +41,8 @@ public class SearchListActivity extends AppCompatActivity {
     private ArrayList<String> displayList = new ArrayList<>();
     private HashMap<String, HashSet<SearchItem>> tagMap;
     private TextView count;
+    ActivityResultLauncher<Intent> activityLauncher;
+    private Boolean cleared = false;
 
     public ArrayList<String> getPlannedList () { return displayList; }
 
@@ -53,6 +60,25 @@ public class SearchListActivity extends AppCompatActivity {
         planListRV.setAdapter(plan_adapter);
         plan_adapter.setPlanListItems(displayList);
         count = findViewById(R.id.plan_count);
+        activityLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if (result.getResultCode() == 1) {
+                    Intent intent = result.getData();
+
+                    if (intent != null) {
+                        plannedList = intent.getStringArrayListExtra("key");
+                        if (plannedList.isEmpty()) {
+                            displayList.clear();
+                            search_adapter.clearList();
+                            plan_adapter.notifyDataSetChanged();
+                            count.setText("0");
+                            cleared = true;
+                        }
+                    }
+                }
+            }
+        });
 
         Intent i = getIntent();
 
@@ -83,13 +109,15 @@ public class SearchListActivity extends AppCompatActivity {
         Button planButton = findViewById(R.id.plan_btn);
         planButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(passedInList != null){
-                    passedInList.addAll(search_adapter.getListOfIds());
-                    plannedList = passedInList;
-                }else {
-                    plannedList = search_adapter.getListOfIds();
+                if (cleared == false) {
+                    if (passedInList != null) {
+                        passedInList.addAll(search_adapter.getListOfIds());
+                        plannedList = passedInList;
+                    } else {
+                        plannedList = search_adapter.getListOfIds();
+                    }
                 }
-
+                cleared = false;
                 // Code to display popup alert if the plan list is empty
                 if(plannedList.isEmpty()) {
                     Log.d("Plan Button", "List is empty");
@@ -116,33 +144,31 @@ public class SearchListActivity extends AppCompatActivity {
                     builder.show();
                     return;
                 }
-                // Previously this would send the info to the Directions page. Now we're rerouting to
-                // route plan summary.
-//                Intent intent = new Intent(SearchListActivity.this, DirectionsActivity.class);
-//                intent.putStringArrayListExtra("key", plannedList);
-//                startActivity(intent);
+
                 Intent intent = new Intent(SearchListActivity.this, RoutePlanSummaryActivity.class);
                 intent.putStringArrayListExtra("key", plannedList);
-                startActivity(intent);
+                activityLauncher.launch(intent);
+
+//                startActivity(intent);
             }
         });
     }
 
     /**
-    public void updatePlan() {
-        if (displayList.isEmpty()) {
-            Toast.makeText(this, "No Data Found..", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            for(String item : displayList)
-            {
-                Log.d("insideUpdatePlan", item);
-            }
-            searchListRV.setVisibility(View.VISIBLE);
-            plan_adapter.updateDisplayList(displayList);
+     public void updatePlan() {
+     if (displayList.isEmpty()) {
+     Toast.makeText(this, "No Data Found..", Toast.LENGTH_SHORT).show();
+     }
+     else {
+     for(String item : displayList)
+     {
+     Log.d("insideUpdatePlan", item);
+     }
+     searchListRV.setVisibility(View.VISIBLE);
+     plan_adapter.updateDisplayList(displayList);
 
-        }
-    }
+     }
+     }
      **/
 
     @Override
@@ -240,18 +266,18 @@ public class SearchListActivity extends AppCompatActivity {
         // our recycler view.
         searchListRV.setAdapter(search_adapter);
     }
-/**
-    public void buildPlanListRecyclerView() {
-        plan_adapter = new PlanAdapter(displayList, SearchListActivity.this);
-        plan_adapter.setHasStableIds(true);
-        LinearLayoutManager manager = new LinearLayoutManager(this);
-        planListRV.setHasFixedSize(true);
+    /**
+     public void buildPlanListRecyclerView() {
+     plan_adapter = new PlanAdapter(displayList, SearchListActivity.this);
+     plan_adapter.setHasStableIds(true);
+     LinearLayoutManager manager = new LinearLayoutManager(this);
+     planListRV.setHasFixedSize(true);
 
-        planListRV.setLayoutManager(manager);
+     planListRV.setLayoutManager(manager);
 
-        planListRV.setAdapter(plan_adapter);
-    }
- **/
+     planListRV.setAdapter(plan_adapter);
+     }
+     **/
 
     public void updatePassedInList(ArrayList<String> passedInList){
         this.passedInList = passedInList;
@@ -266,6 +292,7 @@ public class SearchListActivity extends AppCompatActivity {
         plan_adapter.notifyDataSetChanged();
         count.setText("" + displayList.size());
     }
+
 
 
 }
