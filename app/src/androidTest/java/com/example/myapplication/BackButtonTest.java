@@ -5,11 +5,9 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
@@ -21,6 +19,7 @@ import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
+import androidx.test.rule.GrantPermissionRule;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -36,6 +35,12 @@ public class BackButtonTest {
     @Rule
     public ActivityScenarioRule<MainActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(MainActivity.class);
+
+    @Rule
+    public GrantPermissionRule mGrantPermissionRule =
+            GrantPermissionRule.grant(
+                    "android.permission.ACCESS_FINE_LOCATION",
+                    "android.permission.ACCESS_COARSE_LOCATION");
 
     @Test
     public void backButtonTest() {
@@ -71,6 +76,38 @@ public class BackButtonTest {
                         isDisplayed()));
         materialTextView.perform(click());
 
+        ViewInteraction searchAutoComplete2 = onView(
+                allOf(withId(androidx.appcompat.R.id.search_src_text), withText("gor"),
+                        childAtPosition(
+                                allOf(withId(androidx.appcompat.R.id.search_plate),
+                                        childAtPosition(
+                                                withId(androidx.appcompat.R.id.search_edit_frame),
+                                                1)),
+                                0),
+                        isDisplayed()));
+        searchAutoComplete2.perform(replaceText("go"));
+
+        ViewInteraction searchAutoComplete3 = onView(
+                allOf(withId(androidx.appcompat.R.id.search_src_text), withText("go"),
+                        childAtPosition(
+                                allOf(withId(androidx.appcompat.R.id.search_plate),
+                                        childAtPosition(
+                                                withId(androidx.appcompat.R.id.search_edit_frame),
+                                                1)),
+                                0),
+                        isDisplayed()));
+        searchAutoComplete3.perform(closeSoftKeyboard());
+
+        ViewInteraction materialTextView2 = onView(
+                allOf(withId(R.id.add_btn), withText("+"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.search_list),
+                                        0),
+                                1),
+                        isDisplayed()));
+        materialTextView2.perform(click());
+
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.plan_btn), withText("Plan"),
                         childAtPosition(
@@ -82,20 +119,14 @@ public class BackButtonTest {
         materialButton.perform(click());
 
         ViewInteraction materialButton2 = onView(
-                allOf(withId(R.id.goBack), withText("Go Back"),
+                allOf(withId(R.id.getDirBtn), withText("Get Directions"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                6),
+                                3),
                         isDisplayed()));
         materialButton2.perform(click());
-
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.plan_count), withText("1"),
-                        withParent(withParent(withId(android.R.id.content))),
-                        isDisplayed()));
-        textView.check(matches(withText("1")));
     }
 
     private static Matcher<View> childAtPosition(

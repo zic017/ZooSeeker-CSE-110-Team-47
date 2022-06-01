@@ -18,9 +18,9 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import androidx.test.espresso.ViewInteraction;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
-import androidx.test.rule.ActivityTestRule;
-import androidx.test.runner.AndroidJUnit4;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -31,13 +31,14 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class PlanListDisplayTest {
+public class AddExhibitionTest {
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
+    public ActivityScenarioRule<MainActivity> mActivityScenarioRule =
+            new ActivityScenarioRule<>(MainActivity.class);
 
     @Test
-    public void planListDisplayTest() {
+    public void addExhibitionTest() {
         ViewInteraction appCompatImageView = onView(
                 allOf(withId(androidx.appcompat.R.id.search_button), withContentDescription("Search"),
                         childAtPosition(
@@ -58,7 +59,7 @@ public class PlanListDisplayTest {
                                                 1)),
                                 0),
                         isDisplayed()));
-        searchAutoComplete.perform(replaceText("gorillas"), closeSoftKeyboard());
+        searchAutoComplete.perform(replaceText("mon"), closeSoftKeyboard());
 
         ViewInteraction materialTextView = onView(
                 allOf(withId(R.id.add_btn), withText("+"),
@@ -70,28 +71,11 @@ public class PlanListDisplayTest {
                         isDisplayed()));
         materialTextView.perform(click());
 
-        ViewInteraction appCompatImageView2 = onView(
-                allOf(withId(androidx.appcompat.R.id.search_close_btn), withContentDescription("Clear query"),
-                        childAtPosition(
-                                allOf(withId(androidx.appcompat.R.id.search_plate),
-                                        childAtPosition(
-                                                withId(androidx.appcompat.R.id.search_edit_frame),
-                                                1)),
-                                1),
-                        isDisplayed()));
-        appCompatImageView2.perform(click());
-
         ViewInteraction textView = onView(
-                allOf(withId(R.id.plan_item_text), withText("Gorillas"),
+                allOf(withId(R.id.plan_item_text), withText("Capuchin Monkeys"),
                         withParent(withParent(withId(R.id.plan_list_view))),
                         isDisplayed()));
-        textView.check(matches(isDisplayed()));
-
-        ViewInteraction textView2 = onView(
-                allOf(withId(R.id.plan_item_text), withText("Gorillas"),
-                        withParent(withParent(withId(R.id.plan_list_view))),
-                        isDisplayed()));
-        textView2.check(matches(withText("Gorillas")));
+        textView.check(matches(withText("Capuchin Monkeys")));
     }
 
     private static Matcher<View> childAtPosition(
