@@ -1,14 +1,22 @@
 package com.example.myapplication;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,7 +30,7 @@ import java.util.Set;
 
 
 public class SearchListActivity extends AppCompatActivity {
-//test
+
     private RecyclerView searchListRV;
     private RecyclerView planListRV;
     private SearchAdapter search_adapter;
@@ -36,6 +44,8 @@ public class SearchListActivity extends AppCompatActivity {
     private ArrayList<String> displayList;
     private HashMap<String, HashSet<SearchItem>> tagMap;
     private TextView count;
+    ActivityResultLauncher<Intent> activityLauncher;
+    private Boolean cleared = false;
     private Set<String> displaySet;
 
     public ArrayList<String> getDisplayList() {
@@ -49,25 +59,50 @@ public class SearchListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_list);
+
+        // Instantiating variables
         searchListRV = findViewById(R.id.search_list);
         planListRV = findViewById(R.id.plan_list_view);
         plan_adapter = new PlanListAdapter();
         plan_adapter.setHasStableIds(true);
         planListRV.setLayoutManager(new LinearLayoutManager(this));
         planListRV.setAdapter(plan_adapter);
+        plan_adapter.setPlanListItems(displayList);
         plan_adapter.setPlanListItems(getDisplayList());
         loadPreference();
 
         count = findViewById(R.id.plan_count);
+        activityLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if (result.getResultCode() == 1) {
+                    Intent intent = result.getData();
+
+                    if (intent != null) {
+                        plannedList = intent.getStringArrayListExtra("key");
+                        if (plannedList.isEmpty()) {
+                            displayList.clear();
+                            search_adapter.clearList();
+                            plan_adapter.notifyDataSetChanged();
+                            count.setText("0");
+                            cleared = true;
+                        }
+                    }
+                }
+            }
+        });
 
         Intent i = getIntent();
 
+        // Building search bar
         buildRecyclerView();
         searchListRV.setVisibility(View.INVISIBLE);
 
+        // Updating plan list and plan list count
         updatePassedInList(i.getStringArrayListExtra("key"));
         updatePassedNameList(i.getStringArrayListExtra("key1"));
 
+        // Clears plan list
         Button clearButton = findViewById((R.id.clear));
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,16 +118,42 @@ public class SearchListActivity extends AppCompatActivity {
             }
         });
 
+        // Moves us to route plan summary page
         Map<String, ZooData.VertexInfo> vInfo = ZooData.loadVertexInfoJSON(this, "zoo_node_info.json");
         Button planButton = findViewById(R.id.plan_btn);
         planButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(passedInList != null){
-                    passedInList.addAll(search_adapter.getListOfIds());
-                    plannedList = passedInList;
-                }else {
-                    plannedList = search_adapter.getListOfIds();
+                if (cleared == false) {
+                    if (passedInList != null) {
+                        passedInList.addAll(search_adapter.getListOfIds());
+                        plannedList = passedInList;
+                    } else {
+                        plannedList = search_adapter.getListOfIds();
+                    }
                 }
+                cleared = false;
+                // Code to display popup alert if the plan list is empty
+                if(plannedList.isEmpty()) {
+                    Log.d("Plan Button", "List is empty");
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SearchListActivity.this);
+
+                    builder.setCancelable(true);
+                    builder.setTitle("Empty list");
+                    builder.setMessage("Select some exhibits before planning!");
+
+                    builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
+
+                    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            // Nothing needs to go here it's just necessary to create this for the popup to work correctly
+                        }
+                    });
                 for (String ex : displayList) {
                     for (Map.Entry<String, ZooData.VertexInfo> entry : vInfo.entrySet()) {
                         if (entry.getValue().name.equals(ex)) {
@@ -101,9 +162,15 @@ public class SearchListActivity extends AppCompatActivity {
                     }
                 }
 
-                Intent intent = new Intent(SearchListActivity.this, DirectionsActivity.class);
+                    builder.show();
+                    return;
+                }
+
+                Intent intent = new Intent(SearchListActivity.this, RoutePlanSummaryActivity.class);
                 intent.putStringArrayListExtra("key", plannedList);
-                startActivity(intent);
+                activityLauncher.launch(intent);
+
+//                startActivity(intent);
             }
         });
 
@@ -111,20 +178,20 @@ public class SearchListActivity extends AppCompatActivity {
     }
 
     /**
-    public void updatePlan() {
-        if (displayList.isEmpty()) {
-            Toast.makeText(this, "No Data Found..", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            for(String item : displayList)
-            {
-                Log.d("insideUpdatePlan", item);
-            }
-            searchListRV.setVisibility(View.VISIBLE);
-            plan_adapter.updateDisplayList(displayList);
+     public void updatePlan() {
+     if (displayList.isEmpty()) {
+     Toast.makeText(this, "No Data Found..", Toast.LENGTH_SHORT).show();
+     }
+     else {
+     for(String item : displayList)
+     {
+     Log.d("insideUpdatePlan", item);
+     }
+     searchListRV.setVisibility(View.VISIBLE);
+     plan_adapter.updateDisplayList(displayList);
 
-        }
-    }
+     }
+     }
      **/
 
     @Override
@@ -186,7 +253,7 @@ public class SearchListActivity extends AppCompatActivity {
         // below line we are creating a new array list
         ItemList = new ArrayList<>();
         // below line is to add data to our array list.
-        ItemList = (ArrayList<SearchItem>) SearchItem.loadJSON(this, "sample_node_info.json");
+        ItemList = (ArrayList<SearchItem>) SearchItem.loadJSON(this, "zoo_node_info.json");
 
         for (SearchItem item : ItemList) {
             if(item.getKind().equals("exhibit")) {
@@ -222,18 +289,18 @@ public class SearchListActivity extends AppCompatActivity {
         // our recycler view.
         searchListRV.setAdapter(search_adapter);
     }
-/**
-    public void buildPlanListRecyclerView() {
-        plan_adapter = new PlanAdapter(displayList, SearchListActivity.this);
-        plan_adapter.setHasStableIds(true);
-        LinearLayoutManager manager = new LinearLayoutManager(this);
-        planListRV.setHasFixedSize(true);
+    /**
+     public void buildPlanListRecyclerView() {
+     plan_adapter = new PlanAdapter(displayList, SearchListActivity.this);
+     plan_adapter.setHasStableIds(true);
+     LinearLayoutManager manager = new LinearLayoutManager(this);
+     planListRV.setHasFixedSize(true);
 
-        planListRV.setLayoutManager(manager);
+     planListRV.setLayoutManager(manager);
 
-        planListRV.setAdapter(plan_adapter);
-    }
- **/
+     planListRV.setAdapter(plan_adapter);
+     }
+     **/
 
     public void updatePassedInList(ArrayList<String> passedInList){
         this.passedInList = passedInList;
@@ -298,6 +365,7 @@ public class SearchListActivity extends AppCompatActivity {
         super.onDestroy();
         savePreference();
     }
+
 
 
 
