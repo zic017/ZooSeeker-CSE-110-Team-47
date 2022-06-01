@@ -46,6 +46,7 @@ public class SearchListActivity extends AppCompatActivity {
     ActivityResultLauncher<Intent> activityLauncher;
     private Boolean cleared = false;
     private Set<String> displaySet;
+    private Button clearButton;
 
     public ArrayList<String> getDisplayList() {
         if (displayList == null){
@@ -101,7 +102,7 @@ public class SearchListActivity extends AppCompatActivity {
         updatePassedNameList(i.getStringArrayListExtra("key1"));
 
         // Clears plan list
-        Button clearButton = findViewById((R.id.clear));
+        clearButton = findViewById((R.id.clear));
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
